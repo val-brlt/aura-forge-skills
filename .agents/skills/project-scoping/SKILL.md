@@ -1,92 +1,86 @@
 ---
 name: project-scoping
-description: "User-started Aura Forge functional scoping workflow: interview from an editable idea, review a summary, structure modules/features/MVP, obtain approvals, then prepare a Git commit and push."
+description: "User-started Aura Forge workflow to functionally scope V1 (MVP) or any subsequent product version, obtain approvals, update version-aware project docs, then request separate Git commit and push permissions."
 disable-model-invocation: true
 ---
 
-# Aura Forge — Project Scoping
+# Aura Forge — Version Scoping
 
-This is a **user-invoked orchestration skill**, not an autonomous coding agent. Communicate with the user in French. Use the repository's `AGENTS.md` and approved documentation. Respect explicit user instructions over this workflow.
+This is a **user-invoked orchestration skill**, not an autonomous coding agent. It can be relaunched for **V1, V2, V3, ...** of the same project. Communicate with the user in **French**. Follow the repository's `AGENTS.md` and already approved project decisions. A project is persistent; **each version gets its own scoping cycle**.
 
-## User-facing documentation language (mandatory)
+## Mandatory language contract
 
-All **new functional documents intended for the French-speaking end user** must be written in **French**, regardless of the interview language or existing English templates: `PROJECT.md`, `MVP.md`, `FUTURE-FEATURES.md`, each `MODULE.md`, and every Feature card. This includes all headings, feature/module display names, descriptions, user journeys, behavior and acceptance criteria. English is allowed only for technical keys/identifiers (`AURA-001`, YAML field names/values, file names/slugs), external proper nouns, code, and necessary fixed domain terms. Do not translate the canonical English domain names in `GLOSSARY.md`; use the glossary's existing English-plus-*FR* format.
+Write all **new user-facing functional documentation** in **French**: `PROJECT.md`, `MVP.md` (when relevant), `FUTURE-FEATURES.md`, `versions/<version>/VERSION.md`, module indexes and feature cards. This includes section titles, descriptions and acceptance criteria. Keep stable feature IDs, machine-readable frontmatter keys/values, slugs and file names in English. The **approved scoping summary is kept verbatim in its original language**. Preserve existing `GLOSSARY.md` conventions (English canonical terms plus *FR*) and ADR conventions. All review/approval exchanges are in French.
 
-**Exception:** The approved scoping summary is an evidence snapshot and must retain its original language; do not automatically translate or paraphrase it when copying to `SCOPING-SUMMARY.md`. Keep ADRs and the glossary in their existing repository conventions. Present review tables, gate questions and approval summaries to the user in French. Before seeking approval, confirm the generated documents comply with these language requirements.
+## Scope and dependencies
 
-## Purpose and boundaries
+Scope **functional needs for the target version**, not the whole product every time. Cover user goals, business rules, functional changes, dependencies, exclusions and acceptance criteria when user-approved. **Do not** design UX flows/wireframes, select technologies, create schemas/APIs, implementation tasks or publish GitHub issues. Capture such topics for a later stage instead.
 
-Transform the user's software idea into an **approved functional catalogue**. Do not choose a stack, design databases/APIs/code organization, create implementation tickets/issues, or start production implementation. UX navigation and wireframes belong to the next phase. Record discovered out-of-scope questions for later; they are **not blockers** unless they affect an essential functional decision.
+Use Matt Pocock's installed **model-invoked** `grilling` and `domain-modeling` through the Skill tool, one invocation per skill as needed. These are the mechanisms used by the user-invoked `grill-with-docs`. Do not attempt to invoke `grill-with-docs` or `to-spec` automatically; do not modify Matt's skills. Use the model-invoked local `structure-project` skill through the Skill tool for catalogue preview, apply and audit. Report missing dependencies rather than claiming to have used them.
 
-Use Matt Pocock's installed, **model-invoked** skills `grilling` and `domain-modeling` via the Skill tool (one invocation per skill). These are the same underlying mechanisms used by his user-invoked `grill-with-docs`. Do **not** attempt to invoke the user-invoked `grill-with-docs` or `to-spec` from this skill, and do not duplicate or modify Matt's skill files. If a required skill is unavailable, report it and ask the user to install it rather than pretending it ran.
+## Determine the target version first
 
-When a validated scoping summary is ready, invoke the local **model-invoked** `structure-project` skill through the Skill tool. If its runtime is unavailable, explain the blocker; do not silently invent a substitute workflow.
+Accept a pasted idea, a path to an idea file, or instructions for an existing project version. Read only the relevant existing docs and `AGENTS.md`.
 
-## Input and resume
+- **New project, V1:** read the provided description or `docs/product/00-IDEA.md` when it exists. V1 can be explicitly designated the **MVP**; it is still a version. No other release is assumed approved.
+- **Existing project, V2+:** read `docs/docs-project/PROJECT.md`, the previous `versions/*/VERSION.md`, existing module/feature cards, `FUTURE-FEATURES.md`, the relevant glossary/ADRs, and any user-provided change requests. Use this **approved existing baseline**, not only the original idea. Identify what was delivered, deferred and not yet resolved. **Never infer actual delivery from an approved scope or Git history**; treat delivery as confirmed only when the user or a trusted project record says so.
+- If the target version is specified, honor it. Otherwise, infer V1 only for an unquestionably new project. For a preexisting project, propose the next version from the recorded version list and request confirmation when ambiguous. Never overwrite or renumber old versions silently.
+- Record whether this cycle is `initial_version` or `subsequent_version`, and whether the user has **confirmed** the preceding version was delivered. Do not require past delivery to be marked complete when the user is intentionally planning ahead; keep status truthful.
 
-Accept either (a) pasted idea text or (b) a path to a Markdown description file. If no input was provided, look for `docs/product/00-IDEA.md`; if absent, request the idea. Never treat a document that does not exist as though it exists.
+Maintain resumable state under `.scratch/project-scoping/<project-slug>/<version>/state.md` (one workspace **per version**). On restart, inspect it first and offer a summary/resumption of an incomplete cycle. Track source paths, stage, interview findings, explicit decisions, outstanding questions, summary/catalogue approval, modified files, and separately granted Git permissions. Never treat silence as consent. Keep drafts distinct from approved docs, and do not store secrets.
 
-Create local working artifacts under `.scratch/project-scoping/<project-slug>/` only when needed; do not assume they are tracked by Git. On invocation, inspect that directory first. If it contains an unfinished session, **summarize its recorded state and ask whether to resume** rather than restarting automatically.
+## Workflow: independent gates for each version
 
-Maintain a concise `state.md` with the following data after each milestone:
+### 1. Intake and version-specific interview
 
-- Project slug, description source and current workflow step.
-- Source paths for the draft summary and catalog, where applicable.
-- Explicitly approved decisions and their provenance (or references to the summary).
-- Open questions, deferred UX/architecture topics, blockers and user approvals already received.
-- Document changes proposed/applied, and whether Git commit/push approvals were obtained.
+1. State the **target version** and its starting baseline in French.
+2. For V1, scope the first usable release/MVP from the idea. For V2+, **focus on the delta**: new capabilities, enhancements to delivered features, changed rules, carryovers from backlog, dependencies and explicit exclusions. Do not reopen accepted V1 decisions without a user-requested revision.
+3. Invoke `grilling` for focused discovery and `domain-modeling` for vocabulary/decision modeling. Update glossary and justified ADRs only when appropriate. Do not force a fixed questionnaire or re-ask already answered questions.
+4. Keep cross-phase UX/architecture/implementation questions in a deferred list. Let the user stop an interview and declare coverage *partial* rather than pretending completeness.
 
-Do not record secrets in working artifacts. Keep draft records separate from approved decisions. Never convert a tentative statement into an approval.
+### 2. Version summary and approval gate
 
-## Workflow — stop at each gate
+Draft `.scratch/project-scoping/<project-slug>/<version>/scoping-summary.md` covering:
 
-### 1. Intake and interview
+- Version ID, baseline/previous version, user goals and intended outcomes.
+- Changes **relative to existing behavior** (for V2+), and features entirely new to the product.
+- Explicitly approved decisions, candidate proposals, rejected items and unresolved issues, with provenance.
+- Target-version inclusions, exclusions, deferred/backlog work and user-verified dependencies.
+- Delivery assumptions **marked as assumptions**; coverage assessment (*complete* or *partial*).
 
-1. Read the description, `AGENTS.md`, and the relevant existing glossary/ADRs. Do not read unrelated repository content unnecessarily.
-2. Tell the user this session covers **functional scoping only**: audience, problem, outcomes, business concepts/rules, functional modules, feature needs, dependencies, and version/MVP boundaries.
-3. Invoke `grilling` for its **round-based design-tree interview**; ask coherent frontiers of questions with recommendations, not an arbitrary fixed questionnaire. Invoke `domain-modeling` to refine domain language, update `GLOSSARY.md` as decisions crystallize, and offer ADRs only when genuinely justified.
-4. If architecture, implementation or UX design questions arise, put them in `deferred-questions.md` with their intended later phase, and continue with functional questions.
-5. The user may stop the interview at any moment. In that case, mark coverage as *partial* and continue to the synthesis gate; do not claim the scoping is comprehensive.
+Keep this snapshot in its source language. Show it in French and request **explicit approval**. Approval of the summary does not approve proposed or unresolved requirements. Iterate on correction. Do not proceed without approval.
 
-### 2. Summary and first user approval
+### 3. Catalogue, version structure and approval gate
 
-Produce `.scratch/project-scoping/<project-slug>/scoping-summary.md` with:
+Invoke `structure-project` in `mode=preview` with the approved summary path, target version and existing `docs/docs-project/`. It must:
 
-- Initial problem, users, intended outcome and constraints.
-- Functional decisions explicitly approved by the user, with sources/rationale when available.
-- Candidate domains/modules and features **only if grounded in the conversation**, explicitly marked as approved, proposed, rejected, or unresolved.
-- MVP inclusions and exclusions **only if explicitly settled**.
-- Open functional questions and deferred later-phase questions.
-- Functional success scenarios and a **coverage assessment** (complete / partial, and why).
+- Reuse existing **stable `FEAT-*` IDs** for the same feature; allocate new IDs only for genuinely new features. An enhancement of a V1 feature in V2 can reuse the same canonical card, with version-scoped behavior/history; do not lose V1 acceptance criteria.
+- Propose only changes for the current version and clearly distinguish newly created versus modified features.
+- Select target-version features **only with explicit user approval**. Keep remaining work in a backlog, with proposed, unresolved and rejected items distinguished.
+- Show proposed modifications to *existing approved content* as diffs; never silently rewrite it.
 
-Present a readable summary and ask for **explicit approval or corrections**. Approval here validates the summary; it does **not** automatically approve any proposed or unresolved item. If rejected, revise and ask again. Do not progress without approval.
+Present the proposed catalogue and file manifest in **French**; obtain explicit approval before generating final docs. If changed, revise the preview and seek approval again.
 
-### 3. Structure the approved summary
+Invoke `structure-project` in `mode=apply` only after approval. Write the current version's snapshot and update **living** project/module/feature/backlog indexes; preserve prior version snapshots. Run consistency audit and surface warnings.
 
-Call the `structure-project` skill with `mode=preview` and the approved summary path. That skill proposes a complete catalogue of Modules, Features, decision states, MVP/future scopes, stable IDs and dependencies **before writing final files**.
+### 4. Document review and approval gate
 
-Present this catalogue **in French** and ask for explicit approval. Iterate as needed. No inferred feature may be marked approved without the user's decision.
+Present the added/modified files, feature coverage, version-specific delta, audit results and the relevant Git diff. Show exactly what changed in canonical feature cards already used by older versions. Ask for **explicit approval of the documentation**. If edits are requested, revise and re-audit. On explicit approval, update the current `versions/<version>/VERSION.md` status from `draft` to `approved` (if not already approved), and display that status change in the Git diff before requesting commit authorization; **never** change it to `delivered` here. No automatic transition into UX.
 
-Once the catalogue is approved, call `structure-project` with `mode=apply` and the approved catalogue. The skill writes **French-language** documents in `docs/docs-project/` (except the preserved scoping summary) and performs its consistency audit. Review warnings together with the user; do not suppress unresolved issues.
+### 5. Git permissions: always separate
 
-### 4. Documentation review and second approval
+1. Show `git status`, the scoped diff, and unrelated preexisting changes. Stage **only** the approved functional docs and deliberately approved glossary/ADR updates. Do not use indiscriminate `git add -A`.
+2. Suggest `docs(scoping): validate <version> functional scope`.
+3. Ask separately for **commit** permission. Commit only after approval, then report the hash. If declined, stop with the work tree intact.
+4. Ask separately for **push** permission and destination remote/branch; push only if authorized. Commit permission never implies push permission.
+5. Report the target version's cadrage as approved/complete **only if its own approval gates have passed**. This does **not** mean the version was implemented or delivered. The UX phase for that version may follow later when requested.
 
-Show a concise manifest of created/modified files, structured catalogue, QA findings, and a **Git diff** (or equivalent when Git is unavailable). Verify that source summary was saved in the final docs and glossary/ADR changes are visible.
+## Historical and delivery invariants
 
-Ask the user to **approve the final documentation**. If edits are requested, apply them within scope and repeat the audit/review. Do not create GitHub issues; do not move on to UX automatically.
-
-### 5. Git finalization — separate permissions
-
-1. Show `git status` and the scoped diff. Identify pre-existing user changes and files that must **not** be staged. Stage only approved project-scoping files, never `git add -A` blindly.
-2. Propose a commit message such as `docs(scoping): finalize functional scope and MVP`.
-3. Ask for **explicit commit authorization**. If granted, commit only the approved staged files and report the commit hash; otherwise stop without committing.
-4. Ask **separately** for explicit push authorization and target remote/branch, and push only if authorized. A commit approval does not imply a push approval.
-5. Mark the workflow complete only when the user-approved scope is documented and the requested Git operations have been handled or explicitly deferred. Recommend UX design as the *next* stage without starting it.
-
-## Never
-
-- Treat a conversation as approval merely because the user stopped asking questions.
-- Turn the user's original idea into a hidden new requirement.
-- Generate an implementation-ready `to-spec` issue or development tickets during scoping.
-- Commit, push, merge, delete or overwrite pre-existing work without appropriate authorization.
-- Require an ADR for every decision or fill the glossary with implementation details.
+- V1's MVP scope is **the V1 snapshot**, not a global `release_bucket: mvp` assigned permanently to a feature.
+- `versions/v1/VERSION.md` and its approved summary remain historical references when scoping V2. Reopening/revising a historical version requires a **separate, explicit correction approval** with a visible diff.
+- Do not mark a version `delivered`, or a feature as actually delivered, based on scoping approval. Require explicit evidence or user confirmation.
+- A single canonical feature card can evolve, but earlier version-specific rules and acceptance criteria stay attributable to their original version. Do not retroactively claim that later V2 behavior was part of V1.
+- Keep `FUTURE-FEATURES.md` as a **living backlog**; promote a deferred item into a later version only after explicit approval.
+- Preserve an existing root `MVP.md` or `SCOPING-SUMMARY.md` during migration. Reorganize them only with documented user approval; do not create conflicting copies.
+- Never publish issues, implement code, commit, push, merge, delete or overwrite unrelated user work without the appropriate permission.

@@ -1,5 +1,5 @@
 interface:
-  display_name: "Aura Forge — Cadrage projet"
-  short_description: "Cadrer une idée, valider la synthèse, structurer le MVP et finaliser Git"
+  display_name: "Aura Forge — Cadrage de version"
+  short_description: "Cadrer V1/MVP ou V2+, valider les docs et les opérations Git"
 policy:
   allow_implicit_invocation: false
