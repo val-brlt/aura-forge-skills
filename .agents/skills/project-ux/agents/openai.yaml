@@ -1,0 +1,5 @@
+interface:
+  display_name: "Aura Forge — Conception UX/UI"
+  short_description: "Concevoir l'UX de V1/V2+, valider parcours et écrans, préparer la planification"
+policy:
+  allow_implicit_invocation: false
