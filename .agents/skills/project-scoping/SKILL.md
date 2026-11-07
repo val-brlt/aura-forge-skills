@@ -16,7 +16,9 @@ Write all **new user-facing functional documentation** in **French**: `PROJECT.m
 
 Scope **functional needs for the target version**, not the whole product every time. Cover user goals, business rules, functional changes, dependencies, exclusions and acceptance criteria when user-approved. **Do not** design UX flows/wireframes, select technologies, create schemas/APIs, implementation tasks or publish GitHub issues. Capture such topics for a later stage instead.
 
-Use Matt Pocock's installed **model-invoked** `grilling` and `domain-modeling` through the Skill tool, one invocation per skill as needed. These are the mechanisms used by the user-invoked `grill-with-docs`. Do not attempt to invoke `grill-with-docs` or `to-spec` automatically; do not modify Matt's skills. Use the model-invoked local `structure-project` skill through the Skill tool for catalogue preview, apply and audit. Report missing dependencies rather than claiming to have used them.
+Use Matt Pocock's installed **model-invoked** `grilling` and `domain-modeling` as the interview and domain-modeling procedures. They underpin the user-invoked `grill-with-docs`. Do not automatically invoke `grill-with-docs` or `to-spec`; do not modify Matt's skills. Apply the local `structure-project` instructions for catalogue preview, apply, and audit.
+
+**Codex compatibility (mandatory):** Do **not** assume an executable tool named `Skill` exists. Codex can expose skills as instructions and paths without providing such a tool. At the start of the workflow, inspect the available skill metadata/paths. Read the relevant `SKILL.md` for `grilling` and `domain-modeling` using the available file-reading/shell tools, then follow their instructions in the current session. When structuring docs, read `.agents/skills/structure-project/SKILL.md` (or its resolved installed path) and its indicated references, and execute its `preview`, `apply`, and `audit` procedures directly. If a dedicated skill-invocation tool is actually available, it may be used, but it is **not required**. Do not describe reading and following a skill as a tool-based invocation. Do not report a missing `Skill` tool as an error when the files are readable. If a required skill file truly cannot be found or read, report the specific missing dependency and limit the work accordingly. Continue to obey every approval gate.
 
 ## Determine the target version first
 
@@ -35,7 +37,7 @@ Maintain resumable state under `.scratch/project-scoping/<project-slug>/<version
 
 1. State the **target version** and its starting baseline in French.
 2. For V1, scope the first usable release/MVP from the idea. For V2+, **focus on the delta**: new capabilities, enhancements to delivered features, changed rules, carryovers from backlog, dependencies and explicit exclusions. Do not reopen accepted V1 decisions without a user-requested revision.
-3. Invoke `grilling` for focused discovery and `domain-modeling` for vocabulary/decision modeling. Update glossary and justified ADRs only when appropriate. Do not force a fixed questionnaire or re-ask already answered questions.
+3. Follow the `grilling` skill instructions for focused discovery and the `domain-modeling` instructions for vocabulary/decision modeling, using the Codex-compatible procedure above. Update glossary and justified ADRs only when appropriate. Do not force a fixed questionnaire or re-ask already answered questions.
 4. Keep cross-phase UX/architecture/implementation questions in a deferred list. Let the user stop an interview and declare coverage *partial* rather than pretending completeness.
 
 ### 2. Version summary and approval gate
@@ -52,7 +54,7 @@ Keep this snapshot in its source language. Show it in French and request **expli
 
 ### 3. Catalogue, version structure and approval gate
 
-Invoke `structure-project` in `mode=preview` with the approved summary path, target version and existing `docs/docs-project/`. It must:
+Apply `structure-project` in `mode=preview` (read-only), with the approved summary path, target version and existing `docs/docs-project/`. Follow its `SKILL.md` directly if no dedicated invocation tool is provided. It must:
 
 - Reuse existing **stable `FEAT-*` IDs** for the same feature; allocate new IDs only for genuinely new features. An enhancement of a V1 feature in V2 can reuse the same canonical card, with version-scoped behavior/history; do not lose V1 acceptance criteria.
 - Propose only changes for the current version and clearly distinguish newly created versus modified features.
@@ -61,7 +63,7 @@ Invoke `structure-project` in `mode=preview` with the approved summary path, tar
 
 Present the proposed catalogue and file manifest in **French**; obtain explicit approval before generating final docs. If changed, revise the preview and seek approval again.
 
-Invoke `structure-project` in `mode=apply` only after approval. Write the current version's snapshot and update **living** project/module/feature/backlog indexes; preserve prior version snapshots. Run consistency audit and surface warnings.
+Apply `structure-project` in `mode=apply` only after approval, then follow its `mode=audit` procedure. Write the current version's snapshot and update **living** project/module/feature/backlog indexes; preserve prior version snapshots. Run consistency audit and surface warnings.
 
 ### 4. Document review and approval gate
 
