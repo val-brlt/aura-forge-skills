@@ -10,21 +10,11 @@ This is a **user-invoked orchestration skill**, not an implementation agent. Run
 
 Read `references/document-formats.md` before drafting any final files. Its instructions are English; **all user-facing UX documentation is French**, including headings, interactions, error text and acceptance-oriented behaviors. Machine-readable keys, file names, stable IDs and controlled metadata values remain English. Preserve scoping summaries in their original language; do not change them.
 
-## Required third-party skills (preflight)
+## Design skill integration
 
-`frontend-design` (from `anthropics/skills`) and `design-critique` (from `anthropics/knowledge-work-plugins`) are **mandatory project dependencies** of this workflow. They are expected to be installed before `project-ux` is started. At the beginning of the session, locate and read **both** installed `SKILL.md` files, using the project-local `.agents/skills/` paths (or other Codex-recognized skill locations if the project uses symlinks). Do not rely on either upstream skill being silently available from a different harness.
+Use `frontend-design` to define or refine the visual direction in phase 2, respecting previously approved UI conventions for V2+. Use `design-critique` to review the visual proposals in phase 2 and the finalized UX handoff in phase 4. Both are integral steps of this workflow, not optional suggestions. Draw on each skill's instructions directly in Codex when no dedicated invocation tool is available.
 
-- If either dependency cannot be found or read, **stop before the UX interview**, identify the missing skill and give the user its Codex installation command from `INSTALLATION.md` or the commands below. Never silently install, copy, or substitute a different skill, and never claim that the missing skill was used.
-- `frontend-design` is **required in phase 2** to help develop or critically challenge a specific, deliberate visual direction for the approved journeys and relevant screens, including V2+ consistency with approved existing UI. **Do not turn this into mandatory production UI code:** adapt the skill's visual-design guidance to the current UX artifacts and make prototype code only under the separate prototype gate.
-- `design-critique` is **required in phase 2 and phase 4**: review the proposed wireframes/design directions before gate B and audit the approved UX artifacts before gate C. Use actual evidence (wireframe, screenshot, prototype, or sufficiently detailed documented design) and project context. Report severity and concrete improvements. Do not claim measured accessibility conformance when it has not been measured.
-- Resolve and record the critique's important findings before the corresponding approval gate, or explicitly mark accepted residual limitations. Do not silently approve the agent's own suggested fixes on the user's behalf.
-
-Project-local installation commands (run manually from the repo root):
-
-```bash
-npx skills add anthropics/skills --skill frontend-design -a codex
-npx skills add anthropics/knowledge-work-plugins --skill design-critique -a codex
-```
+Use visual-design guidance without requiring production UI code. Prototypes remain optional and require their own user approval. Ground critiques in real wireframes, screenshots, prototypes, or sufficiently detailed screen descriptions; communicate evidence limits, prioritize findings, and apply user-approved corrections before validation. Never silently approve design changes on the user's behalf.
 
 ## Boundary and inputs
 
@@ -38,7 +28,7 @@ npx skills add anthropics/knowledge-work-plugins --skill design-critique -a code
 
 - When installed, read and follow Matt Pocock's model-invoked `grilling` instructions for **focused UX questions**, not a second full functional interview. Use `domain-modeling` only if UX terminology/decisions truly require it. Do not alter upstream skill files.
 - For a **specific unresolved visual/interaction question**, consider Matt's `prototype` (visual variants or a small interactive logic demo). Read its actual `SKILL.md` before use. Prefer simple wireframes first, and obtain user approval **before writing prototype code or changing a route**. Its upstream post-prototype branch/commit workflow must not run without separate explicit permissions here. If the user's constraints make the upstream procedure incompatible, use its exploration principles directly instead of claiming the skill was invoked end-to-end.
-- Anthropic's `frontend-design` and `design-critique` are **required**, not conditional helpers. Follow the preflight rule above; use `frontend-design` for visual direction and `design-critique` for structured reviews at the specified phases. Respect any source skill guidance that applies without letting it override the scope or human-approval gates of `project-ux`. Never install third-party skills silently.
+- Apply `frontend-design` for visual direction and `design-critique` for structured reviews at the specified phases. Follow their applicable guidance without letting it override the scope or human-approval gates of `project-ux`.
 - **Do not assume an executable `Skill` tool exists in Codex.** Find the installed skills' `SKILL.md` through available metadata/file tools, read them, then apply their procedures directly when no invocation tool exists. This is normal, not an error. Do not present merely reading instructions as invoking a specialized tool.
 
 ## Version-aware work state
@@ -115,6 +105,6 @@ Show `git status` and the relevant diff; identify unrelated pre-existing work. S
 - Never infer delivery from the version's `status: approved` or from UX approval.
 - IDs are stable: `FEAT-*` belongs to functional scope, `FLOW-*` to a user journey, `SCREEN-*` to a conceptual screen; avoid using screen count as ticket count.
 - Earlier approved UX and functional version snapshots remain traceable. Changed canonical screens get version-labelled additions instead of overwriting earlier decisions.
-- `frontend-design` and `design-critique` must be available and used in their defined phases. Skill presence is a prerequisite; it does not authorize prototype code or Git operations.
+- Use `frontend-design` and `design-critique` in their defined phases. Their use does not authorize prototype code or Git operations.
 - Planning later combines **functional scope + UX handoff + validated architecture**. Do not publish implementation Issues here.
 - Never overwrite unrelated files or take Git actions without authorization.
