@@ -47,7 +47,7 @@ Aucun critère supplémentaire proposé.
 
 ## Questions ouvertes
 
-Aucune question fonctionnelle bloquante consignée. La présentation de l’historique et sa représentation technique seront étudiées ultérieurement.
+Aucune question fonctionnelle bloquante consignée. La présentation de l’historique figure dans les [livrables UX approuvés](../../versions/v1/ux/UX-SUMMARY.md) ; sa représentation technique reste à étudier.
 
 ## Traçabilité
 

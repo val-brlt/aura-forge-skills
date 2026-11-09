@@ -47,7 +47,7 @@ Aucun critère supplémentaire proposé.
 
 ## Questions ouvertes
 
-Aucune question fonctionnelle bloquante consignée. Le format technique des informations et leur présentation seront définis dans les phases ultérieures.
+Aucune question fonctionnelle bloquante consignée. La présentation figure dans les [livrables UX approuvés](../../versions/v1/ux/UX-SUMMARY.md) ; le format technique des informations reste à définir.
 
 ## Traçabilité
 

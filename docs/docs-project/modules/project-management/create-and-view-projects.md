@@ -41,7 +41,7 @@ Aucun critère supplémentaire proposé.
 
 ## Questions ouvertes
 
-Aucune question fonctionnelle consignée pour V1. Les écrans et la navigation seront définis ultérieurement.
+Aucune question fonctionnelle consignée pour V1. Les écrans et la navigation sont décrits dans les [livrables UX approuvés](../../versions/v1/ux/UX-SUMMARY.md).
 
 ## Traçabilité
 

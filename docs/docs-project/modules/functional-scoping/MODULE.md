@@ -6,11 +6,13 @@ Accompagner l’utilisateur de l’idée ou des nouveaux besoins jusqu’à un c
 
 ## Périmètre
 
-V1 couvre l’entretien avec l’IA à partir de textes, l’arbitrage des propositions, la structuration du catalogue en modules et fonctionnalités, les critères d’acceptation et les modifications manuelles. Trois validations se succèdent : synthèse, catalogue et cadrage final.
+V1 couvre l’entretien avec l’IA à partir de textes : questions structurées, recommandations et réponses libres dont l’interprétation est confirmée avant décision. Les discussions liées aux questions et le fil général du projet permettent d’explorer les besoins. Ce fil suit le projet entre ses versions, sans modifier automatiquement ses décisions. L’assistant distingue le prévu, l’approuvé et le confirmé livré.
+
+Le cadrage comprend l’arbitrage des propositions, la structuration du catalogue en modules et fonctionnalités, les critères d’acceptation et les modifications manuelles. Trois validations se succèdent : synthèse, catalogue et cadrage final. L’analyse préparatoire n’en constitue pas une quatrième.
 
 Une règle indispensable non clarifiée bloque la validation finale ; l’utilisateur peut la préciser ou reporter la fonctionnalité. Les questions non bloquantes peuvent rester visibles. L’absence de réponse ne vaut jamais approbation.
 
-Les parcours et écrans, l’architecture, les choix techniques et les tâches de réalisation appartiennent à des phases ultérieures.
+Les parcours et écrans des projets gérés, leur architecture, leurs choix techniques et leurs tâches de réalisation appartiennent à des phases ultérieures. Les [livrables UX V1](../../versions/v1/ux/UX-SUMMARY.md) décrivent l’interface approuvée du produit Aura Forge.
 
 ## Fonctionnalités
 

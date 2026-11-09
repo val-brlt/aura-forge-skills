@@ -8,6 +8,8 @@ Permettre de retrouver le travail de cadrage entre sessions et de comprendre les
 
 L’entretien et les décisions sont sauvegardés automatiquement et reprenables après fermeture ou erreur de l’assistant. Une suspension conserve les questions ouvertes et indique une couverture partielle sans approbation implicite.
 
+Les échanges et brouillons généraux restent propres à chaque projet ; son fil est conservé entre les versions consultées, avec le contexte de version identifiable. Les discussions liées aux questions restent séparées. Un échec de réponse permet un réessai sans dupliquer le message utilisateur. Les archives restent consultables ; la restauration précède une nouvelle saisie ou la reprise du cadrage.
+
 L’historique rend consultables les décisions, les états approuvés et les comportements fonctionnels prévus par version. Il conserve la distinction entre approbation et livraison et entre une fonctionnalité et ses évolutions successives.
 
 ## Fonctionnalités

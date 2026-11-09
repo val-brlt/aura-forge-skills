@@ -49,7 +49,7 @@ Aucun critère supplémentaire proposé.
 
 ## Questions ouvertes
 
-Aucune question fonctionnelle consignée pour V1. Les mécanismes de présentation et d’exécution des validations restent à concevoir dans leurs phases respectives.
+Aucune question fonctionnelle consignée pour V1. La présentation des validations figure dans les [livrables UX approuvés](../../versions/v1/ux/UX-SUMMARY.md) ; leurs mécanismes techniques d’exécution restent à concevoir.
 
 ## Traçabilité
 

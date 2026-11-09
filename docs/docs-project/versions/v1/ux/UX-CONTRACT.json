@@ -1,0 +1,1074 @@
+{
+  "schemaVersion": 1,
+  "version": "v1",
+  "status": "approved",
+  "scope": "versions/v1/VERSION.md",
+  "flows": [
+    {
+      "id": "FLOW-001",
+      "name": "Créer, retrouver et entretenir ses projets",
+      "featureIds": [
+        "FEAT-001",
+        "FEAT-002",
+        "FEAT-003"
+      ],
+      "screenIds": [
+        "SCREEN-001",
+        "SCREEN-002",
+        "SCREEN-003"
+      ],
+      "steps": [
+        {
+          "screenId": "SCREEN-001",
+          "action": "Consulter les projets ou choisir « Nouveau projet ».",
+          "result": "La liste des projets est consultable et la création ouvre SCREEN-002."
+        },
+        {
+          "screenId": "SCREEN-002",
+          "action": "Saisir le nom et la description, puis créer le projet et ouvrir sa vue d’ensemble.",
+          "result": "Un projet distinct est créé et sa vue d’ensemble s’ouvre avec sa première version."
+        },
+        {
+          "screenId": "SCREEN-003",
+          "action": "Consulter ou modifier la description ; l’enregistrement conserve les cadrages approuvés.",
+          "result": "La description est enregistrée sans réécrire les cadrages approuvés."
+        },
+        {
+          "screenId": "SCREEN-003",
+          "action": "Archiver après confirmation si nécessaire ; retrouver le projet via le filtre des archives et le restaurer avant de le modifier.",
+          "result": "L’archive conserve le projet ; sa restauration permet la modification."
+        }
+      ],
+      "alternatives": [
+        "Annuler une création ne crée pas de projet. Annuler une édition ne modifie pas la description enregistrée. La liste vide invite à créer ; une archive reste consultable, avec versions et décisions intactes.",
+        "Les champs absents à la création produisent une erreur reliée au champ et un focus utile. Un retour confirme création, modification, archivage ou restauration."
+      ]
+    },
+    {
+      "id": "FLOW-002",
+      "name": "Préparer les versions, déclarer une livraison et rouvrir un cadrage",
+      "featureIds": [
+        "FEAT-004",
+        "FEAT-005",
+        "FEAT-006",
+        "FEAT-012"
+      ],
+      "screenIds": [
+        "SCREEN-003",
+        "SCREEN-004",
+        "SCREEN-005",
+        "SCREEN-006",
+        "SCREEN-010"
+      ],
+      "steps": [
+        {
+          "screenId": "SCREEN-004",
+          "action": "Ouvrir les versions et consulter leurs états ainsi que leurs informations de livraison.",
+          "result": "Les états de cadrage et de livraison sont lisibles séparément."
+        },
+        {
+          "screenId": "SCREEN-004",
+          "action": "Préparer la version suivante à partir des nouveaux besoins ; réutiliser le contexte approuvé et les éléments reportés sans inclusion automatique.",
+          "result": "Une version suivante est préparée sans inclusion automatique du contexte approuvé ni des reports."
+        },
+        {
+          "screenId": "SCREEN-004",
+          "action": "Pour revenir sur une version approuvée non livrée, confirmer la réouverture : conserver l’état approuvé, suspendre la suivante active et signaler les éléments à revoir.",
+          "result": "L’état approuvé est conservé, la suivante active est suspendue et ses éléments affectés sont à revoir sans réécriture automatique."
+        },
+        {
+          "screenId": "SCREEN-006",
+          "action": "Revoir et valider les résultats affectés ; consulter l’historique pour retrouver la référence précédente.",
+          "result": "Les résultats affectés sont revalidés ; SCREEN-010 conserve la référence précédente."
+        },
+        {
+          "screenId": "SCREEN-004",
+          "action": "Déclarer la livraison par son action propre, avec confirmation explicite ; cette action ne valide aucun cadrage incomplet.",
+          "result": "La livraison est déclarée explicitement sans approuver un cadrage incomplet."
+        }
+      ],
+      "alternatives": [
+        "Si un cadrage est déjà actif, terminer ou suspendre celui-ci avant d’en activer un autre. La préparation avant livraison est possible. Après livraison, une évolution passe par une nouvelle version. Annuler un dialogue laisse les états inchangés.",
+        "L’interface explique le cadrage actif unique, la suspension de la suivante, la référence à revoir et l’interdiction de rouvrir une version livrée. Les validations et les livraisons restent attribuables à leur version."
+      ]
+    },
+    {
+      "id": "FLOW-003",
+      "name": "Analyser l’idée, répondre et reprendre le cadrage",
+      "featureIds": [
+        "FEAT-007",
+        "FEAT-008",
+        "FEAT-011"
+      ],
+      "screenIds": [
+        "SCREEN-003",
+        "SCREEN-005",
+        "SCREEN-006"
+      ],
+      "steps": [
+        {
+          "screenId": "SCREEN-005",
+          "action": "Lancer l’analyse préparatoire si elle n’a pas encore été réalisée ; elle prépare les questions sans approuver le périmètre.",
+          "result": "L’analyse prépare les questions sans approbation métier."
+        },
+        {
+          "screenId": "SCREEN-005",
+          "action": "Choisir une question du tour et lire son contexte, la recommandation et sa justification.",
+          "result": "La question affiche contexte, recommandation et justification."
+        },
+        {
+          "screenId": "SCREEN-005",
+          "action": "Appliquer la recommandation explicitement formulée, ou saisir sa propre réponse, relire l’interprétation proposée, l’ajuster et confirmer.",
+          "result": "La réponse explicitement confirmée devient une décision ; son interprétation reste corrigeable avant confirmation."
+        },
+        {
+          "screenId": "SCREEN-005",
+          "action": "Si nécessaire, ouvrir une discussion liée à la question, échanger en texte avec rendu Markdown, puis revenir pour décider.",
+          "result": "La discussion conserve son sujet et le retour à la question permet de décider."
+        },
+        {
+          "screenId": "SCREEN-006",
+          "action": "Retrouver les réponses confirmées dans la synthèse ; sa validation reste une action distincte.",
+          "result": "La synthèse présente les réponses confirmées et reste à valider."
+        }
+      ],
+      "alternatives": [
+        "La discussion utilise Entrée pour envoyer et Maj+Entrée pour une nouvelle ligne ; la composition de texte n’envoie pas prématurément. Une réponse ambiguë peut rester à clarifier. Suspendre conserve la couverture partielle, les questions et les réponses sans approbation implicite ; la reprise passe par le choix explicite de la version suspendue.",
+        "Analyse ou réponse IA en attente puis en erreur : conserver les textes et décisions, proposer un réessai. Une erreur de sauvegarde indique que les changements restent dans la session et invite à réessayer avant fermeture. La persistance réelle n’est pas implémentée dans la galerie."
+      ]
+    },
+    {
+      "id": "FLOW-004",
+      "name": "Arbitrer les propositions et structurer le catalogue",
+      "featureIds": [
+        "FEAT-004",
+        "FEAT-008",
+        "FEAT-009",
+        "FEAT-012"
+      ],
+      "screenIds": [
+        "SCREEN-005",
+        "SCREEN-007",
+        "SCREEN-008",
+        "SCREEN-010"
+      ],
+      "steps": [
+        {
+          "screenId": "SCREEN-005",
+          "action": "Examiner les propositions du cadrage, leurs recommandations et leurs états ; ouvrir si nécessaire une discussion propre au sujet.",
+          "result": "Les propositions et recommandations sont consultables avec leur discussion propre."
+        },
+        {
+          "screenId": "SCREEN-007",
+          "action": "Discuter, modifier, accepter, refuser ou reporter ; décider explicitement de l’inclusion d’une proposition acceptée.",
+          "result": "Les arbitrages sont conservés ; acceptation et inclusion restent distinctes."
+        },
+        {
+          "screenId": "SCREEN-007",
+          "action": "Revoir les éléments reportés lors d’une nouvelle version : leur présence comme contexte ne les inclut pas dans son périmètre.",
+          "result": "Les reports restent du contexte jusqu’à sélection explicite."
+        },
+        {
+          "screenId": "SCREEN-008",
+          "action": "À partir de la synthèse validée, examiner le catalogue ; renommer le module, modifier une fonctionnalité, son comportement ou ses critères.",
+          "result": "Le catalogue issu de la synthèse validée est modifiable avec ses critères."
+        },
+        {
+          "screenId": "SCREEN-010",
+          "action": "Conserver l’identité d’une fonctionnalité évoluée, sa trace de modification et ses comportements antérieurs dans l’historique ; revalider les résultats affectés.",
+          "result": "L’identité fonctionnelle et les comportements antérieurs restent consultables ; les résultats affectés sont à revalider."
+        }
+      ],
+      "alternatives": [
+        "Une proposition peut être acceptée mais non incluse. Modifier une proposition retenue la remet à arbitrer et impose de revoir le périmètre affecté. Un catalogue de nouvelle version peut rester vide jusqu’à une sélection explicite.",
+        "Une règle indispensable d’une fonctionnalité retenue reste signalée tant qu’elle n’est pas clarifiée ou que la fonctionnalité n’est pas reportée. Une référence protégée exige sa réouverture avant modification. Les filtres sans résultat expliquent où retrouver les autres propositions."
+      ]
+    },
+    {
+      "id": "FLOW-005",
+      "name": "Valider la synthèse, le catalogue et le cadrage final",
+      "featureIds": [
+        "FEAT-008",
+        "FEAT-009",
+        "FEAT-010"
+      ],
+      "screenIds": [
+        "SCREEN-006",
+        "SCREEN-008",
+        "SCREEN-009"
+      ],
+      "steps": [
+        {
+          "screenId": "SCREEN-006",
+          "action": "Relire puis confirmer la synthèse avant la préparation du catalogue.",
+          "result": "La synthèse est explicitement approuvée avant préparation du catalogue."
+        },
+        {
+          "screenId": "SCREEN-008",
+          "action": "Relire et confirmer le catalogue, avec fonctionnalités et critères, avant la consolidation finale.",
+          "result": "Le catalogue est explicitement approuvé avant consolidation finale."
+        },
+        {
+          "screenId": "SCREEN-009",
+          "action": "Examiner le périmètre consolidé, les décisions, les reports et les questions ouvertes.",
+          "result": "Le périmètre, les décisions, les reports et les questions ouvertes sont relisibles."
+        },
+        {
+          "screenId": "SCREEN-009",
+          "action": "En cas de règle indispensable indéterminée sur une fonctionnalité retenue, clarifier ou reporter, puis revalider le catalogue modifié.",
+          "result": "La règle indispensable est clarifiée ou la fonctionnalité reportée ; le catalogue affecté est à revalider."
+        },
+        {
+          "screenId": "SCREEN-009",
+          "action": "Confirmer le cadrage final dans son dialogue, avec action explicite ; la livraison reste non confirmée tant qu’elle n’a pas été déclarée séparément.",
+          "result": "Le cadrage final est approuvé ; la livraison conserve sa déclaration distincte."
+        }
+      ],
+      "alternatives": [
+        "Annuler laisse le résultat non approuvé. Une question non bloquante peut rester dans le cadrage final. Les corrections manuelles et celles issues de l’assistant suivent les mêmes règles de traçabilité et de nouvelle validation.",
+        "La liste des prérequis explique les validations manquantes ; un blocage indique sa cause et les deux issues possibles. Le bouton final est indisponible tant que les prérequis ou une règle bloquante ne sont pas traités. Suspension, erreur et silence ne valident rien."
+      ]
+    },
+    {
+      "id": "FLOW-006",
+      "name": "Consulter les décisions, références et archives",
+      "featureIds": [
+        "FEAT-003",
+        "FEAT-006",
+        "FEAT-012"
+      ],
+      "screenIds": [
+        "SCREEN-001",
+        "SCREEN-003",
+        "SCREEN-004",
+        "SCREEN-010"
+      ],
+      "steps": [
+        {
+          "screenId": "SCREEN-001",
+          "action": "Retrouver le projet, y compris par le filtre des archives, puis consulter son contexte.",
+          "result": "Le projet actif ou archivé est retrouvé ; SCREEN-003 présente son contexte."
+        },
+        {
+          "screenId": "SCREEN-010",
+          "action": "Ouvrir l’historique et sélectionner la version concernée.",
+          "result": "L’historique de la version choisie est affiché."
+        },
+        {
+          "screenId": "SCREEN-010",
+          "action": "Choisir un événement ou un état approuvé conservé ; lire son origine, son contenu et la version à laquelle il appartient.",
+          "result": "Le contenu sélectionné est consultable avec son origine et sa version."
+        },
+        {
+          "screenId": "SCREEN-010",
+          "action": "En cas de réouverture, retrouver l’état précédemment approuvé ; pour une fonctionnalité évoluée, consulter le comportement de sa version d’origine.",
+          "result": "Les références et comportements antérieurs sont conservés sans réécriture."
+        }
+      ],
+      "alternatives": [
+        "La consultation ne change pas la version active en cadrage. L’archive conserve l’historique ; restauration nécessaire avant reprise. La livraison déclarée reste une information distincte de la référence approuvée.",
+        "Avant sélection, le panneau explique comment ouvrir une entrée. Les états protégés expliquent pourquoi la modification exige restauration ou réouverture. Aucune correction rétroactive d’une version livrée n’est proposée."
+      ]
+    },
+    {
+      "id": "FLOW-007",
+      "name": "Discuter du projet dans son ensemble",
+      "featureIds": [
+        "FEAT-007",
+        "FEAT-011"
+      ],
+      "screenIds": [
+        "SCREEN-003",
+        "SCREEN-011"
+      ],
+      "steps": [
+        {
+          "screenId": "SCREEN-011",
+          "action": "Ouvrir la discussion ; retrouver le fil et le brouillon propres au projet, ainsi que le contexte de version consulté.",
+          "result": "Le fil et le brouillon du projet sont retrouvés avec le contexte de version consulté."
+        },
+        {
+          "screenId": "SCREEN-011",
+          "action": "Saisir ou coller un message puis envoyer par Entrée ou bouton ; utiliser Maj+Entrée pour une nouvelle ligne.",
+          "result": "Le message est envoyé ; Maj+Entrée ajoute une ligne sans envoi."
+        },
+        {
+          "screenId": "SCREEN-011",
+          "action": "Lire la réponse avec rendu Markdown et contexte de version identifiable ; poursuivre librement l’exploration.",
+          "result": "La réponse est lisible en Markdown avec son contexte de version."
+        },
+        {
+          "screenId": "SCREEN-011",
+          "action": "Si une décision de cadrage est nécessaire, ouvrir le cadrage de la version concernée pour ses questions et validations explicites.",
+          "result": "Le cadrage concerné est accessible pour ses décisions et validations explicites."
+        }
+      ],
+      "alternatives": [
+        "Changer de projet sépare messages et brouillons ; changer de version d’un même projet conserve le fil sans perdre l’attribution du contexte des messages. Les discussions des questions restent séparées. Une version approuvée n’empêche pas l’exploration ; une archive reste en consultation seule.",
+        "Une réponse en attente est annoncée. En cas d’erreur, le message reste présent ; le réessai ajoute la réponse sans dupliquer la saisie utilisateur. Une idée discutée ne modifie automatiquement ni cadrage, ni description, ni catalogue, ni livraison."
+      ]
+    }
+  ],
+  "screens": [
+    {
+      "id": "SCREEN-001",
+      "name": "Liste des projets",
+      "featureIds": [
+        "FEAT-001",
+        "FEAT-003"
+      ],
+      "flowIds": [
+        "FLOW-001",
+        "FLOW-006"
+      ],
+      "change": "new",
+      "mockup": "mockups/index.html#SCREEN-001",
+      "states": [
+        "Liste normale",
+        "aucun projet avec invitation à créer",
+        "aucune archive",
+        "projets archivés identifiables et consultables. Le cadrage approuvé et la livraison ne sont pas confondus dans les états affichés."
+      ],
+      "interactions": [
+        {
+          "id": "ACT-001",
+          "trigger": "Ouvrir « Liste des projets »",
+          "result": "Titre « Mes projets », action « Nouveau projet », filtres « En cours » et « Archivés », puis lignes de projets avec description et état de la version. Les archives ne constituent pas une entrée du menu latéral."
+        },
+        {
+          "id": "ACT-002",
+          "trigger": "Choisir « Nouveau projet »",
+          "result": "Le formulaire SCREEN-002 s’ouvre."
+        },
+        {
+          "id": "ACT-003",
+          "trigger": "Choisir une ligne de projet",
+          "result": "SCREEN-003 s’ouvre pour le projet sélectionné."
+        },
+        {
+          "id": "ACT-004",
+          "trigger": "Changer le filtre des projets",
+          "result": "Les projets actifs et archivés restent distingués."
+        }
+      ],
+      "accessibilityNotes": [
+        "Filtres à état sélectionné explicite ; liens de projet nommés ; liste lisible sans dépendre de la couleur.",
+        "Sur mobile, les métadonnées passent sous la description."
+      ]
+    },
+    {
+      "id": "SCREEN-002",
+      "name": "Création de projet",
+      "featureIds": [
+        "FEAT-001"
+      ],
+      "flowIds": [
+        "FLOW-001"
+      ],
+      "change": "new",
+      "mockup": "mockups/index.html#SCREEN-002",
+      "states": [
+        "Formulaire vide ou rempli",
+        "nom ou description absents avec erreur au champ",
+        "création confirmée dans le nouveau contexte. Une saisie invalide ne crée pas de projet."
+      ],
+      "interactions": [
+        {
+          "id": "ACT-005",
+          "trigger": "Ouvrir « Création de projet »",
+          "result": "Retour aux projets, nom, description libre, aide à la saisie, action « Créer le projet » et annulation. Une explication présente le chemin vers le cadrage validé."
+        },
+        {
+          "id": "ACT-006",
+          "trigger": "Saisir ou coller le nom et la description puis créer",
+          "result": "Le projet ouvre SCREEN-003 avec sa première version ; aucun import ni enrichissement dédié par IA n’est proposé."
+        },
+        {
+          "id": "ACT-007",
+          "trigger": "Annuler la création",
+          "result": "La liste réapparaît sans création de projet."
+        },
+        {
+          "id": "ACT-008",
+          "trigger": "Créer avec un champ obligatoire vide",
+          "result": "Une erreur est reliée au champ ; aucun projet n’est créé et le premier champ invalide reçoit le focus."
+        }
+      ],
+      "accessibilityNotes": [
+        "Libellés associés aux champs ; erreurs reliées par aria-describedby, état aria-invalid et focus sur le premier champ en erreur.",
+        "Formulaire et aide s’empilent sur petit écran."
+      ]
+    },
+    {
+      "id": "SCREEN-003",
+      "name": "Vue d’ensemble du projet",
+      "featureIds": [
+        "FEAT-001",
+        "FEAT-002",
+        "FEAT-003",
+        "FEAT-004",
+        "FEAT-007",
+        "FEAT-011"
+      ],
+      "flowIds": [
+        "FLOW-001",
+        "FLOW-002",
+        "FLOW-003",
+        "FLOW-006",
+        "FLOW-007"
+      ],
+      "change": "new",
+      "mockup": "mockups/index.html#SCREEN-003",
+      "states": [
+        "Projet actif, analyse à commencer, cadrage à poursuivre, suspendu ou approuvé",
+        "archive avec bannière de consultation et action de restauration. Validations et livraisons restent inchangées après archivage."
+      ],
+      "interactions": [
+        {
+          "id": "ACT-009",
+          "trigger": "Ouvrir « Vue d’ensemble du projet »",
+          "result": "Nom dans l’en-tête et le contenu, description modifiable, panneau de reprise et liste des versions. Le menu gauche contient vue d’ensemble, discussion IA, versions, historique, puis les étapes de travail ; il ne répète ni « Projet ouvert », ni le nom, ni un titre « Projet »."
+        },
+        {
+          "id": "ACT-010",
+          "trigger": "Enregistrer la description modifiée",
+          "result": "La description est conservée sans réécrire les cadrages approuvés."
+        },
+        {
+          "id": "ACT-011",
+          "trigger": "Annuler l’édition",
+          "result": "La description enregistrée reste inchangée."
+        },
+        {
+          "id": "ACT-012",
+          "trigger": "Confirmer l’archivage ou restaurer depuis la bannière",
+          "result": "L’archive devient consultable en lecture seule ; la restauration permet la modification. Validations et livraisons restent inchangées."
+        },
+        {
+          "id": "ACT-013",
+          "trigger": "Choisir la reprise",
+          "result": "Le panneau conduit à l’analyse, aux questions, au résultat en cours ou au choix explicite d’une version suspendue."
+        },
+        {
+          "id": "ACT-014",
+          "trigger": "Choisir « Discussion IA »",
+          "result": "SCREEN-011 présente le fil général du projet."
+        }
+      ],
+      "accessibilityNotes": [
+        "Contexte projet/version partagé et actions explicites ; bannière expliquant la consultation seule.",
+        "Description et panneau de reprise sont juxtaposés sur bureau puis empilés sur mobile."
+      ]
+    },
+    {
+      "id": "SCREEN-004",
+      "name": "Versions et références",
+      "featureIds": [
+        "FEAT-004",
+        "FEAT-005",
+        "FEAT-006",
+        "FEAT-012"
+      ],
+      "flowIds": [
+        "FLOW-002",
+        "FLOW-006"
+      ],
+      "change": "new",
+      "mockup": "mockups/index.html#SCREEN-004",
+      "states": [
+        "Version en préparation, suspendue, approuvée, livrée",
+        "suivante à revoir après modification de sa référence",
+        "refus d’activer deux cadrages",
+        "archive sans action de modification. Une livraison peut être déclarée sans approuver implicitement un cadrage incomplet."
+      ],
+      "interactions": [
+        {
+          "id": "ACT-015",
+          "trigger": "Ouvrir « Versions et références »",
+          "result": "Action « Préparer la version suivante », règle du cadrage actif unique, lignes de versions, états et actions propres à chacune. Les informations de cadrage et de livraison restent lisibles séparément."
+        },
+        {
+          "id": "ACT-016",
+          "trigger": "Consulter une version",
+          "result": "Le contexte consulté et ses états de cadrage et de livraison restent identifiables séparément."
+        },
+        {
+          "id": "ACT-017",
+          "trigger": "Préparer la version suivante",
+          "result": "Les nouveaux besoins, le contexte approuvé et les reports sont disponibles sans inclusion automatique, y compris avant livraison de la précédente."
+        },
+        {
+          "id": "ACT-018",
+          "trigger": "Activer un autre cadrage",
+          "result": "Le cadrage actif doit être terminé ou suspendu avant activation d’un autre ; la règle du cadrage actif unique est expliquée."
+        },
+        {
+          "id": "ACT-019",
+          "trigger": "Confirmer la réouverture d’une version approuvée non livrée",
+          "result": "La référence approuvée est conservée ; la suivante active est suspendue et les éléments affectés sont à revoir, sans réécriture automatique."
+        },
+        {
+          "id": "ACT-020",
+          "trigger": "Demander la réouverture d’une version livrée",
+          "result": "La réouverture est interdite ; une évolution passe par une nouvelle version."
+        },
+        {
+          "id": "ACT-021",
+          "trigger": "Déclarer la livraison et cocher sa confirmation",
+          "result": "La livraison est déclarée pour la version choisie sans approbation implicite d’un cadrage incomplet. Annuler le dialogue conserve les états précédents."
+        }
+      ],
+      "accessibilityNotes": [
+        "Chaque action indique la version concernée ; dialogues natifs nommés, annulation et confirmation explicites.",
+        "Les actions passent à la ligne sur mobile, sans tableau trop large."
+      ]
+    },
+    {
+      "id": "SCREEN-005",
+      "name": "Analyse et questions de cadrage",
+      "featureIds": [
+        "FEAT-004",
+        "FEAT-007",
+        "FEAT-008",
+        "FEAT-011"
+      ],
+      "flowIds": [
+        "FLOW-002",
+        "FLOW-003",
+        "FLOW-004"
+      ],
+      "change": "new",
+      "mockup": "mockups/index.html#SCREEN-005",
+      "states": [
+        "Analyse à lancer, en attente ou en erreur avec réessai",
+        "question à examiner, réponse saisie, interprétation à confirmer, réponse enregistrée ou modifiable",
+        "cadrage suspendu ou en consultation seule. Une question bloquante retenue doit être clarifiée ou reportée avant validation finale."
+      ],
+      "interactions": [
+        {
+          "id": "ACT-022",
+          "trigger": "Ouvrir « Analyse et questions de cadrage »",
+          "result": "Contexte de cadrage, navigation locale vers synthèse/catalogue/final et décisions/reportés. Avant analyse : idée et action « Analyser l’idée ». Après analyse : progression du tour, liste des questions et question sélectionnée avec contexte, recommandation, justification, actions et réponse libre."
+        },
+        {
+          "id": "ACT-023",
+          "trigger": "Lancer l’analyse",
+          "result": "L’analyse prépare les questions sans validation métier ; attente ou erreur permettent un réessai."
+        },
+        {
+          "id": "ACT-024",
+          "trigger": "Choisir une question",
+          "result": "Son contexte, sa recommandation et sa justification apparaissent avec la progression du tour."
+        },
+        {
+          "id": "ACT-025",
+          "trigger": "Appliquer la recommandation explicitement formulée",
+          "result": "La réponse est confirmée pour la question ; une recommandation d’inclusion précise la version concernée."
+        },
+        {
+          "id": "ACT-026",
+          "trigger": "Saisir une réponse libre, relire son interprétation, la corriger puis confirmer",
+          "result": "La décision confirmée alimente la synthèse à relire ; une réponse non confirmée n’est pas approuvée et peut rester à clarifier."
+        },
+        {
+          "id": "ACT-027",
+          "trigger": "Ouvrir une discussion de question puis revenir pour décider",
+          "result": "Le panneau garde le sujet et ses messages séparés, affiche le Markdown et laisse la décision explicite dans la question. Entrée envoie, Maj+Entrée ajoute une ligne ; la composition est respectée."
+        },
+        {
+          "id": "ACT-028",
+          "trigger": "Suspendre le cadrage",
+          "result": "Réponses, questions ouvertes et couverture partielle sont conservées, sans approbation implicite."
+        },
+        {
+          "id": "ACT-029",
+          "trigger": "Réessayer après une erreur IA ou de sauvegarde",
+          "result": "Les textes et décisions sont conservés ; une erreur de sauvegarde indique que les changements restent dans la session et invite à réessayer avant fermeture."
+        }
+      ],
+      "accessibilityNotes": [
+        "Question active et progression exprimées en texte ; actions clavier ; pas d’envoi automatique d’une réponse libre non confirmée.",
+        "Dans la discussion : Markdown sémantique, Entrée pour envoyer, Maj+Entrée pour une nouvelle ligne, composition respectée.",
+        "Sur mobile, seule la liste des questions et les sous-onglets défilent horizontalement ; l’élément actif reste visible."
+      ]
+    },
+    {
+      "id": "SCREEN-006",
+      "name": "Synthèse à valider",
+      "featureIds": [
+        "FEAT-006",
+        "FEAT-007",
+        "FEAT-010"
+      ],
+      "flowIds": [
+        "FLOW-002",
+        "FLOW-003",
+        "FLOW-005"
+      ],
+      "change": "new",
+      "mockup": "mockups/index.html#SCREEN-006",
+      "states": [
+        "Synthèse non préparée, à valider, corrigée ou validée",
+        "questions ouvertes visibles",
+        "cadrage approuvé ou livré en consultation. La validation n’approuve ni le catalogue, ni le cadrage final, ni une livraison."
+      ],
+      "interactions": [
+        {
+          "id": "ACT-030",
+          "trigger": "Ouvrir « Synthèse à valider »",
+          "result": "Objectif, utilisateurs, périmètre retenu, éléments reportés/refusés, points à préciser et décisions issues des réponses. Panneau de première validation avec correction et retour aux questions."
+        },
+        {
+          "id": "ACT-031",
+          "trigger": "Revenir aux questions ou corriger la synthèse",
+          "result": "Les réponses restent consultables ; les corrections sont tracées et invalident les validations affectées."
+        },
+        {
+          "id": "ACT-032",
+          "trigger": "Confirmer « Valider la synthèse »",
+          "result": "La synthèse est approuvée avant préparation du catalogue ; ni le catalogue, ni le cadrage final, ni une livraison ne sont approuvés par cette action."
+        },
+        {
+          "id": "ACT-033",
+          "trigger": "Consulter la référence après réouverture",
+          "result": "L’état précédemment approuvé reste accessible dans l’historique."
+        }
+      ],
+      "accessibilityNotes": [
+        "Document hiérarchisé par titres, listes et libellés ; panneau de décision proche du contenu sur bureau et à sa suite sur mobile ; bouton de validation et dialogue explicites."
+      ]
+    },
+    {
+      "id": "SCREEN-007",
+      "name": "Décisions et reports du cadrage",
+      "featureIds": [
+        "FEAT-004",
+        "FEAT-008"
+      ],
+      "flowIds": [
+        "FLOW-004"
+      ],
+      "change": "new",
+      "mockup": "mockups/index.html#SCREEN-007",
+      "states": [
+        "Proposition à arbitrer, acceptée sans inclusion, incluse, refusée, reportée ou modifiée à reprendre",
+        "règle indispensable à préciser",
+        "filtre sans résultat. En archive ou sur référence protégée, les actions de mutation sont indisponibles avec explication contextuelle."
+      ],
+      "interactions": [
+        {
+          "id": "ACT-034",
+          "trigger": "Ouvrir « Décisions et reports du cadrage »",
+          "result": "Titre local au cadrage, retour aux questions, filtres « Toutes », « À arbitrer », « Reportées », propositions et recommandation IA, puis actions d’arbitrage et éventuelle sélection du périmètre."
+        },
+        {
+          "id": "ACT-035",
+          "trigger": "Filtrer les propositions du cadrage",
+          "result": "La sélection est explicite ; un filtre vide explique où retrouver les autres propositions."
+        },
+        {
+          "id": "ACT-036",
+          "trigger": "Discuter une proposition avec l’IA",
+          "result": "Le fil garde le bon sujet et ses messages séparés."
+        },
+        {
+          "id": "ACT-037",
+          "trigger": "Modifier, accepter, refuser ou reporter une proposition",
+          "result": "L’arbitrage est explicite ; modifier une proposition retenue la remet à arbitrer et impose une nouvelle validation des résultats affectés."
+        },
+        {
+          "id": "ACT-038",
+          "trigger": "Décider de l’inclusion d’une proposition acceptée",
+          "result": "Acceptation et inclusion restent distinctes ; les reports ne sont jamais inclus automatiquement dans une version suivante."
+        },
+        {
+          "id": "ACT-039",
+          "trigger": "Consulter une référence protégée",
+          "result": "Les mutations sont indisponibles en archive ou sur référence protégée, avec explication de la restauration ou réouverture requise ; une règle indispensable doit être clarifiée ou la fonctionnalité reportée avant validation finale."
+        }
+      ],
+      "accessibilityNotes": [
+        "États toujours libellés, filtres à sélection explicite, actions nommées.",
+        "Les discussions gardent leur sujet et leurs messages séparés.",
+        "Les actions s’enroulent dans la largeur mobile."
+      ]
+    },
+    {
+      "id": "SCREEN-008",
+      "name": "Catalogue fonctionnel",
+      "featureIds": [
+        "FEAT-008",
+        "FEAT-009",
+        "FEAT-010",
+        "FEAT-012"
+      ],
+      "flowIds": [
+        "FLOW-004",
+        "FLOW-005"
+      ],
+      "change": "new",
+      "mockup": "mockups/index.html#SCREEN-008",
+      "states": [
+        "Catalogue en attente de synthèse, vide pour une nouvelle version, proposé, corrigé ou validé",
+        "aucun élément automatiquement retenu",
+        "référence protégée en consultation. Le périmètre d’une version suivante distingue les évolutions des nouvelles capacités."
+      ],
+      "interactions": [
+        {
+          "id": "ACT-040",
+          "trigger": "Ouvrir « Catalogue fonctionnel »",
+          "result": "Navigation des validations, module sélectionné, fonctionnalités avec identité, nouveauté/évolution, comportement et critères. Action distincte « Valider le catalogue ». Les comportements antérieurs restent accessibles par l’historique."
+        },
+        {
+          "id": "ACT-041",
+          "trigger": "Ouvrir le catalogue après validation de la synthèse",
+          "result": "Les modules, fonctionnalités, comportements et critères sont proposés ; une nouvelle version reste vide jusqu’à sélection explicite."
+        },
+        {
+          "id": "ACT-042",
+          "trigger": "Renommer un module ou modifier l’intitulé, le comportement et les critères d’une fonctionnalité",
+          "result": "Les corrections sont tracées ; l’identité de la fonctionnalité est conservée et ses comportements antérieurs restent accessibles dans l’historique."
+        },
+        {
+          "id": "ACT-043",
+          "trigger": "Confirmer « Valider le catalogue »",
+          "result": "Le catalogue est approuvé avant consolidation finale ; un catalogue modifié doit être revalidé avant validation finale."
+        }
+      ],
+      "accessibilityNotes": [
+        "Titres et critères en liste, identité accompagnée d’un libellé de statut ; dialogue d’édition avec champs nommés.",
+        "Sur mobile, la liste de modules précède les fonctionnalités et la validation suit le document."
+      ]
+    },
+    {
+      "id": "SCREEN-009",
+      "name": "Cadrage final",
+      "featureIds": [
+        "FEAT-008",
+        "FEAT-009",
+        "FEAT-010"
+      ],
+      "flowIds": [
+        "FLOW-005"
+      ],
+      "change": "new",
+      "mockup": "mockups/index.html#SCREEN-009",
+      "states": [
+        "Synthèse ou catalogue non validé",
+        "règle indispensable bloquante",
+        "catalogue à revalider",
+        "cadrage prêt",
+        "cadrage approuvé. Une question non bloquante peut rester visible. Aucune absence de réponse, erreur ou suspension ne vaut approbation."
+      ],
+      "interactions": [
+        {
+          "id": "ACT-044",
+          "trigger": "Ouvrir « Cadrage final »",
+          "result": "État de validation, blocage éventuel et issues proposées, périmètre retenu, reports, décisions structurantes, question non bloquante conservée et liste des prérequis."
+        },
+        {
+          "id": "ACT-045",
+          "trigger": "Examiner les prérequis",
+          "result": "Les validations manquantes et règles indispensables non clarifiées sont signalées ; le bouton final reste indisponible tant que ces blocages subsistent."
+        },
+        {
+          "id": "ACT-046",
+          "trigger": "Clarifier une règle indispensable ou reporter la fonctionnalité",
+          "result": "Le blocage propose ces deux issues et le catalogue affecté est à revalider."
+        },
+        {
+          "id": "ACT-047",
+          "trigger": "Confirmer le cadrage final dans son dialogue",
+          "result": "Le cadrage est approuvé par action explicite ; une question non bloquante peut rester visible. Annuler, ne pas répondre, suspendre ou rencontrer une erreur n’approuve rien."
+        },
+        {
+          "id": "ACT-048",
+          "trigger": "Consulter ensuite la version",
+          "result": "La livraison reste une déclaration distincte sur SCREEN-004."
+        }
+      ],
+      "accessibilityNotes": [
+        "Le blocage explique sa cause et propose deux actions compréhensibles ; état et prérequis lisibles sans couleur.",
+        "La confirmation finale exige une action explicite et laisse une sortie par annulation."
+      ]
+    },
+    {
+      "id": "SCREEN-010",
+      "name": "Historique fonctionnel",
+      "featureIds": [
+        "FEAT-003",
+        "FEAT-004",
+        "FEAT-006",
+        "FEAT-012"
+      ],
+      "flowIds": [
+        "FLOW-002",
+        "FLOW-004",
+        "FLOW-006"
+      ],
+      "change": "new",
+      "mockup": "mockups/index.html#SCREEN-010",
+      "states": [
+        "Historique initial, événements issus de l’IA ou de décisions manuelles, état approuvé initial et référence avant réouverture",
+        "aucune sélection",
+        "version livrée ou non",
+        "archive consultable. Aucun contrôle de réécriture d’une version livrée n’est proposé."
+      ],
+      "interactions": [
+        {
+          "id": "ACT-049",
+          "trigger": "Ouvrir « Historique fonctionnel »",
+          "result": "Choix de la version, liste chronologique des événements avec origine et états approuvés conservés, puis panneau de contenu sélectionné. L’information de livraison reste distincte."
+        },
+        {
+          "id": "ACT-050",
+          "trigger": "Choisir une version dans l’historique",
+          "result": "Ses événements s’affichent sans changer le cadrage actif ; avant sélection, le panneau explique comment ouvrir une entrée."
+        },
+        {
+          "id": "ACT-051",
+          "trigger": "Ouvrir une décision ou un état conservé",
+          "result": "Contenu, contexte, origine, modifications et version sont consultables, y compris la référence avant réouverture et les comportements précédents d’une même identité fonctionnelle."
+        },
+        {
+          "id": "ACT-052",
+          "trigger": "Consulter une archive ou une version livrée",
+          "result": "L’historique reste lisible ; aucune réécriture rétroactive d’une version livrée n’est proposée."
+        }
+      ],
+      "accessibilityNotes": [
+        "Version et origine explicites, événements actionnables au clavier, contenu structuré ; chronologie et détail côte à côte sur bureau puis l’un après l’autre sur mobile."
+      ]
+    },
+    {
+      "id": "SCREEN-011",
+      "name": "Discussion générale du projet",
+      "featureIds": [
+        "FEAT-007",
+        "FEAT-011"
+      ],
+      "flowIds": [
+        "FLOW-007"
+      ],
+      "change": "new",
+      "mockup": "mockups/index.html#SCREEN-011",
+      "states": [
+        "Premier échange, fil existant, brouillon, réponse en attente, erreur avec réessai sans duplication, changement de projet/version. En archive, lecture possible et saisie désactivée jusqu’à restauration. L’assistant ne déduit pas une livraison d’une approbation."
+      ],
+      "interactions": [
+        {
+          "id": "ACT-053",
+          "trigger": "Ouvrir « Discussion générale du projet »",
+          "result": "Entrée « Discussion IA » du menu projet, fil général et saisie ; contexte à droite avec description, version consultée et dernière référence approuvée. Sur mobile, ce contexte suit la discussion."
+        },
+        {
+          "id": "ACT-054",
+          "trigger": "Saisir ou coller un message puis envoyer par Entrée ou bouton",
+          "result": "Le message apparaît dans le fil du projet ; la réponse en attente est annoncée puis affichée en Markdown. Maj+Entrée ajoute une ligne ; la composition du texte est respectée."
+        },
+        {
+          "id": "ACT-055",
+          "trigger": "Changer de projet ou de version consultée",
+          "result": "Messages et brouillons restent séparés entre projets. Le fil général est conservé entre versions du même projet, avec contexte des messages identifiable et discussions de questions séparées."
+        },
+        {
+          "id": "ACT-056",
+          "trigger": "Poursuivre l’exploration sur une version approuvée ou livrée",
+          "result": "Description, versions et décisions fournissent le contexte, sans modification automatique de description, propositions, catalogue, validations ou livraison ; approbation et livraison restent distinctes."
+        },
+        {
+          "id": "ACT-057",
+          "trigger": "Ouvrir le cadrage depuis le contexte",
+          "result": "Les décisions de la version concernée restent soumises à leurs questions et validations explicites."
+        },
+        {
+          "id": "ACT-058",
+          "trigger": "Réessayer après une erreur de réponse",
+          "result": "Le message utilisateur reste disponible ; le réessai ajoute la réponse sans dupliquer la saisie."
+        },
+        {
+          "id": "ACT-059",
+          "trigger": "Consulter une discussion archivée",
+          "result": "Le fil reste lisible ; la saisie est désactivée jusqu’à restauration du projet."
+        }
+      ],
+      "accessibilityNotes": [
+        "Zone de discussion nommée et annonces de statut, libellé de saisie, Markdown sémantique et composition de texte respectée.",
+        "Défilement du fil dans le panneau ; commande d’envoi et aide clavier visibles.",
+        "Le thème clair/sombre conserve la lisibilité."
+      ]
+    }
+  ],
+  "featureCoverage": [
+    {
+      "featureId": "FEAT-001",
+      "coverage": "covered",
+      "screenIds": [
+        "SCREEN-001",
+        "SCREEN-002",
+        "SCREEN-003"
+      ],
+      "flowIds": [
+        "FLOW-001"
+      ]
+    },
+    {
+      "featureId": "FEAT-002",
+      "coverage": "covered",
+      "screenIds": [
+        "SCREEN-003"
+      ],
+      "flowIds": [
+        "FLOW-001"
+      ]
+    },
+    {
+      "featureId": "FEAT-003",
+      "coverage": "covered",
+      "screenIds": [
+        "SCREEN-001",
+        "SCREEN-003",
+        "SCREEN-010"
+      ],
+      "flowIds": [
+        "FLOW-001",
+        "FLOW-006"
+      ]
+    },
+    {
+      "featureId": "FEAT-004",
+      "coverage": "covered",
+      "screenIds": [
+        "SCREEN-003",
+        "SCREEN-004",
+        "SCREEN-005",
+        "SCREEN-007",
+        "SCREEN-010"
+      ],
+      "flowIds": [
+        "FLOW-002",
+        "FLOW-004"
+      ]
+    },
+    {
+      "featureId": "FEAT-005",
+      "coverage": "covered",
+      "screenIds": [
+        "SCREEN-004"
+      ],
+      "flowIds": [
+        "FLOW-002"
+      ]
+    },
+    {
+      "featureId": "FEAT-006",
+      "coverage": "covered",
+      "screenIds": [
+        "SCREEN-004",
+        "SCREEN-006",
+        "SCREEN-010"
+      ],
+      "flowIds": [
+        "FLOW-002",
+        "FLOW-006"
+      ]
+    },
+    {
+      "featureId": "FEAT-007",
+      "coverage": "covered",
+      "screenIds": [
+        "SCREEN-003",
+        "SCREEN-005",
+        "SCREEN-006",
+        "SCREEN-011"
+      ],
+      "flowIds": [
+        "FLOW-003",
+        "FLOW-007"
+      ]
+    },
+    {
+      "featureId": "FEAT-008",
+      "coverage": "covered",
+      "screenIds": [
+        "SCREEN-005",
+        "SCREEN-007",
+        "SCREEN-008",
+        "SCREEN-009"
+      ],
+      "flowIds": [
+        "FLOW-003",
+        "FLOW-004",
+        "FLOW-005"
+      ]
+    },
+    {
+      "featureId": "FEAT-009",
+      "coverage": "covered",
+      "screenIds": [
+        "SCREEN-008",
+        "SCREEN-009"
+      ],
+      "flowIds": [
+        "FLOW-004",
+        "FLOW-005"
+      ]
+    },
+    {
+      "featureId": "FEAT-010",
+      "coverage": "covered",
+      "screenIds": [
+        "SCREEN-006",
+        "SCREEN-008",
+        "SCREEN-009"
+      ],
+      "flowIds": [
+        "FLOW-005"
+      ]
+    },
+    {
+      "featureId": "FEAT-011",
+      "coverage": "covered",
+      "screenIds": [
+        "SCREEN-003",
+        "SCREEN-005",
+        "SCREEN-011"
+      ],
+      "flowIds": [
+        "FLOW-003",
+        "FLOW-007"
+      ]
+    },
+    {
+      "featureId": "FEAT-012",
+      "coverage": "covered",
+      "screenIds": [
+        "SCREEN-004",
+        "SCREEN-008",
+        "SCREEN-010"
+      ],
+      "flowIds": [
+        "FLOW-002",
+        "FLOW-004",
+        "FLOW-006"
+      ]
+    }
+  ],
+  "futureConsiderations": [
+    {
+      "source": "FUTURE-FEATURES.md",
+      "item": "UX/UI, architecture, planification et développement des projets gérés : capacités futures sans version attribuée.",
+      "navigationImplication": "Séparer le menu projet des étapes de travail permet une extension ultérieure ; seul le cadrage fonctionnel est disponible en V1, sans phase future visible ni nouvel écran."
+    },
+    {
+      "source": "FUTURE-FEATURES.md",
+      "item": "Authentification, collaboration, fichiers, GitHub et agents, suppression définitive et amélioration dédiée de la description : hors V1, sans engagement de réalisation.",
+      "navigationImplication": "Ne pas ajouter d’entrée ni de commande vers ces capacités ; conserver les entrées textuelles, l’espace personnel et l’archivage réversible."
+    },
+    {
+      "source": "FUTURE-FEATURES.md",
+      "item": "Export Markdown refusé pour V1 sans report présumé ; synchronisation externe non tranchée.",
+      "navigationImplication": "Aucun export ni lien de synchronisation ; ces sujets ne constituent pas des capacités futures approuvées."
+    }
+  ]
+}

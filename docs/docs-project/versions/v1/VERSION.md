@@ -31,6 +31,8 @@ Aucune fonctionnalité de cette V1 n’est déclarée implémentée ou livrée p
 - [FEAT-011 — Sauvegarder et reprendre un cadrage](../../modules/continuity/save-and-resume-scoping.md).
 - [FEAT-012 — Consulter l’historique fonctionnel et les décisions](../../modules/continuity/view-functional-history.md).
 
+Le cadrage présente des questions structurées avec recommandations, réponses libres à confirmer et discussions liées aux sujets. FEAT-007 comprend aussi une discussion générale du projet, conservée entre ses versions avec le contexte de chaque échange identifiable. FEAT-011 assure la continuité de ce fil et des brouillons propres au projet, distincts de ceux des autres projets et des questions. Un réessai après erreur ne duplique pas la saisie utilisateur.
+
 ## Évolutions des fonctionnalités existantes
 
 Aucune : les douze fonctionnalités sont nouvelles pour le produit. Leurs fiches canoniques conservent chacune une section V1, qui pourra servir de référence lors de cadrages ultérieurs.
@@ -56,8 +58,11 @@ Ces décisions sont figées pour ce cadrage V1. Le [backlog vivant](../../FUTURE
 - Une version suivante peut être préparée avant livraison de la précédente ; le prévu et le confirmé livré restent distingués.
 - La reprise du dernier cadrage approuvé et des éléments reportés n’inclut automatiquement aucun élément dans une nouvelle version.
 - Une règle indispensable non clarifiée pour une fonctionnalité retenue bloque la validation finale. Une question non bloquante peut rester visible.
+- L’analyse prépare les questions sans approbation implicite ni validation supplémentaire.
+- Une discussion générale ne modifie automatiquement ni description, ni arbitrage, ni catalogue, ni validation, ni livraison. Les décisions restent explicites et propres à leur version.
+- Une version approuvée ou livrée reste utilisable comme contexte d’exploration. Un projet archivé et ses échanges restent consultables, avec restauration requise avant modification ou nouvelle saisie.
 
-Aucune question fonctionnelle bloquante n’est consignée pour V1. Le fournisseur IA, sa configuration et ses coûts, l’adaptation technique des skills, les choix UX/UI, l’architecture et l’exploitation restent à étudier ultérieurement. Aucune disponibilité de service externe n’est présumée vérifiée.
+Aucune question fonctionnelle bloquante n’est consignée pour V1. L’expérience UX/UI est approuvée. Le fournisseur IA, sa configuration et ses coûts, l’adaptation technique des skills, l’architecture et l’exploitation restent à étudier ultérieurement. Aucune disponibilité de service externe n’est présumée vérifiée.
 
 ## Traçabilité des décisions de l’entretien
 
@@ -97,3 +102,7 @@ Empreinte SHA-256 de la copie approuvée : `0DB939D99E851477B5D8586019248F90029C
 ## Source de cadrage
 
 [Synthèse approuvée pour V1, conservée à l’identique](SCOPING-SUMMARY.md).
+
+## Conception UX validée
+
+L’utilisateur a répondu « ok je valide les maquettes » à la [galerie HTML R3](ux/mockups/index.html), comprenant onze écrans, la discussion générale et le menu projet simplifié. La [synthèse UX V1](ux/UX-SUMMARY.md) présente les décisions et les limites ; le [contrat UX](ux/UX-CONTRACT.json) relie les douze fonctionnalités aux sept parcours, écrans, interactions et états. Cette approbation ne déclare aucune livraison et n’autorise ni commit ni push.

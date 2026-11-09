@@ -16,7 +16,8 @@ Le résultat attendu est un cadrage consultable dans l’application : synthèse
 
 - Créer et consulter plusieurs projets, modifier leur description, les archiver et les restaurer.
 - Cadrer les versions successives d’un projet, avec une seule version active en cadrage par projet.
-- Mener l’entretien de cadrage avec l’IA à partir de textes saisis ou collés.
+- Mener le cadrage avec l’IA à partir de textes saisis ou collés : questions structurées, recommandations et réponses libres à confirmer.
+- Explorer les besoins dans une discussion générale propre au projet, distincte des discussions liées aux questions et conservée entre les versions consultées.
 - Arbitrer les propositions et modifier manuellement les informations fonctionnelles.
 - Valider successivement la synthèse, le catalogue puis le cadrage final.
 - Sauvegarder automatiquement le travail, le reprendre et consulter son historique.
@@ -27,6 +28,8 @@ Le résultat attendu est un cadrage consultable dans l’application : synthèse
 - Les informations métier sont structurées et persistantes ; leur représentation technique reste à concevoir.
 - Une proposition, une inclusion dans une version, une validation de cadrage et une livraison sont des informations distinctes.
 - Une fonctionnalité conserve son identité au fil de ses évolutions ; les règles et décisions de chaque version restent attribuables à cette version.
+- Une discussion ne modifie automatiquement ni description, ni arbitrage, ni catalogue, ni validation, ni livraison. Les échanges généraux et leurs brouillons restent propres au projet ; le contexte de version des messages reste identifiable.
+- Un projet archivé reste consultable, échanges compris ; sa restauration précède toute modification ou nouvelle saisie.
 - Une version suivante peut être cadrée avant livraison de la précédente. Le prévu reste distingué du confirmé livré.
 - Les modifications manuelles suivent les mêmes règles de traçabilité et de nouvelle validation que les propositions de l’IA.
 - Les workflows `project-scoping` et `structure-project`, appuyés par les procédures d’entretien et de modélisation métier, servent de référence fonctionnelle. Leur adaptation technique à l’application appartient à une phase ultérieure.
@@ -52,7 +55,9 @@ Le [backlog](FUTURE-FEATURES.md) distingue les capacités reportées, la proposi
 
 ## Décisions encore ouvertes
 
-Aucune question fonctionnelle bloquante n’est consignée pour V1. Le fournisseur IA, les choix UX/UI, l’architecture, les coûts, l’exploitation et les adaptations techniques des skills restent à étudier dans leurs phases respectives.
+Aucune question fonctionnelle bloquante n’est consignée pour V1. Le fournisseur IA, l’architecture, les coûts, l’exploitation et les adaptations techniques des skills restent à étudier dans leurs phases respectives.
+
+La [synthèse UX](versions/v1/ux/UX-SUMMARY.md), le [contrat UX](versions/v1/ux/UX-CONTRACT.json) et les [maquettes HTML approuvées](versions/v1/ux/mockups/index.html) décrivent l’expérience validée de V1. Cette approbation ne confirme aucune livraison.
 
 ## Sources et état du cadrage
 

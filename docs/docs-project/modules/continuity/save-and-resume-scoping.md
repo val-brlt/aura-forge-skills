@@ -17,11 +17,15 @@ L’entretien et les décisions sont sauvegardés automatiquement. Les informati
 
 L’utilisateur peut suspendre un entretien incomplet ; sa couverture partielle et ses questions ouvertes restent visibles. Une interruption, une reprise ou une erreur ne transforme jamais une proposition en décision approuvée.
 
+Les échanges et brouillons du fil général restent propres au projet, distincts des discussions liées aux questions. Changer de projet ne mélange ni messages ni saisies ; changer de version consultée d’un même projet conserve son fil général et le contexte de version des échanges. Après une erreur de réponse, le message utilisateur reste disponible et le réessai ne le duplique pas. Une erreur de sauvegarde signale que les changements restent dans la session et invite à réessayer avant fermeture.
+
+L’archivage conserve les échanges en consultation seule ; la restauration précède toute nouvelle saisie.
+
 ## Historique fonctionnel par version
 
 ### V1
 
-**Comportement validé :** sauvegarde automatique de l’entretien et des décisions, reprise entre sessions et après erreur, avec suspension explicite d’un travail partiel.
+**Comportement validé :** sauvegarde automatique de l’entretien et des décisions, reprise entre sessions et après erreur, avec suspension explicite d’un travail partiel. Les échanges et brouillons généraux sont conservés par projet, avec le contexte de version identifiable.
 
 **Critères d’acceptation validés :**
 
@@ -31,6 +35,11 @@ L’utilisateur peut suspendre un entretien incomplet ; sa couverture partielle 
 - Les informations fonctionnelles conservées restent consultables et réutilisables dans l’application.
 - L’utilisateur peut suspendre un entretien incomplet avec une couverture partielle indiquée et les questions ouvertes visibles.
 - Une suspension, une erreur ou une reprise n’accorde aucune approbation implicite.
+- Les échanges et les brouillons du fil général restent associés à leur projet ; la consultation d’un autre projet ne mélange pas ses messages ou sa saisie.
+- Le changement de version consultée d’un même projet ne fait pas perdre son fil général ; les échanges restent attribuables à leur contexte de version.
+- Après une erreur de réponse, le message utilisateur reste disponible et le réessai ne le duplique pas.
+- L’archivage conserve la consultation du fil ; une nouvelle saisie exige la restauration du projet.
+- Une erreur de sauvegarde indique que les changements restent dans la session et permet de réessayer sans prétendre qu’ils sont enregistrés.
 
 **Source :** [Synthèse V1 — persistance, interruption et reprise](../../versions/v1/SCOPING-SUMMARY.md#5-persistance-interruption-et-reprise), description initiale et D09, D13.
 
@@ -40,7 +49,7 @@ Aucun critère supplémentaire proposé.
 
 ## Dépendances fonctionnelles
 
-- Le travail sauvegardé se rapporte à un [projet](../project-management/create-and-view-projects.md) et à une [version](../version-management/prepare-project-versions.md) identifiés.
+- Le cadrage sauvegardé se rapporte à un [projet](../project-management/create-and-view-projects.md) et à une [version](../version-management/prepare-project-versions.md) identifiés. Le fil général appartient au projet, avec le contexte de version des échanges conservé.
 - Les conditions de validation finale restent celles de [FEAT-010 — Valider les trois étapes du cadrage](../functional-scoping/approve-scoping-stages.md), même après une reprise.
 - Un [projet archivé](../project-management/archive-and-restore-project.md) doit être restauré avant de poursuivre son cadrage.
 
