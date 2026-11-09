@@ -1,0 +1,6 @@
+interface:
+  display_name: "Aura Forge — Architecture technique"
+  short_description: "Conçoit et valide l'architecture technique par version"
+  default_prompt: "Utilise $project-architecture pour concevoir ou faire évoluer l'architecture de la version active à partir du cadrage fonctionnel et de l'UX validés, faire approuver les décisions structurantes et préparer les livrables pour la planification, sans coder ni effectuer de commit ou de push sans autorisation distincte."
+policy:
+  allow_implicit_invocation: false
