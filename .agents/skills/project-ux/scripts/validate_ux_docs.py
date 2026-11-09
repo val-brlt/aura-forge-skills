@@ -1,371 +1,461 @@
 #!/usr/bin/env python3
-"""Check Aura Forge version-aware UX document IDs and traceability.
+"""Validate an Aura Forge UX JSON contract and promoted HTML gallery.
 
-Standard-library only. This checks consistency, NOT actual UX quality,
-French prose, user approval, or software delivery.
+Standard library only. Static checks do not establish design quality, visual
+approval, runtime JavaScript correctness or delivery status.
 
 Usage:
-  python .agents/skills/project-ux/scripts/validate_ux_docs.py docs/docs-project --version v1
-  python .agents/skills/project-ux/scripts/validate_ux_docs.py docs/docs-project
+    python .agents/skills/project-ux/scripts/validate_ux_docs.py docs/docs-project --version v1
+    python .agents/skills/project-ux/scripts/validate_ux_docs.py docs/docs-project
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
+from html.parser import HTMLParser
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Any
+from urllib.parse import unquote, urlsplit
 
-ID_FEAT = re.compile(r"FEAT-\d{3,}\b")
-ID_FLOW = re.compile(r"FLOW-\d{3,}\b")
-ID_SCREEN = re.compile(r"SCREEN-\d{3,}\b")
-FLOW_HEADING = re.compile(r"^##\s+(FLOW-\d{3,})\s*[—:–-]\s*.+$", re.M)
-HEADING_2 = re.compile(r"^##\s+(.+?)\s*$", re.M)
+FEAT = re.compile(r"FEAT-\d{3,}\Z")
+FLOW = re.compile(r"FLOW-\d{3,}\Z")
+SCREEN = re.compile(r"SCREEN-\d{3,}\Z")
+ACT = re.compile(r"ACT-\d{3,}\Z")
+FEAT_FIND = re.compile(r"FEAT-\d{3,}\b")
+HEADING = re.compile(r"^##\s+(.+?)\s*$", re.M)
+STATUS = {"draft", "approved"}
+COVERAGE = {"covered", "no_ui", "unresolved"}
+CHANGE = {"new", "modified", "reused"}
+HTML_ASSET_TAGS = {"script", "img", "source", "iframe", "audio", "video"}
 
 
-class Audit:
-    def __init__(self, root: Path):
-        self.root = root.resolve()
-        self.errors: List[str] = []
-        self.warnings: List[str] = []
-        self.scanned_versions: List[str] = []
+class HTMLDetails(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.screens: set[str] = set()
+        self.nav: set[str] = set()
+        self.assets: list[str] = []
+        self.external: list[str] = []
+        self.image_screens: set[str] = set()
 
-    def error(self, message: str) -> None:
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        a = dict(attrs)
+        screen_id = a.get("id") or ""
+        if SCREEN.fullmatch(screen_id):
+            self.screens.add(screen_id)
+            if tag in {"img", "svg", "canvas", "picture"}:
+                self.image_screens.add(screen_id)
+        href = a.get("href") or ""
+        if tag == "a" and href.startswith("#") and SCREEN.fullmatch(href[1:]):
+            self.nav.add(href[1:])
+        urls: list[str] = []
+        if tag == "link" and href:
+            urls.append(href)
+        if tag in HTML_ASSET_TAGS:
+            if a.get("src"):
+                urls.append(a["src"] or "")
+            if tag == "video" and a.get("poster"):
+                urls.append(a["poster"] or "")
+        for url in urls:
+            parsed = urlsplit(url)
+            if parsed.scheme and parsed.scheme != "data" or url.startswith("//"):
+                self.external.append(url)
+            elif parsed.path:
+                self.assets.append(unquote(parsed.path))
+
+
+class Validation:
+    def __init__(self, docs_root: Path) -> None:
+        self.root = docs_root.resolve()
+        self.errors: list[str] = []
+        self.warnings: list[str] = []
+        self.html_cache: dict[Path, HTMLDetails] = {}
+
+    def err(self, message: str) -> None:
         self.errors.append(message)
 
     def warn(self, message: str) -> None:
         self.warnings.append(message)
 
-    def relative(self, path: Path) -> str:
+    def rel(self, path: Path) -> str:
         try:
             return str(path.relative_to(self.root))
         except ValueError:
             return str(path)
 
-    def read(self, path: Path) -> Optional[str]:
+    def read(self, path: Path) -> str | None:
         try:
             return path.read_text(encoding="utf-8")
-        except (OSError, UnicodeError) as exc:
-            self.error(f"Missing/unreadable {self.relative(path)}: {exc}")
+        except (OSError, UnicodeError) as ex:
+            self.err(f"{self.rel(path)} unreadable: {ex}")
             return None
 
-    def frontmatter(self, path: Path, content: str) -> Dict[str, object]:
-        """Parse the deliberately small YAML subset used by these templates."""
-        if not content.startswith("---\n"):
-            self.error(f"{self.relative(path)}: YAML frontmatter missing")
+    def frontmatter(self, path: Path, text: str) -> dict[str, str]:
+        match = re.match(r"\A---\r?\n(.*?)\r?\n---(?:\r?\n|\Z)", text, re.S)
+        if match is None:
+            self.err(f"{self.rel(path)}: YAML frontmatter missing")
             return {}
-        match = re.search(r"\A---\n(.*?)\n---\s*(?:\n|\Z)", content, re.S)
-        if not match:
-            self.error(f"{self.relative(path)}: unterminated YAML frontmatter")
-            return {}
-        result: Dict[str, object] = {}
-        current: Optional[str] = None
+        result: dict[str, str] = {}
         for line in match.group(1).splitlines():
-            if not line.strip() or line.lstrip().startswith("#"):
-                continue
-            key_match = re.fullmatch(r"([a-z][a-z0-9_]*):\s*(.*?)\s*", line)
-            if key_match:
-                current, raw_value = key_match.groups()
-                if current in result:
-                    self.error(f"{self.relative(path)}: duplicate frontmatter key {current}")
-                result[current] = raw_value.strip('"\'') if raw_value else []
-                continue
-            item_match = re.fullmatch(r"\s+-\s+(\S.*?)\s*", line)
-            if item_match and current is not None and isinstance(result.get(current), list):
-                cast_list = result[current]
-                assert isinstance(cast_list, list)
-                cast_list.append(item_match.group(1).strip('"\''))
-                continue
-            self.error(f"{self.relative(path)}: unsupported YAML syntax {line!r}; use the documented scalar/dash-list format")
+            m = re.fullmatch(r"([a-z][a-z0-9_]*):\s*(.*?)\s*", line)
+            if m:
+                result[m.group(1)] = m.group(2).strip("\"'")
         return result
 
-    def section(self, content: str, heading: str) -> Optional[str]:
-        pattern = re.compile(r"^##\s+" + re.escape(heading) + r"\s*$", re.M)
-        match = pattern.search(content)
-        if not match:
-            return None
-        following = HEADING_2.search(content, match.end())
-        return content[match.end():following.start() if following else len(content)]
+    def scope_features(self, path: Path, text: str) -> set[str]:
+        found: set[str] = set()
+        heads = list(HEADING.finditer(text))
+        wanted = {"Fonctionnalités incluses", "Évolutions des fonctionnalités existantes"}
+        for i, h in enumerate(heads):
+            if h.group(1).strip() in wanted:
+                end = heads[i + 1].start() if i + 1 < len(heads) else len(text)
+                found.update(FEAT_FIND.findall(text[h.end():end]))
+        if not found:
+            self.err(f"{self.rel(path)}: no FEAT-* IDs in the version's included/evolving features sections")
+        return found
 
-    def markdown_table(self, path: Path, content: str, heading: str, columns: List[str]) -> List[Dict[str, str]]:
-        section = self.section(content, heading)
-        if section is None:
-            self.error(f"{self.relative(path)}: missing section ## {heading}")
-            return []
-        rows = []
-        for line in section.splitlines():
-            stripped = line.strip()
-            if not (stripped.startswith("|") and stripped.endswith("|")):
-                continue
-            cells = [cell.strip() for cell in stripped[1:-1].split("|")]
-            if all(re.fullmatch(r":?-+:?", cell) for cell in cells):
-                continue
-            rows.append(cells)
-        if not rows:
-            self.error(f"{self.relative(path)}: missing table under ## {heading}")
-            return []
-        if rows[0] != columns:
-            self.error(f"{self.relative(path)}: expected columns {columns}, got {rows[0]}")
-            return []
-        parsed = []
-        for index, row in enumerate(rows[1:], 1):
-            if len(row) != len(columns):
-                self.error(f"{self.relative(path)}: malformed row {index} under ## {heading}")
-                continue
-            parsed.append(dict(zip(columns, row)))
-        return parsed
-
-    def resolve_link(self, source: Path, cell: str) -> Optional[Path]:
-        match = re.search(r"\]\(([^)#]+)(?:#[^)]+)?\)", cell)
-        if not match:
-            self.error(f"{self.relative(source)}: missing Markdown link in screen card column: {cell}")
-            return None
-        target = (source.parent / match.group(1)).resolve()
-        if not target.is_relative_to(self.root):
-            self.error(f"{self.relative(source)}: screen link leaves the docs root: {cell}")
-            return None
-        return target
-
-    def canonical_features(self) -> Dict[str, Path]:
-        found: Dict[str, Path] = {}
-        for path in (self.root / "modules").glob("*/*.md"):
+    def canonical_features(self) -> set[str]:
+        result: dict[str, Path] = {}
+        for path in (self.root / "modules").glob("**/*.md"):
             if path.name == "MODULE.md":
                 continue
-            content = self.read(path)
-            if content is None:
+            contents = self.read(path)
+            if contents is None:
                 continue
-            meta = self.frontmatter(path, content)
-            feature = meta.get("id")
-            if not isinstance(feature, str) or ID_FEAT.fullmatch(feature) is None:
-                self.error(f"{self.relative(path)}: missing/invalid canonical feature id")
-                continue
-            if feature in found:
-                self.error(f"Duplicate canonical {feature}: {self.relative(found[feature])} and {self.relative(path)}")
+            metadata = self.frontmatter(path, contents)
+            fid = metadata.get("id", "")
+            if not FEAT.fullmatch(fid):
+                self.err(f"{self.rel(path)}: missing/invalid canonical FEAT ID")
+            elif fid in result:
+                self.err(f"Duplicate feature {fid} in {self.rel(path)} and {self.rel(result[fid])}")
             else:
-                found[feature] = path
-        return found
+                result[fid] = path
+        return set(result)
 
-    def canonical_screens(self) -> Dict[str, Tuple[Path, Dict[str, object], str]]:
-        found: Dict[str, Tuple[Path, Dict[str, object], str]] = {}
-        for path in (self.root / "ux" / "screens").glob("*.md"):
-            content = self.read(path)
-            if content is None:
-                continue
-            meta = self.frontmatter(path, content)
-            screen = meta.get("id")
-            if not isinstance(screen, str) or ID_SCREEN.fullmatch(screen) is None:
-                self.error(f"{self.relative(path)}: missing/invalid SCREEN id")
-                continue
-            if screen in found:
-                self.error(f"Duplicate {screen}: {self.relative(found[screen][0])} and {self.relative(path)}")
+    def require_str(self, obj: dict[str, Any], key: str, context: str, nonempty: bool = True) -> str:
+        val = obj.get(key)
+        if not isinstance(val, str) or (nonempty and not val.strip()):
+            self.err(f"{context}: {key} must be a nonempty string")
+            return ""
+        return val
+
+    def require_list(self, obj: dict[str, Any], key: str, context: str) -> list[Any]:
+        val = obj.get(key)
+        if not isinstance(val, list):
+            self.err(f"{context}: {key} must be an array")
+            return []
+        return val
+
+    def id_list(self, obj: dict[str, Any], key: str, context: str, regex: re.Pattern[str]) -> set[str]:
+        vals = self.require_list(obj, key, context)
+        result: set[str] = set()
+        for val in vals:
+            if not isinstance(val, str) or not regex.fullmatch(val):
+                self.err(f"{context}: invalid {key} ID {val!r}")
+            elif val in result:
+                self.err(f"{context}: duplicate {key} ID {val}")
             else:
-                found[screen] = (path, meta, content)
-            for field, regex in (("features", ID_FEAT), ("flows", ID_FLOW)):
-                values = meta.get(field)
-                if not isinstance(values, list) or not values:
-                    self.error(f"{self.relative(path)}: {field} must be a non-empty YAML dash list")
-                    continue
-                for value in values:
-                    if not isinstance(value, str) or regex.fullmatch(value) is None:
-                        self.error(f"{self.relative(path)}: invalid {field} value {value!r}")
-                if len(values) != len(set(values)):
-                    self.error(f"{self.relative(path)}: duplicate {field} entries")
-            for heading in ("Objectif de l'écran", "Contenu et hiérarchie", "Interactions et navigation", "États et retours", "Accessibilité et adaptation", "Évolutions par version"):
-                if self.section(content, heading) is None:
-                    self.warn(f"{self.relative(path)}: missing recommended ## {heading}")
-        return found
-
-    def version_features(self, path: Path, content: str) -> Set[str]:
-        result: Set[str] = set()
-        for heading in ("Fonctionnalités incluses", "Évolutions des fonctionnalités existantes"):
-            section = self.section(content, heading)
-            if section is not None:
-                result.update(ID_FEAT.findall(section))
-        if not result:
-            self.error(f"{self.relative(path)}: no version-scoped FEAT IDs in the documented scope sections")
+                result.add(val)
         return result
 
-    def flows(self, path: Path, content: str) -> Dict[str, Dict[str, object]]:
-        headings = list(FLOW_HEADING.finditer(content))
-        if not headings:
-            self.error(f"{self.relative(path)}: no ## FLOW-### — ... sections")
-        result: Dict[str, Dict[str, object]] = {}
-        for index, heading in enumerate(headings):
-            flow_id = heading.group(1)
-            body = content[heading.end():headings[index+1].start() if index + 1 < len(headings) else len(content)]
-            if flow_id in result:
-                self.error(f"{self.relative(path)}: duplicate flow {flow_id} within the version")
-            def field(name: str) -> str:
-                match = re.search(r"^\*\*" + re.escape(name) + r"\s*:\*\*\s*(.+?)\s*$", body, re.M)
-                if not match:
-                    self.error(f"{self.relative(path)}: {flow_id} missing **{name} :**")
-                return match.group(1).strip() if match else ""
-            features = set(ID_FEAT.findall(field("Fonctionnalités")))
-            screens = set(ID_SCREEN.findall(field("Écrans")))
-            decision = field("Décision")
-            if not features or not screens:
-                self.error(f"{self.relative(path)}: {flow_id} needs at least one FEAT and SCREEN")
-            if decision not in {"approved", "proposed", "unresolved"}:
-                self.error(f"{self.relative(path)}: {flow_id} invalid decision {decision!r}")
-            result[flow_id] = {"features": features, "screens": screens, "decision": decision}
-        return result
+    def local_path(self, base: Path, url: str, context: str, want_html: bool = False) -> tuple[Path, str] | None:
+        if ".scratch/" in url or ".scratch\\" in url:
+            self.err(f"{context}: final artifact links to scratch ({url})")
+            return None
+        parsed = urlsplit(url)
+        if parsed.scheme or parsed.netloc or not parsed.path or parsed.query:
+            self.err(f"{context}: expected local relative file path, got {url!r}")
+            return None
+        target = (base / unquote(parsed.path)).resolve()
+        if not target.is_relative_to(self.root):
+            self.err(f"{context}: path leaves DOCS_ROOT: {url!r}")
+            return None
+        if not target.is_file():
+            self.err(f"{context}: missing file {self.rel(target)}")
+            return None
+        if want_html and target.suffix.lower() != ".html":
+            self.err(f"{context}: mockup is not HTML: {url!r}")
+            return None
+        return target, unquote(parsed.fragment)
 
-    def check_version(self, version: str, features: Dict[str, Path], screens: Dict[str, Tuple[Path, Dict[str, object], str]]) -> None:
+    def html_check(self, path: Path, expected_screen: str) -> None:
+        if path not in self.html_cache:
+            contents = self.read(path)
+            if contents is None:
+                return
+            if ".scratch/" in contents or ".scratch\\" in contents:
+                self.err(f"{self.rel(path)}: references scratch")
+            detail = HTMLDetails()
+            try:
+                detail.feed(contents)
+            except Exception as exc:
+                self.err(f"{self.rel(path)}: invalid HTML: {exc}")
+                return
+            self.html_cache[path] = detail
+            if not detail.screens:
+                self.err(f"{self.rel(path)}: no id=SCREEN-* HTML containers")
+            for sid in detail.image_screens:
+                self.err(f"{self.rel(path)}: {sid} is an image/canvas, not an HTML screen container")
+            for sid in detail.screens - detail.nav:
+                self.err(f"{self.rel(path)}: missing navigation href=\"#{sid}\"")
+            for url in detail.external:
+                self.err(f"{self.rel(path)}: external dependency {url!r}; must work offline")
+            for url in detail.assets:
+                self.local_path(path.parent, url, self.rel(path))
+        if path in self.html_cache and expected_screen not in self.html_cache[path].screens:
+            self.err(f"{self.rel(path)}: missing HTML container #{expected_screen}")
+
+    def check_version(self, version: str, available_features: set[str]) -> None:
         directory = self.root / "versions" / version
         scope_path = directory / "VERSION.md"
-        ux_dir = directory / "ux"
-        summary_path = ux_dir / "UX-SUMMARY.md"
-        flows_path = ux_dir / "USER-FLOWS.md"
-        inventory_path = ux_dir / "SCREEN-INVENTORY.md"
-        texts = [self.read(path) for path in (scope_path, summary_path, flows_path, inventory_path)]
-        if any(value is None for value in texts):
+        summary_path = directory / "ux" / "UX-SUMMARY.md"
+        contract_path = directory / "ux" / "UX-CONTRACT.json"
+        scope_txt = self.read(scope_path)
+        summary_txt = self.read(summary_path)
+        contract_txt = self.read(contract_path)
+        if any(x is None for x in (scope_txt, summary_txt, contract_txt)):
             return
-        scope_text, summary_text, flows_text, inventory_text = texts  # type: ignore[misc]
-        self.scanned_versions.append(version)
-        scope_meta = self.frontmatter(scope_path, scope_text)
-        if scope_meta.get("version") != version:
-            self.error(f"{self.relative(scope_path)}: version frontmatter differs from directory")
-        if scope_meta.get("status") not in ("approved", "delivered"):
-            self.error(f"{self.relative(scope_path)}: UX requires an approved functional version scope")
-        version_features = self.version_features(scope_path, scope_text)
-        for feature in version_features:
-            if feature not in features:
-                self.error(f"{version}: {feature} in VERSION.md has no canonical feature card")
-        for path, content in ((summary_path, summary_text), (flows_path, flows_text), (inventory_path, inventory_text)):
-            meta = self.frontmatter(path, content)
-            if meta.get("version") != version:
-                self.error(f"{self.relative(path)}: version frontmatter differs from directory")
-        summary_meta = self.frontmatter(summary_path, summary_text)
-        status = summary_meta.get("status")
-        if status not in ("draft", "approved"):
-            self.error(f"{self.relative(summary_path)}: status must be draft or approved")
-        expected_scope = f"versions/{version}/VERSION.md"
-        if summary_meta.get("scope") != expected_scope:
-            self.error(f"{self.relative(summary_path)}: scope must be {expected_scope}")
+        assert scope_txt is not None and summary_txt is not None and contract_txt is not None
+        scope_meta = self.frontmatter(scope_path, scope_txt)
+        if scope_meta.get("version") != version or scope_meta.get("status") not in {"approved", "delivered"}:
+            self.err(f"{self.rel(scope_path)}: UX requires approved/delivered scope for {version}")
+        included = self.scope_features(scope_path, scope_txt)
+        for missing in sorted(included - available_features):
+            self.err(f"{version}: {missing} has no canonical feature card")
+        summary_meta = self.frontmatter(summary_path, summary_txt)
+        if summary_meta.get("version") != version:
+            self.err(f"{self.rel(summary_path)}: version metadata mismatch")
+        if summary_meta.get("scope") != f"versions/{version}/VERSION.md":
+            self.err(f"{self.rel(summary_path)}: wrong scope path")
+        if summary_meta.get("status") not in STATUS:
+            self.err(f"{self.rel(summary_path)}: status must be draft or approved")
+        for heading in ["Objectifs et parcours principaux", "Navigation et décisions de conception", "Maquettes validées", "Anticipation des évolutions futures (hors périmètre)"]:
+            if re.search(r"^##\s+" + re.escape(heading) + r"\s*$", summary_txt, re.M) is None:
+                self.err(f"{self.rel(summary_path)}: missing ## {heading}")
+        if ".scratch/" in summary_txt or ".scratch\\" in summary_txt:
+            self.err(f"{self.rel(summary_path)}: links to scratch")
+        try:
+            data = json.loads(contract_txt)
+        except json.JSONDecodeError as exc:
+            self.err(f"{self.rel(contract_path)}: invalid JSON: {exc}")
+            return
+        if not isinstance(data, dict):
+            self.err(f"{self.rel(contract_path)}: expected JSON object")
+            return
+        if type(data.get("schemaVersion")) is not int or data["schemaVersion"] != 1:
+            self.err(f"{self.rel(contract_path)}: schemaVersion must be integer 1")
+        if data.get("version") != version or data.get("scope") != f"versions/{version}/VERSION.md":
+            self.err(f"{self.rel(contract_path)}: version or scope mismatch")
+        if data.get("status") not in STATUS:
+            self.err(f"{self.rel(contract_path)}: status must be draft or approved")
+        if data.get("status") != summary_meta.get("status"):
+            self.err(f"{version}: summary and contract approval status differ")
+        approved = data.get("status") == "approved"
+        if ".scratch/" in contract_txt or ".scratch\\" in contract_txt:
+            self.err(f"{self.rel(contract_path)}: references scratch")
 
-        defined_flows = self.flows(flows_path, flows_text)
-        screen_rows = self.markdown_table(inventory_path, inventory_text, "Écrans de la version", ["Écran", "Rôle", "Fiche"])
-        coverage_rows = self.markdown_table(inventory_path, inventory_text, "Couverture des fonctionnalités", ["Fonctionnalité", "Écrans", "Parcours", "Couverture"])
-        inventory_screens: Set[str] = set()
-        for row in screen_rows:
-            screen_id = row["Écran"]
-            if ID_SCREEN.fullmatch(screen_id) is None:
-                self.error(f"{self.relative(inventory_path)}: invalid screen inventory id {screen_id!r}")
+        flows: dict[str, dict[str, set[str]]] = {}
+        for raw in self.require_list(data, "flows", version):
+            if not isinstance(raw, dict):
+                self.err(f"{version}: flow must be object")
                 continue
-            if screen_id in inventory_screens:
-                self.error(f"{self.relative(inventory_path)}: duplicate inventory screen {screen_id}")
-            inventory_screens.add(screen_id)
-            target = self.resolve_link(inventory_path, row["Fiche"])
-            if screen_id not in screens:
-                self.error(f"{version}: {screen_id} missing canonical screen card")
-            elif target is not None and target != screens[screen_id][0].resolve():
-                self.error(f"{version}: {screen_id} card link does not match canonical card")
-            if target is not None and not target.is_file():
-                self.error(f"{version}: broken screen card link {self.relative(target)}")
+            fid = self.require_str(raw, "id", "flow")
+            if not FLOW.fullmatch(fid):
+                self.err(f"{version}: invalid flow id {fid!r}")
+                continue
+            if fid in flows:
+                self.err(f"{version}: duplicate flow {fid}")
+            self.require_str(raw, "name", fid)
+            feature_ids = self.id_list(raw, "featureIds", fid, FEAT)
+            screen_ids = self.id_list(raw, "screenIds", fid, SCREEN)
+            if not feature_ids or not screen_ids:
+                self.err(f"{version}: {fid} needs featureIds and screenIds")
+            steps = self.require_list(raw, "steps", fid)
+            if not steps:
+                self.err(f"{version}: {fid} has no steps")
+            for step in steps:
+                if not isinstance(step, dict):
+                    self.err(f"{fid}: step must be object")
+                    continue
+                sid = self.require_str(step, "screenId", fid)
+                if sid not in screen_ids:
+                    self.err(f"{fid}: step screen {sid} not in flow screenIds")
+                self.require_str(step, "action", fid)
+                self.require_str(step, "result", fid)
+            for value in self.require_list(raw, "alternatives", fid):
+                if not isinstance(value, str):
+                    self.err(f"{fid}: alternatives must be strings")
+            flows[fid] = {"features": feature_ids, "screens": screen_ids}
 
-        for flow_id, info in defined_flows.items():
-            referenced = info["screens"]
-            assert isinstance(referenced, set)
-            for screen_id in referenced - inventory_screens:
-                self.error(f"{version}: {flow_id} uses {screen_id} absent from Écrans de la version")
-            if info["decision"] != "approved" and status == "approved":
-                self.error(f"{version}: approved UX summary contains {flow_id} decision={info['decision']}")
-            for feature_id in info["features"]:
-                if feature_id not in features:
-                    self.error(f"{version}: {flow_id} references unknown {feature_id}")
-        seen: Set[str] = set()
-        no_ui_section = self.section(inventory_text, "Justifications sans interface")
-        no_ui_reasons = dict(re.findall(r"^\s*-\s*(FEAT-\d{3,})\s*:\s*(.+?)\s*$", no_ui_section or "", re.M))
-        for row in coverage_rows:
-            feature_id = row["Fonctionnalité"]
-            if ID_FEAT.fullmatch(feature_id) is None:
-                self.error(f"{version}: invalid feature ID {feature_id!r} in coverage")
+        screens: dict[str, dict[str, set[str]]] = {}
+        used_actions: set[str] = set()
+        for raw in self.require_list(data, "screens", version):
+            if not isinstance(raw, dict):
+                self.err(f"{version}: screen must be object")
                 continue
-            if feature_id in seen:
-                self.error(f"{version}: duplicate coverage row for {feature_id}")
-            seen.add(feature_id)
-            if feature_id not in version_features:
-                self.error(f"{version}: coverage includes {feature_id}, not in approved version scope")
-            status_coverage = row["Couverture"]
-            referenced_screens = set(ID_SCREEN.findall(row["Écrans"]))
-            referenced_flows = set(ID_FLOW.findall(row["Parcours"]))
-            if status_coverage == "covered":
-                if not referenced_screens or not referenced_flows:
-                    self.error(f"{version}: {feature_id} covered but missing SCREEN/FLOW IDs")
-                for screen_id in referenced_screens:
-                    if screen_id not in inventory_screens:
-                        self.error(f"{version}: {feature_id} references {screen_id} absent from inventory")
-                    if screen_id in screens:
-                        meta = screens[screen_id][1]
-                        if feature_id not in (meta.get("features") or []):
-                            self.error(f"{version}: {screen_id} card does not link back to {feature_id}")
-                for flow_id in referenced_flows:
-                    if flow_id not in defined_flows:
-                        self.error(f"{version}: {feature_id} references undefined {flow_id}")
-                        continue
-                    flow = defined_flows[flow_id]
-                    if feature_id not in flow["features"]:
-                        self.error(f"{version}: {flow_id} does not link back to {feature_id}")
-                    if not referenced_screens.intersection(flow["screens"]):
-                        self.error(f"{version}: {feature_id} has no screen shared with {flow_id}")
-                    for screen_id in referenced_screens.intersection(flow["screens"]):
-                        if screen_id in screens and flow_id not in (screens[screen_id][1].get("flows") or []):
-                            self.error(f"{version}: {screen_id} card does not link back to {flow_id}")
-                    if flow["decision"] != "approved" and status == "approved":
-                        self.error(f"{version}: {feature_id} linked to unapproved flow {flow_id}")
-            elif status_coverage == "no_ui":
-                if referenced_screens or referenced_flows or row["Écrans"] != "-" or row["Parcours"] != "-":
-                    self.error(f"{version}: {feature_id} no_ui must use '-' for screens and flows")
-                reason = no_ui_reasons.get(feature_id, "")
-                if len(reason.strip()) < 12 or "<" in reason or "TODO" in reason.upper():
-                    self.error(f"{version}: {feature_id} no_ui requires a meaningful user-approved justification")
-            elif status_coverage == "unresolved":
-                if status == "approved":
-                    self.error(f"{version}: {feature_id} unresolved but UX summary is approved")
-                self.warn(f"{version}: {feature_id} UX coverage unresolved; not ready for planning")
+            sid = self.require_str(raw, "id", "screen")
+            if not SCREEN.fullmatch(sid):
+                self.err(f"{version}: invalid screen id {sid!r}")
+                continue
+            if sid in screens:
+                self.err(f"{version}: duplicate screen {sid}")
+            self.require_str(raw, "name", sid)
+            features = self.id_list(raw, "featureIds", sid, FEAT)
+            flow_ids = self.id_list(raw, "flowIds", sid, FLOW)
+            if not features or not flow_ids:
+                self.err(f"{sid}: must link to at least one feature and flow")
+            change = self.require_str(raw, "change", sid)
+            if change not in CHANGE:
+                self.err(f"{sid}: change must be new/modified/reused")
+            url = self.require_str(raw, "mockup", sid)
+            checked = self.local_path(contract_path.parent, url, sid, want_html=True) if url else None
+            if checked is not None:
+                path, anchor = checked
+                if anchor != sid:
+                    self.err(f"{sid}: mockup URL fragment must be #{sid}")
+                self.html_check(path, sid)
+                if change in {"new", "modified"} and path != (contract_path.parent / "mockups" / "index.html").resolve():
+                    self.err(f"{sid}: new/modified screen must point to current version's approved mockups/index.html")
+            states = self.require_list(raw, "states", sid)
+            if not states or any(not isinstance(x, str) or not x.strip() for x in states):
+                self.err(f"{sid}: states must be a nonempty string list")
+            interactions = self.require_list(raw, "interactions", sid)
+            for interaction in interactions:
+                if not isinstance(interaction, dict):
+                    self.err(f"{sid}: interaction must be an object")
+                    continue
+                action_id = self.require_str(interaction, "id", sid)
+                if not ACT.fullmatch(action_id):
+                    self.err(f"{sid}: invalid ACT id {action_id!r}")
+                elif action_id in used_actions:
+                    self.err(f"{version}: duplicate action id {action_id}")
+                used_actions.add(action_id)
+                self.require_str(interaction, "trigger", action_id)
+                self.require_str(interaction, "result", action_id)
+            for val in self.require_list(raw, "accessibilityNotes", sid):
+                if not isinstance(val, str):
+                    self.err(f"{sid}: accessibilityNotes must be strings")
+            screens[sid] = {"features": features, "flows": flow_ids}
+
+        for fid, info in flows.items():
+            for sid in info["screens"]:
+                if sid not in screens:
+                    self.err(f"{fid}: unknown screen {sid}")
+                elif fid not in screens[sid]["flows"]:
+                    self.err(f"{fid}: {sid} does not link back to the flow")
+            for feat in info["features"]:
+                if feat not in included:
+                    self.err(f"{fid}: feature {feat} not in {version}'s scope")
+        for sid, info in screens.items():
+            for fid in info["flows"]:
+                if fid not in flows:
+                    self.err(f"{sid}: unknown flow {fid}")
+                elif sid not in flows[fid]["screens"]:
+                    self.err(f"{sid}: {fid} does not link back to screen")
+            for feat in info["features"]:
+                if feat not in included:
+                    self.err(f"{sid}: feature {feat} not in {version}'s scope")
+
+        coverage_seen: set[str] = set()
+        for raw in self.require_list(data, "featureCoverage", version):
+            if not isinstance(raw, dict):
+                self.err(f"{version}: coverage entry must be object")
+                continue
+            feat = self.require_str(raw, "featureId", "coverage")
+            if not FEAT.fullmatch(feat):
+                self.err(f"{version}: invalid coverage feature {feat!r}")
+                continue
+            if feat in coverage_seen:
+                self.err(f"{version}: duplicate coverage for {feat}")
+            coverage_seen.add(feat)
+            if feat not in included:
+                self.err(f"{version}: {feat} covered but not in target version scope")
+            kind = self.require_str(raw, "coverage", feat)
+            sids = self.id_list(raw, "screenIds", feat, SCREEN)
+            fids = self.id_list(raw, "flowIds", feat, FLOW)
+            if kind == "covered":
+                if not sids or not fids:
+                    self.err(f"{feat}: covered requires SCREEN and FLOW references")
+                for sid in sids:
+                    if sid not in screens or feat not in screens[sid]["features"]:
+                        self.err(f"{feat}: {sid} missing or does not link back to this feature")
+                for fid in fids:
+                    if fid not in flows or feat not in flows[fid]["features"]:
+                        self.err(f"{feat}: {fid} missing or does not link back to this feature")
+                    elif not sids.intersection(flows[fid]["screens"]):
+                        self.err(f"{feat}: {fid} has no screen in {feat}'s coverage")
+            elif kind == "no_ui":
+                if sids or fids:
+                    self.err(f"{feat}: no_ui requires empty screenIds and flowIds")
+                note = raw.get("justification")
+                if not isinstance(note, str) or len(note.strip()) < 15:
+                    self.err(f"{feat}: no_ui requires a meaningful user-approved justification")
+            elif kind == "unresolved":
+                if approved:
+                    self.err(f"{feat}: unresolved coverage blocks approved status")
             else:
-                self.error(f"{version}: {feature_id} invalid coverage {status_coverage!r}")
-        for missing in sorted(version_features - seen):
-            self.error(f"{version}: missing coverage row for scoped feature {missing}")
-        for flow_id, info in defined_flows.items():
-            for screen_id in info["screens"]:
-                if screen_id in screens and flow_id not in (screens[screen_id][1].get("flows") or []):
-                    self.error(f"{version}: {screen_id} card does not link to flow {flow_id}")
-        self.warn(f"{version}: semantic UX review and explicit human approvals must still be verified manually")
+                self.err(f"{feat}: invalid coverage {kind!r}")
+        for fid in sorted(included - coverage_seen):
+            self.err(f"{version}: missing featureCoverage entry for {fid}")
 
-    def run(self, version: Optional[str]) -> int:
-        if not self.root.is_dir():
-            print(f"ERROR: project docs root does not exist: {self.root}", file=sys.stderr)
-            return 2
-        features = self.canonical_features()
-        screens = self.canonical_screens()
-        if version:
-            if not re.fullmatch(r"v\d+", version):
-                print("ERROR: --version must look like v1, v2, etc.", file=sys.stderr)
-                return 2
-            versions = [version]
-        else:
-            versions = sorted(path.parent.name for path in (self.root / "versions").glob("*/ux/UX-SUMMARY.md"))
-            if not versions:
-                self.error("No versions/*/ux/UX-SUMMARY.md found")
-        for target in versions:
-            self.check_version(target, features, screens)
-        for message in self.errors:
-            print(f"ERROR: {message}")
-        for message in self.warnings:
-            print(f"WARN: {message}")
-        print(f"AUDIT: {len(self.scanned_versions)} version(s), {len(features)} canonical feature(s), "
-              f"{len(screens)} canonical screen(s), {len(self.errors)} error(s), {len(self.warnings)} warning(s)")
-        return 1 if self.errors else 0
+        considerations = self.require_list(data, "futureConsiderations", version)
+        for idx, raw in enumerate(considerations):
+            ctx = f"{version} futureConsiderations[{idx}]"
+            if not isinstance(raw, dict):
+                self.err(f"{ctx}: must be an object")
+                continue
+            source = self.require_str(raw, "source", ctx)
+            self.require_str(raw, "item", ctx)
+            self.require_str(raw, "navigationImplication", ctx)
+            if source:
+                self.local_path(self.root, source, ctx)
+        if (self.root / "FUTURE-FEATURES.md").is_file() and not considerations:
+            self.warn(f"{version}: futureConsiderations is empty; check that roadmap context was actually reviewed")
+
+        if screens:
+            # The user-facing summary must point to a real gallery, including
+            # a prior version's approved gallery for wholly reused screens.
+            links = re.findall(r"\]\(([^)]+\.html(?:#[^)]*)?)\)", summary_txt)
+            if not links:
+                self.err(f"{self.rel(summary_path)}: must link to a final HTML gallery")
+            for link in links:
+                self.local_path(summary_path.parent, link, self.rel(summary_path), want_html=True)
+        if approved and summary_meta.get("status") != "approved":
+            self.err(f"{version}: contract approved, summary not approved")
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("docs_root", type=Path, help="Path to docs/docs-project")
-    parser.add_argument("--version", help="One version to check, e.g. v1")
+    parser.add_argument("docs_root", type=Path)
+    parser.add_argument("--version", help="Only check this version (e.g. v1)")
     args = parser.parse_args()
-    return Audit(args.docs_root).run(args.version)
+    root = args.docs_root
+    if not root.is_dir():
+        print(f"ERROR: documentation root not found: {root}", file=sys.stderr)
+        return 2
+    check = Validation(root)
+    features = check.canonical_features()
+    if args.version:
+        versions = [args.version]
+    else:
+        versions = sorted(p.name for p in (root / "versions").iterdir() if p.is_dir() and (p / "ux" / "UX-CONTRACT.json").exists()) if (root / "versions").is_dir() else []
+    if not versions:
+        print("ERROR: no UX contract versions found", file=sys.stderr)
+        return 2
+    for version in versions:
+        if re.fullmatch(r"v\d+", version) is None:
+            check.err(f"Invalid version directory {version}")
+        else:
+            check.check_version(version, features)
+    for warning in check.warnings:
+        print("WARNING:", warning)
+    for error in check.errors:
+        print("ERROR:", error)
+    print(f"Checked {len(versions)} version(s): {len(check.errors)} error(s), {len(check.warnings)} warning(s)")
+    return 1 if check.errors else 0
 
 
 if __name__ == "__main__":

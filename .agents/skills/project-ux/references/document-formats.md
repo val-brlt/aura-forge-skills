@@ -1,45 +1,36 @@
-# Aura Forge UX Document Formats — Version-Aware UX/UI Design
+# Aura Forge UX output contract — reference for Codex
 
-This is **agent-facing documentation in English**. The examples below intentionally use **French prose**, because the generated user-facing UX documents must be written in **French**. Stable identifiers, YAML keys/controlled values, file names and paths stay in English.
+Instructions here are **in English**. Generated UX summaries, HTML UI text and JSON human-readable values must be **in French**. Stable IDs, JSON property names, file names and controlled values remain English.
 
-## Purpose and canonical relationships
+## Design artifacts and their roles
 
-The UX output must be readable by people **and** deterministically consumable by a later architecture/planning skill. It is not a GitHub Issue specification and must not pick an implementation stack.
+**HTML** is the approved visual/interaction example; it is offline-capable, non-production and navigable. **`UX-CONTRACT.json`** is the structured, implementation-independent UX behavior and traceability source used by later agents. **`UX-SUMMARY.md`** provides a concise overview for the user, without copying each screen's content. **`ux/DESIGN-GUIDELINES.md`** is optional and describes stable shared patterns only when validated. No standard `USER-FLOWS.md`, `SCREEN-INVENTORY.md` or `ux/screens/<screen>.md` is needed. Exceptional complex-pattern notes are permitted when they add genuinely unique context; reference them from the summary.
 
-- `FEAT-001`: canonical functional feature ID from `modules/**/<feature>.md` and the approved `versions/<version>/VERSION.md`.
-- `FLOW-001`: stable UX flow ID. Its **version-specific approved behavior** is recorded under each `versions/<version>/ux/USER-FLOWS.md`; reuse the ID when a previously defined journey evolves.
-- `SCREEN-001`: stable conceptual screen ID. Its **single living canonical card** is `ux/screens/<screen-slug>.md`. Extend its `## Évolutions par version` section; do not delete V1 content to describe V2.
-- The **version's** `SCREEN-INVENTORY.md` is the index and machine-readable crosswalk connecting `FEAT-*`, `SCREEN-*`, `FLOW-*`, and the screen card files. It must include **every feature explicitly in this version's approved scope**, including ones without a UI.
-- The **version's** `UX-SUMMARY.md` is the approval record: `draft` until the final UX document approval, then `approved`. This status never means software delivery.
-- In V2+, retain the old `versions/v1/ux/` docs untouched and reference existing screens without copying their cards.
+Use the existing documentation root (`docs/docs-project` or `docs/docs-projet`), never both. An approved preview begins in `.scratch/project-ux/<project>/<version>/preview/` and **the same files** are copied to `<DOCS_ROOT>/versions/<version>/ux/mockups/` after explicit visual approval. No final asset/URL may point to `.scratch`. Local HTML screens have `id="SCREEN-001"` and usable `href="#SCREEN-001"` navigation. A screen may link to the previous version's promoted HTML if unchanged; no duplicate gallery is needed merely for documentation.
 
-Identifiers use `FEAT-001`, `FLOW-001`, `SCREEN-001` (minimum three digits). Do not reuse an ID for a different concept or renumber existing IDs. All paths in the tables and cards must resolve relative to their document.
-
-## Output tree
+## Final file tree
 
 ```text
-docs/docs-project/
+<DOCS_ROOT>/
+├── PROJECT.md                             # existing, maintained by functional scoping
+├── FUTURE-FEATURES.md                     # existing roadmap
+├── modules/<module>/<feature>.md           # canonical functional features
 ├── ux/
-│   ├── DESIGN-GUIDELINES.md                # optional: approved shared rules only
-│   └── screens/
-│       └── create-project.md               # one canonical card for SCREEN-001
-└── versions/
-    ├── v1/
-    │   ├── VERSION.md                      # existing approved functional scope
-    │   └── ux/
-    │       ├── UX-SUMMARY.md
-    │       ├── USER-FLOWS.md
-    │       └── SCREEN-INVENTORY.md
-    └── v2/
-        └── ux/                             # only when V2 UX is being designed
-            ├── UX-SUMMARY.md
-            ├── USER-FLOWS.md
-            └── SCREEN-INVENTORY.md
+│   └── DESIGN-GUIDELINES.md               # optional
+└── versions/<version>/
+    ├── VERSION.md                         # approved feature scope
+    └── ux/
+        ├── UX-SUMMARY.md
+        ├── UX-CONTRACT.json
+        └── mockups/
+            ├── index.html                # only if new/changed UI
+            ├── style.css                 # if needed by HTML
+            └── app.js                    # if needed by HTML
 ```
 
-Do **not** create empty future-version folders or force images/prototypes. Store actual approved wireframe/prototype assets in an agreed location; reference them by a real relative link/URL. Never invent asset paths.
+Do not create empty folders or force every HTML file to have external CSS/JS. Keep version history, but avoid per-screen documentation and duplicate data.
 
-## `versions/<version>/ux/UX-SUMMARY.md` (version UX approval record)
+## UX-SUMMARY.md — compact user-facing format
 
 ```markdown
 ---
@@ -50,201 +41,92 @@ scope: versions/v1/VERSION.md
 
 # Conception UX/UI — V1
 
-## Objectifs de l'expérience
-Permettre à l'utilisateur de créer et retrouver ses projets sans perdre le contexte.
+## Objectifs et parcours principaux
+<Description brève des tâches et parcours retenus, pas de fiche par écran>
 
-## Source fonctionnelle
-[Périmètre validé de V1](../VERSION.md)
+## Navigation et décisions de conception
+<Organisation globale, raisons des décisions qui ne ressortent pas de la maquette>
 
-## Utilisateurs et tâches prioritaires
-<Description des utilisateurs et de leurs objectifs validés>
+## Maquettes validées
+[Ouvrir les maquettes HTML](mockups/index.html)
 
-## Navigation et organisation des informations
-<Organisation validée, sans choisir de framework>
+## Anticipation des évolutions futures (hors périmètre)
+<Impacts sur la navigation de la vision du produit et des fonctionnalités futures, sans nouveaux écrans maquettés>
 
-## Écrans et parcours
-- [Parcours de la version](USER-FLOWS.md)
-- [Inventaire des écrans et couverture fonctionnelle](SCREEN-INVENTORY.md)
-
-## Direction visuelle et décisions validées
-<Choix validés, ou mention qu'aucune direction visuelle détaillée n'est définie>
-
-## Nouveautés et changements de la version
-<Pour V1 : première expérience. Pour V2 : différences UX par rapport à V1>
-
-## Accessibilité et adaptation
-<Comportements attendus et décisions actées>
-
-## Questions ouvertes et limites
-<Points non bloquants ou points à trancher avant approbation>
-
-## Vérification de couverture
-<Résumé de la revue de cohérence et de ses limites>
+## Accessibilité, limites et questions ouvertes
+<Conventions et exceptions utiles, ou « Aucun point bloquant »>
 ```
 
-**Metadata:**
-- `version`: version directory (e.g. `v1`, `v2`).
-- `status`: `draft` or `approved` only; set `approved` solely after **explicit human approval** and a passed audit.
-- `scope`: project-root-relative path to the **approved** functional scope for this same version.
+For a version with **no new/changed UI**, replace the mockup link with a real link to the previous approved version's HTML as appropriate. `status` is `draft` until the **actual HTML** is approved and the structured contract passes validation, then `approved`. Do not claim the software was delivered.
 
-## `versions/<version>/ux/USER-FLOWS.md` (one section per flow)
+## UX-CONTRACT.json — required machine-readable format
 
-A flow can be shared conceptually by later versions, but its **scenario for each version** lives in the corresponding version file. Every flow has a unique `FLOW-*` heading **within that version**.
+Use the following schema shape. This is an *illustrative* dataset, not a claim that these features are actually in the project. Do not add behaviors or fields that were not validated.
 
-```markdown
----
-version: v1
----
-
-# Parcours utilisateurs — V1
-
-## FLOW-001 — Créer un projet
-
-**Fonctionnalités :** FEAT-001
-**Écrans :** SCREEN-001, SCREEN-002
-**Décision :** approved
-
-### Déclencheur
-L'utilisateur choisit l'action « Nouveau projet ».
-
-### Objectif et résultat attendu
-Créer un projet et accéder à sa vue principale.
-
-### Parcours principal
-1. L'utilisateur ouvre l'écran de création.
-2. Il saisit les informations demandées.
-3. Il confirme et accède au projet créé.
-
-### Variantes et interruptions
-<Retour arrière, annulation, reprise, permissions, etc.>
-
-### Erreurs et retours utilisateur
-<États visibles pour les données invalides, les erreurs et la confirmation>
-
-### Décisions et questions ouvertes
-<Éléments validés ou questions clairement signalées>
+```json
+{
+  "schemaVersion": 1,
+  "version": "v1",
+  "status": "draft",
+  "scope": "versions/v1/VERSION.md",
+  "flows": [
+    {
+      "id": "FLOW-001",
+      "name": "Créer un projet",
+      "featureIds": ["FEAT-001"],
+      "screenIds": ["SCREEN-001"],
+      "steps": [
+        {"screenId": "SCREEN-001", "action": "Saisir la description", "result": "Le formulaire est renseigné"}
+      ],
+      "alternatives": ["En cas de description vide, afficher une erreur de validation"]
+    }
+  ],
+  "screens": [
+    {
+      "id": "SCREEN-001",
+      "name": "Création du projet",
+      "featureIds": ["FEAT-001"],
+      "flowIds": ["FLOW-001"],
+      "change": "new",
+      "mockup": "mockups/index.html#SCREEN-001",
+      "states": ["initial", "validation-error", "submitting", "success"],
+      "interactions": [
+        {"id": "ACT-001", "trigger": "Cliquer sur Créer", "result": "Le projet est créé ou une erreur est affichée"}
+      ],
+      "accessibilityNotes": ["Les erreurs sont annoncées et associées au champ concerné"]
+    }
+  ],
+  "featureCoverage": [
+    {"featureId": "FEAT-001", "coverage": "covered", "screenIds": ["SCREEN-001"], "flowIds": ["FLOW-001"]}
+  ],
+  "futureConsiderations": [
+    {
+      "source": "FUTURE-FEATURES.md",
+      "item": "Phases ultérieures du projet",
+      "navigationImplication": "Prévoir une navigation pouvant accueillir les nouvelles phases sans les activer dans cette version"
+    }
+  ]
+}
 ```
 
-Controlled `**Décision :**` values: `approved`, `proposed`, `unresolved`. A `proposed`/`unresolved` flow is not planning-ready and must not silently appear as an accepted deliverable. A flow may reference existing baseline feature IDs, but its **new behavior for this version** must stay within the approved scope. If a reused flow changes in V2, document the **V2 delta** in its V2 record. A flow must reference at least one actual screen and feature.
+**Required top-level fields:** `schemaVersion` (integer `1`), `version` (`vN`), `status` (`draft` or `approved`), `scope` (`versions/<version>/VERSION.md`), `flows`, `screens`, `featureCoverage`, `futureConsiderations` (arrays, possibly empty when roadmap has no known implication).
 
-## `ux/screens/<screen-slug>.md` (one canonical living card per conceptual screen)
+**Flow:** `id` (`FLOW-###`), `name` (French), `featureIds`, `screenIds`, `steps` (objects with `screenId`, `action`, `result`), `alternatives` (French strings; may be empty). Flows with UI must reference at least one scoped feature and screen. Keep stable flow IDs across versions when a journey evolves.
 
-```markdown
----
-id: SCREEN-001
-features:
-  - FEAT-001
-flows:
-  - FLOW-001
----
+**Screen:** `id` (`SCREEN-###`), `name`, `featureIds` and `flowIds` (only current-version relevant connections), `change` (`new`, `modified`, `reused`), `mockup` (relative file path ending in `.html#SCREEN-###`, potentially a **prior version's** approved gallery), `states` (nonempty list of states), `interactions` (objects with unique `ACT-###` IDs, `trigger`, `result`), and `accessibilityNotes` (array, possibly empty). HTML screen elements must have the exact matching `id`. The mockup can be a reused prior-version link such as `../../v1/ux/mockups/index.html#SCREEN-001`. Simulated HTML behavior is illustrative, while this contract records the **approved observable behavior**.
 
-# SCREEN-001 — Création de projet
+**Coverage:** one entry for **every `FEAT-*` in the target version's `VERSION.md`**, and none for future-only or untouched historic features. Each entry has `featureId`, `coverage` and `screenIds` / `flowIds` arrays. `covered` requires at least one screen and flow and matching reciprocal references; `no_ui` requires empty arrays plus a meaningful **user-approved** `justification`; `unresolved` is allowed only while `draft` and blocks approval. Never use `no_ui` to hide missing design.
 
-## Objectif de l'écran
-<Pourquoi cet écran existe et dans quel contexte il apparaît>
+**Future considerations:** optional entries with `source` pointing to an **existing** project/roadmap source, `item`, `navigationImplication`. These entries cannot create current-version `FEAT-*`, screens, journeys, Issue scope or clickable future features. They preserve future-aware navigation decisions without mocking future phases.
 
-## Contenu et hiérarchie
-<Informations, actions principales et secondaires, éléments prioritaires>
+**JSON is the authoritative UX *data* handoff**, but the validated `VERSION.md` and feature cards remain the functional truth; never overwrite them merely because JSON or prototype code suggests new behavior. The `UX-SUMMARY.md` summarizes instead of duplicating fields, allowing the future architecture/planning skill to use the JSON without re-parsing long Markdown tables.
 
-## Interactions et navigation
-<Actions, transitions, confirmations, retour en arrière et sorties>
+## Incorporating approved functional refinements discovered during UX
 
-## États et retours
-<Normal, vide, chargement, validation, erreur, permissions, succès>
+For a **not-yet-delivered version**, update the canonical feature card and its existing version-specific section **in place**, the module description, the version `VERSION.md` and relevant living indexes (only where affected). Example: if the user explicitly approves a general project discussion as part of V1 during UX, the existing V1 project-discussion feature should simply contain that general discussion behavior and its acceptance criteria. Do not insert a paragraph like “Complément V1 acté pendant la revue UX — D17”, “Source complémentaire”, `SCOPING-ADDENDUM.md`, or any narrative provenance inside the feature/module pages. The existing requirements should read as a unified, current specification. Mention the scope refinement in the **conversation and Git diff**, not as an addendum in user documentation. Preserve the original `SCOPING-SUMMARY.md` as the historical first synthesis unless the user explicitly approves editing it.
 
-## Accessibilité et adaptation
-<Clavier, lisibilité, focus, formats d'écran, selon besoins validés>
+For an **already delivered version**, keep its functional baseline unchanged; document genuinely new behavior under the next version's normal scope. If it is uncertain whether a change belongs in the current or a later version, ask before finalization. Never invent approval or change a feature ID to disguise a scope change.
 
-## Évolutions par version
-### V1
-<Comportement et décisions UX approuvés en V1, avec références FEAT/FLOW>
+## Validation rules
 
-### V2
-<Seulement après décision V2 : ce qui change, sans effacer V1>
-
-## Maquettes et prototypes validés
-<Aucun si aucune maquette n'a été réalisée ; sinon vrais liens vers les assets et verdicts>
-
-## Questions ouvertes
-<Aucune ou liste explicite>
-```
-
-`features` and `flows` frontmatter arrays contain the **union of IDs actually referenced by this conceptual screen across versions**; they are not a claim that all those features were implemented in every version. Use simple YAML dash lists as shown, with IDs unquoted. Do not use undocumented alternatives to the field names. Screen ID is globally unique across canonical cards, and the same feature may be linked to multiple screens.
-
-**Important:** Once a version's section is approved, a later iteration must **append/update the new version section**, not silently rewrite the previous one. If V1 documentation requires correcting, present the exact correction and ask for a distinct approval.
-
-## `versions/<version>/ux/SCREEN-INVENTORY.md` (mandatory handoff contract)
-
-The validator expects the **exact section headings and column names** below, but the prose itself remains French. Keep one **row per screen** and **one row per version-scoped feature**. Every `covered` row must provide at least one screen and one flow; use comma-separated IDs, not extra syntax. Use `-` when none.
-
-```markdown
----
-version: v1
----
-
-# Inventaire des écrans — V1
-
-## Écrans de la version
-
-| Écran | Rôle | Fiche |
-| --- | --- | --- |
-| SCREEN-001 | Créer un projet | [Fiche](../../../ux/screens/create-project.md) |
-| SCREEN-002 | Accéder au projet créé | [Fiche](../../../ux/screens/project-details.md) |
-
-## Couverture des fonctionnalités
-
-| Fonctionnalité | Écrans | Parcours | Couverture |
-| --- | --- | --- | --- |
-| FEAT-001 | SCREEN-001, SCREEN-002 | FLOW-001 | covered |
-| FEAT-002 | - | - | no_ui |
-
-## Justifications sans interface
-- FEAT-002 : <Explication validée montrant pourquoi cette fonctionnalité ne nécessite pas d'interface>
-
-## Écarts et points non résolus
-Aucun.
-```
-
-Controlled coverage values: `covered`, `no_ui`, `unresolved` (English machine values; all human explanations French).
-
-- `covered`: at least one listed `SCREEN-*` and `FLOW-*`; they must exist, refer back to the feature and be represented in the current version's flow definitions.
-- `no_ui`: no screen/flow IDs; an **explicit, user-approved** justification in `## Justifications sans interface` is required. Do not use it merely to bypass a missing design.
-- `unresolved`: not ready for planning; it is allowed in draft docs but **blocks final `approved` status**.
-- Include any screen used by a current-version flow in `## Écrans de la version`, even if its canonical card was first created for V1.
-- An unrelated feature outside the target version can be referenced by shared screens historically, but **must not be added as target-version work**.
-
-## `ux/DESIGN-GUIDELINES.md` (optional)
-
-```markdown
-# Principes de conception UX/UI
-
-## Principes d'ergonomie
-<Comportements communs validés>
-
-## Navigation partagée
-<Conventions de navigation validées>
-
-## Langage et messages
-<Terminologie et règles de formulation en français>
-
-## Composants et motifs d'interaction
-<Patrons d'interaction observables, sans imposer une technologie>
-
-## Accessibilité et adaptation
-<Attentes applicables à tous les écrans>
-
-## Historique des décisions
-<Version d'origine et évolutions justifiées>
-```
-
-Do not invent visual tokens, colors, fonts, components, or design systems simply to fill this file. Create it only once shared decisions have been explicitly accepted.
-
-## Review and handoff invariants
-
-1. Version scope is approved **before** UX starts. The UX agent cannot broaden it.
-2. Review journeys, navigation and screen inventory with the user **before** producing detailed wireframes.
-3. Review the selected visual direction/prototype verdict separately.
-4. Run `scripts/validate_ux_docs.py` plus a semantic review. The validator checks structure and references, **not actual UX quality**.
-5. A `status: approved` UX summary is legal only after explicit approval and when every target-version feature is `covered` or justified `no_ui`, with approved flow decisions.
-6. Documentation supplies inputs for **architecture and planning**. The planning skill will decide vertical development slices from functional needs, approved UX and validated architecture; it must **not create one GitHub Issue per screen**.
-7. No automatic commit, push, branch creation, GitHub Issue creation or deployment.
+Run `scripts/validate_ux_docs.py <DOCS_ROOT> --version <version>` from the repository root. Validate coverage, IDs and cross-references, file and anchor links, and scratch isolation. HTML cannot be fully behavior-tested by static validation; manually open the final gallery and compare it to the user-approved preview. Review changes to functional docs in the Git diff before asking for separate commit and push permissions. Do not auto-delete legacy Markdown files; when upgrading an existing UX output, propose removal of obsolete files **only after** all references have been updated and the user agrees.
