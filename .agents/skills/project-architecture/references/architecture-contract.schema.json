@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://auraforge.local/schemas/architecture-contract-v1.json",
+  "title": "Aura Forge Version Architecture Contract",
+  "description": "Compact planning handoff for an explicitly reviewed and versioned architecture design.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "version", "sources", "modules", "decisions", "open_questions", "handoff", "approval"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "version": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "status", "technical_design_path"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "status": {"enum": ["proposed", "in_design", "approved", "delivered"]},
+        "technical_design_path": {"$ref": "#/$defs/nonempty"},
+        "baseline_version": {"type": ["string", "null"]}
+      }
+    },
+    "sources": {
+      "type": "object", "additionalProperties": false,
+      "required": ["functional_paths", "ux_paths"],
+      "properties": {
+        "functional_paths": {"type": "array", "items": {"$ref": "#/$defs/nonempty"}, "minItems": 1, "uniqueItems": true},
+        "ux_paths": {"type": "array", "items": {"$ref": "#/$defs/nonempty"}, "minItems": 1, "uniqueItems": true},
+        "existing_code_paths": {"type": "array", "items": {"$ref": "#/$defs/nonempty"}, "uniqueItems": true}
+      }
+    },
+    "modules": {"type": "array", "items": {"$ref": "#/$defs/module"}},
+    "interfaces": {"type": "array", "items": {"$ref": "#/$defs/interface"}},
+    "data_entities": {"type": "array", "items": {"$ref": "#/$defs/entity"}},
+    "quality_requirements": {"type": "array", "items": {"$ref": "#/$defs/quality"}},
+    "decisions": {"type": "array", "items": {"$ref": "#/$defs/decision"}},
+    "change_impact": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "summary": {"type": "string"},
+        "affected_module_refs": {"$ref": "#/$defs/refs"},
+        "migration_notes": {"type": "array", "items": {"type": "string"}},
+        "compatibility_notes": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "open_questions": {"type": "array", "items": {"$ref": "#/$defs/question"}},
+    "traceability": {"type": "array", "items": {"$ref": "#/$defs/trace"}},
+    "handoff": {
+      "type": "object", "additionalProperties": false,
+      "required": ["planning_ready", "blockers"],
+      "properties": {
+        "planning_ready": {"type": "boolean"},
+        "blockers": {"type": "array", "items": {"type": "string"}},
+        "notes": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "approval": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {"enum": ["draft", "submitted", "approved", "rejected"]},
+        "approved_by": {"type": ["string", "null"]},
+        "approved_on": {"type": ["string", "null"], "format": "date"},
+        "evidence_ref": {"type": ["string", "null"]}
+      }
+    }
+  },
+  "$defs": {
+    "nonempty": {"type": "string", "minLength": 1},
+    "refs": {"type": "array", "items": {"$ref": "#/$defs/nonempty"}, "uniqueItems": true},
+    "module": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "name", "responsibility", "depends_on", "feature_refs"],
+      "properties": {
+        "id": {"pattern": "^MOD-[A-Za-z0-9._-]+$", "type": "string"},
+        "name": {"$ref": "#/$defs/nonempty"},
+        "responsibility": {"$ref": "#/$defs/nonempty"},
+        "depends_on": {"$ref": "#/$defs/refs"},
+        "feature_refs": {"$ref": "#/$defs/refs"},
+        "ux_refs": {"$ref": "#/$defs/refs"},
+        "decision_refs": {"$ref": "#/$defs/refs"},
+        "change_type": {"enum": ["new", "modified", "unchanged", "deprecated"]}
+      }
+    },
+    "interface": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "provider_module", "consumer_modules", "contract_summary"],
+      "properties": {
+        "id": {"pattern": "^IFACE-[A-Za-z0-9._-]+$", "type": "string"},
+        "kind": {"enum": ["http", "event", "internal", "rpc", "other"]},
+        "provider_module": {"$ref": "#/$defs/nonempty"},
+        "consumer_modules": {"$ref": "#/$defs/refs"},
+        "contract_summary": {"$ref": "#/$defs/nonempty"},
+        "contract_path": {"type": "string"},
+        "security_notes": {"type": "string"},
+        "failure_notes": {"type": "string"},
+        "feature_refs": {"$ref": "#/$defs/refs"}
+      }
+    },
+    "entity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "name", "owner_module"],
+      "properties": {
+        "id": {"pattern": "^DATA-[A-Za-z0-9._-]+$", "type": "string"},
+        "name": {"$ref": "#/$defs/nonempty"},
+        "owner_module": {"$ref": "#/$defs/nonempty"},
+        "invariants": {"type": "array", "items": {"type": "string"}},
+        "relationships": {"type": "array", "items": {"type": "string"}},
+        "feature_refs": {"$ref": "#/$defs/refs"}
+      }
+    },
+    "quality": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "requirement", "source_refs"],
+      "properties": {
+        "id": {"$ref": "#/$defs/nonempty"},
+        "requirement": {"$ref": "#/$defs/nonempty"},
+        "source_refs": {"$ref": "#/$defs/refs"},
+        "verification": {"type": "string"},
+        "target_status": {"enum": ["approved", "proposed", "unknown"]}
+      }
+    },
+    "decision": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "title", "status", "source_refs"],
+      "properties": {
+        "id": {"$ref": "#/$defs/nonempty"},
+        "title": {"$ref": "#/$defs/nonempty"},
+        "status": {"enum": ["proposed", "accepted", "rejected", "superseded"]},
+        "adr_path": {"type": "string"},
+        "source_refs": {"$ref": "#/$defs/refs"}
+      }
+    },
+    "question": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "question", "blocking"],
+      "properties": {
+        "id": {"$ref": "#/$defs/nonempty"},
+        "question": {"$ref": "#/$defs/nonempty"},
+        "blocking": {"type": "boolean"},
+        "affected_refs": {"$ref": "#/$defs/refs"},
+        "owner": {"type": "string"}
+      }
+    },
+    "trace": {
+      "type": "object", "additionalProperties": false,
+      "required": ["feature_ref", "module_refs"],
+      "properties": {
+        "feature_ref": {"$ref": "#/$defs/nonempty"},
+        "module_refs": {"$ref": "#/$defs/refs"},
+        "interface_refs": {"$ref": "#/$defs/refs"},
+        "data_entity_refs": {"$ref": "#/$defs/refs"},
+        "ux_refs": {"$ref": "#/$defs/refs"}
+      }
+    }
+  }
+}
