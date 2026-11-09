@@ -19,6 +19,12 @@ Use the repository's existing docs root. If it is `docs/docs-project`, relative 
             └── ARCHITECTURE-CONTRACT.json
 ```
 
+## Scratch comparisons (not canonical architecture deliverables)
+
+Before any consequential new technical recommendation is submitted for approval, maintain a human-readable comparison in `.scratch/project-architecture/<version>/comparisons/<choice>.md` (or the equivalent established scratch convention). See [technical-comparisons.md](technical-comparisons.md). Keep the current proposal, alternatives, project-specific criteria, limitations, primary sources, open uncertainties and actual user decision status. Update the same file as discussion evolves.
+
+These scratch files are **working review materials**. They do not imply a validated decision, do not substitute for the rationale in an ADR or the canonical architecture, and should not be included in Git commits by default. A decision affecting several independent technologies should have separate comparisons; avoid a single approval that bundles unrelated trade-offs.
+
 ## ARCHITECTURE.md (global architecture, human-facing French)
 
 Keep short, factual, canonical and organized by **subject**, never by a chronology of appended corrections. Suggested sections when relevant:
@@ -86,7 +92,7 @@ The structured contract is **an index/hand-off**, not a copy of the prose docs. 
 - [ ] Shared technical contracts sufficiently defined for dependent/parallel agents.
 - [ ] Module ownership, dependencies and key invariants coherent.
 - [ ] No future-only scope silently included.
-- [ ] Significant trade-offs expressly accepted; ADRs written only when warranted.
+- [ ] Consequential newly proposed choices were compared in `.scratch/` before approval, with credible alternatives, recommendation and evidence; significant trade-offs expressly accepted; ADRs written only when warranted.
 - [ ] No unresolved blocking question, migration or interface conflict.
 - [ ] Global and version architecture, UX, functional specs and JSON contract agree.
 - [ ] Final architecture approval is verifiable, separate from Git permissions.
