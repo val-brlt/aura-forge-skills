@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "architect-specify": {
+      "source": "tikalk/adlc-team-skills",
+      "sourceType": "github",
+      "skillPath": "skills/architect/architect-specify/SKILL.md",
+      "computedHash": "4f569b34615f41fea78afa1f99f370eb7abde0e3ac5bd8805e0f32f14529f214"
+    },
     "ask-matt": {
       "source": "mattpocock/skills",
       "sourceType": "github",
@@ -108,6 +114,12 @@
       "sourceType": "github",
       "skillPath": "skills/engineering/retro/SKILL.md",
       "computedHash": "e63bb774fba4e601edfffc56bbd5c938d76c8faa2dff49456dff3b1e679cd3b6"
+    },
+    "software-architecture": {
+      "source": "magnus919/agent-skills",
+      "sourceType": "github",
+      "skillPath": "software-architecture/SKILL.md",
+      "computedHash": "f71418ac0aea18adf2a2a497c77b3ed2a7deacab75c6ea710d5c095b284f0d3b"
     },
     "tdd": {
       "source": "mattpocock/skills",
