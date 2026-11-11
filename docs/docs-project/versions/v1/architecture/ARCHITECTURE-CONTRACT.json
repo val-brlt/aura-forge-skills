@@ -1,0 +1,1254 @@
+{
+  "schema_version": "1.0",
+  "version": {
+    "id": "v1",
+    "status": "approved",
+    "technical_design_path": "docs/docs-project/versions/v1/architecture/TECHNICAL-DESIGN.md",
+    "baseline_version": null
+  },
+  "sources": {
+    "functional_paths": [
+      "docs/docs-project/PROJECT.md",
+      "docs/docs-project/versions/v1/VERSION.md",
+      "GLOSSARY.md",
+      "docs/docs-project/modules/project-management/MODULE.md",
+      "docs/docs-project/modules/version-management/MODULE.md",
+      "docs/docs-project/modules/functional-scoping/MODULE.md",
+      "docs/docs-project/modules/continuity/MODULE.md"
+    ],
+    "ux_paths": [
+      "docs/docs-project/versions/v1/ux/UX-SUMMARY.md",
+      "docs/docs-project/versions/v1/ux/UX-CONTRACT.json"
+    ],
+    "existing_code_paths": []
+  },
+  "modules": [
+    {
+      "id": "MOD-frontend",
+      "name": "Vue/TypeScript",
+      "responsibility": "Interface approuvée, états de saisie/sauvegarde et routage contextuel des résultats.",
+      "depends_on": [
+        "MOD-application"
+      ],
+      "feature_refs": [
+        "FEAT-001",
+        "FEAT-002",
+        "FEAT-003",
+        "FEAT-004",
+        "FEAT-005",
+        "FEAT-006",
+        "FEAT-007",
+        "FEAT-008",
+        "FEAT-009",
+        "FEAT-010",
+        "FEAT-011",
+        "FEAT-012"
+      ],
+      "ux_refs": [
+        "FLOW-001",
+        "FLOW-002",
+        "FLOW-003",
+        "FLOW-004",
+        "FLOW-005",
+        "FLOW-006",
+        "FLOW-007"
+      ],
+      "decision_refs": [
+        "ADR-0004",
+        "ADR-0007"
+      ],
+      "change_type": "new"
+    },
+    {
+      "id": "MOD-application",
+      "name": "Coordination FastAPI",
+      "responsibility": "Entrées HTTP/SSE, gardes de contexte/révision, reçus idempotents et coordination transactionnelle des propriétaires.",
+      "depends_on": [
+        "MOD-projects",
+        "MOD-versions",
+        "MOD-scoping",
+        "MOD-continuity",
+        "MOD-codex",
+        "MOD-storage"
+      ],
+      "feature_refs": [
+        "FEAT-001",
+        "FEAT-002",
+        "FEAT-003",
+        "FEAT-004",
+        "FEAT-005",
+        "FEAT-006",
+        "FEAT-007",
+        "FEAT-008",
+        "FEAT-009",
+        "FEAT-010",
+        "FEAT-011",
+        "FEAT-012"
+      ],
+      "ux_refs": [
+        "FLOW-001",
+        "FLOW-002",
+        "FLOW-003",
+        "FLOW-004",
+        "FLOW-005",
+        "FLOW-006",
+        "FLOW-007"
+      ],
+      "decision_refs": [
+        "ADR-0003",
+        "ADR-0006",
+        "ADR-0007",
+        "ADR-0008",
+        "ADR-0009"
+      ],
+      "change_type": "new"
+    },
+    {
+      "id": "MOD-projects",
+      "name": "Gestion des projets",
+      "responsibility": "Identité, description, archivage et restauration.",
+      "depends_on": [
+        "MOD-storage"
+      ],
+      "feature_refs": [
+        "FEAT-001",
+        "FEAT-002",
+        "FEAT-003"
+      ],
+      "ux_refs": [
+        "FLOW-001"
+      ],
+      "decision_refs": [
+        "ADR-0005",
+        "ADR-0006"
+      ],
+      "change_type": "new"
+    },
+    {
+      "id": "MOD-versions",
+      "name": "Gestion des versions",
+      "responsibility": "Versions, activité/suspension, référence exacte et livraison explicitement déclarée.",
+      "depends_on": [
+        "MOD-storage"
+      ],
+      "feature_refs": [
+        "FEAT-004",
+        "FEAT-005",
+        "FEAT-006"
+      ],
+      "ux_refs": [
+        "FLOW-002"
+      ],
+      "decision_refs": [
+        "ADR-0005",
+        "ADR-0006",
+        "ADR-0008"
+      ],
+      "change_type": "new"
+    },
+    {
+      "id": "MOD-scoping",
+      "name": "Cadrage fonctionnel",
+      "responsibility": "Questions/interprétations, propositions/arbitrages, catalogue et validations/copies approuvées.",
+      "depends_on": [
+        "MOD-storage"
+      ],
+      "feature_refs": [
+        "FEAT-007",
+        "FEAT-008",
+        "FEAT-009",
+        "FEAT-010"
+      ],
+      "ux_refs": [
+        "FLOW-003",
+        "FLOW-004",
+        "FLOW-005"
+      ],
+      "decision_refs": [
+        "ADR-0006",
+        "ADR-0008",
+        "ADR-0009"
+      ],
+      "change_type": "new"
+    },
+    {
+      "id": "MOD-continuity",
+      "name": "Continuité",
+      "responsibility": "Conversations, messages, brouillons, tentatives et vues d’historique fournies par la coordination.",
+      "depends_on": [
+        "MOD-storage"
+      ],
+      "feature_refs": [
+        "FEAT-011",
+        "FEAT-012"
+      ],
+      "ux_refs": [
+        "FLOW-003",
+        "FLOW-006",
+        "FLOW-007"
+      ],
+      "decision_refs": [
+        "ADR-0006",
+        "ADR-0007",
+        "ADR-0008"
+      ],
+      "change_type": "new"
+    },
+    {
+      "id": "MOD-codex",
+      "name": "Intégration Codex",
+      "responsibility": "SDK officiel, processus stdio, instructions structurées, événements et traduction des erreurs ; aucune autorité métier.",
+      "depends_on": [],
+      "feature_refs": [
+        "FEAT-007",
+        "FEAT-009",
+        "FEAT-010",
+        "FEAT-011"
+      ],
+      "ux_refs": [
+        "FLOW-003",
+        "FLOW-004",
+        "FLOW-005",
+        "FLOW-007"
+      ],
+      "decision_refs": [
+        "ADR-0001",
+        "ADR-0002",
+        "ADR-0003",
+        "ADR-0009"
+      ],
+      "change_type": "new"
+    },
+    {
+      "id": "MOD-storage",
+      "name": "Infrastructure SQLite",
+      "responsibility": "Connexions, transactions, migrations et sauvegarde ; SQL métier sous les opérations de chaque propriétaire.",
+      "depends_on": [],
+      "feature_refs": [
+        "FEAT-001",
+        "FEAT-002",
+        "FEAT-003",
+        "FEAT-004",
+        "FEAT-005",
+        "FEAT-006",
+        "FEAT-007",
+        "FEAT-008",
+        "FEAT-009",
+        "FEAT-010",
+        "FEAT-011",
+        "FEAT-012"
+      ],
+      "ux_refs": [],
+      "decision_refs": [
+        "ADR-0005",
+        "ADR-0008"
+      ],
+      "change_type": "new"
+    }
+  ],
+  "interfaces": [
+    {
+      "id": "IFACE-http",
+      "kind": "http",
+      "provider_module": "MOD-application",
+      "consumer_modules": [
+        "MOD-frontend"
+      ],
+      "contract_summary": "Commandes/lectures /api/v1. Mutations : command_id, context, expected_revisions, payload. Acquittement committed/accepted ; reçu et effet atomiques. Commande identique rejouée sans double effet ; contenu différent sous même ID refusé.",
+      "contract_path": "docs/docs-project/versions/v1/architecture/TECHNICAL-DESIGN.md",
+      "security_notes": "Host/origine et méthodes/contenus contrôlés, contexte revalidé ; aucune mutation GET.",
+      "failure_notes": "Révision obsolète refusée ; pas de succès si commit échoue. Erreurs codées avec saisie locale préservée.",
+      "feature_refs": [
+        "FEAT-001",
+        "FEAT-002",
+        "FEAT-003",
+        "FEAT-004",
+        "FEAT-005",
+        "FEAT-006",
+        "FEAT-007",
+        "FEAT-008",
+        "FEAT-009",
+        "FEAT-010",
+        "FEAT-011",
+        "FEAT-012"
+      ]
+    },
+    {
+      "id": "IFACE-events",
+      "kind": "event",
+      "provider_module": "MOD-application",
+      "consumer_modules": [
+        "MOD-frontend"
+      ],
+      "contract_summary": "SSE mutualisé par page. ready après abonnement, puis snapshot et réconciliation par révision. Enveloppe schema_version/event_id/stream_session_id/type/context/resource_revisions/payload, IDs commande/tentative utiles.",
+      "contract_path": "docs/docs-project/versions/v1/architecture/TECHNICAL-DESIGN.md",
+      "security_notes": "Même origine, pas de secret dans URL, contexte ne fusionne pas les conversations.",
+      "failure_notes": "Files bornées, resync_required ou reconnexion ; pas de journal durable ni de rejeu garanti de chaque fragment.",
+      "feature_refs": [
+        "FEAT-007",
+        "FEAT-011"
+      ]
+    },
+    {
+      "id": "IFACE-projects",
+      "kind": "internal",
+      "provider_module": "MOD-projects",
+      "consumer_modules": [
+        "MOD-application"
+      ],
+      "contract_summary": "Opérations projet avec contrôles d’archive et révisions, via transaction fournie ; aucune écriture dans données d’un autre propriétaire.",
+      "contract_path": "docs/docs-project/versions/v1/architecture/TECHNICAL-DESIGN.md",
+      "security_notes": "Mutations autorisées seulement dans état métier compatible.",
+      "failure_notes": "Erreur annule la transaction coordonnée.",
+      "feature_refs": [
+        "FEAT-001",
+        "FEAT-002",
+        "FEAT-003"
+      ]
+    },
+    {
+      "id": "IFACE-versions",
+      "kind": "internal",
+      "provider_module": "MOD-versions",
+      "consumer_modules": [
+        "MOD-application"
+      ],
+      "contract_summary": "Préparation/reprise/réouverture/livraison ; une seule active par projet, référence exacte conservée. La coordination compose avec cadrage pour réouverture atomique.",
+      "contract_path": "docs/docs-project/versions/v1/architecture/TECHNICAL-DESIGN.md",
+      "security_notes": "Livraison exige commande explicite ; version livrée non rouverte.",
+      "failure_notes": "Conflits et prérequis refusés sans transition partielle.",
+      "feature_refs": [
+        "FEAT-004",
+        "FEAT-005",
+        "FEAT-006"
+      ]
+    },
+    {
+      "id": "IFACE-scoping",
+      "kind": "internal",
+      "provider_module": "MOD-scoping",
+      "consumer_modules": [
+        "MOD-application"
+      ],
+      "contract_summary": "Propositions et modifications du courant ; confirmations explicites et trois validations successives sur révisions, copie et journal atomiques ; identités fonctionnelles stables.",
+      "contract_path": "docs/docs-project/versions/v1/architecture/TECHNICAL-DESIGN.md",
+      "security_notes": "Sortie IA n’accorde ni validation ni livraison ; questions bloquantes contrôlées.",
+      "failure_notes": "Contenu obsolète/invalide non appliqué ; copies historiques intactes.",
+      "feature_refs": [
+        "FEAT-007",
+        "FEAT-008",
+        "FEAT-009",
+        "FEAT-010"
+      ]
+    },
+    {
+      "id": "IFACE-continuity",
+      "kind": "internal",
+      "provider_module": "MOD-continuity",
+      "consumer_modules": [
+        "MOD-application"
+      ],
+      "contract_summary": "Messages/brouillons/tentatives contextuels ; réessai sur même message et nouvelle tentative ; historique en lecture auprès des propriétaires via coordination.",
+      "contract_path": "docs/docs-project/versions/v1/architecture/TECHNICAL-DESIGN.md",
+      "security_notes": "Projet archivé consultable, nouvelles saisies interdites avant restauration.",
+      "failure_notes": "Message persisté conservé, état incertain réconcilié ; pas de répétition automatique d’inférence.",
+      "feature_refs": [
+        "FEAT-011",
+        "FEAT-012"
+      ]
+    },
+    {
+      "id": "IFACE-codex",
+      "kind": "rpc",
+      "provider_module": "MOD-codex",
+      "consumer_modules": [
+        "MOD-application"
+      ],
+      "contract_summary": "SDK app-server stdio, instructions/version de schéma et source_revisions ; propositions structurées par tâche. Client à handler explicite refusant les demandes techniques ; opérations bloquantes hors boucle FastAPI.",
+      "contract_path": "docs/docs-project/versions/v1/architecture/TECHNICAL-DESIGN.md",
+      "security_notes": "Structured explicite, pas de SQL/Git/droits métier ; compte et capacités effectifs requis avant génération.",
+      "failure_notes": "Aucune transaction distribuée SQLite/Codex. État incertain conservé ; aucun secours API payant ni permission implicite.",
+      "feature_refs": [
+        "FEAT-007",
+        "FEAT-009",
+        "FEAT-010",
+        "FEAT-011"
+      ]
+    },
+    {
+      "id": "IFACE-persistence",
+      "kind": "internal",
+      "provider_module": "MOD-storage",
+      "consumer_modules": [
+        "MOD-application",
+        "MOD-projects",
+        "MOD-versions",
+        "MOD-scoping",
+        "MOD-continuity"
+      ],
+      "contract_summary": "Transaction/connexion partagée pour opérations coordonnées ; FK vérifiées, WAL corrigé/FULL retenus, migrations versionnées et backup cohérent.",
+      "contract_path": "docs/docs-project/versions/v1/architecture/TECHNICAL-DESIGN.md",
+      "security_notes": "Chemin utilisateur persistant hors code/statique ; pas de DB exposée au runtime Codex ou navigateur.",
+      "failure_notes": "Contention traitée, transaction courte rollback en erreur ; restauration compatible application arrêtée.",
+      "feature_refs": [
+        "FEAT-001",
+        "FEAT-002",
+        "FEAT-003",
+        "FEAT-004",
+        "FEAT-005",
+        "FEAT-006",
+        "FEAT-007",
+        "FEAT-008",
+        "FEAT-009",
+        "FEAT-010",
+        "FEAT-011",
+        "FEAT-012"
+      ]
+    }
+  ],
+  "data_entities": [
+    {
+      "id": "DATA-project",
+      "name": "Project",
+      "owner_module": "MOD-projects",
+      "invariants": [
+        "Identité stable ; archive/restauration ne modifient pas validations ou livraison."
+      ],
+      "relationships": [
+        "Parent de versions et du fil général."
+      ],
+      "feature_refs": [
+        "FEAT-001",
+        "FEAT-002",
+        "FEAT-003"
+      ]
+    },
+    {
+      "id": "DATA-version",
+      "name": "ProjectVersion",
+      "owner_module": "MOD-versions",
+      "invariants": [
+        "Une seule version active par projet ; référence exacte conservée ; livraison et approbation distinctes."
+      ],
+      "relationships": [
+        "Appartient à Project ; référence une ApprovedSnapshot et peut être suspendue pour revue."
+      ],
+      "feature_refs": [
+        "FEAT-004",
+        "FEAT-005",
+        "FEAT-006"
+      ]
+    },
+    {
+      "id": "DATA-feature",
+      "name": "FeatureIdentity",
+      "owner_module": "MOD-scoping",
+      "invariants": [
+        "Une identité de fonctionnalité est conservée entre versions."
+      ],
+      "relationships": [
+        "Propre au projet ; décrite par des VersionFeature."
+      ],
+      "feature_refs": [
+        "FEAT-004",
+        "FEAT-009",
+        "FEAT-012"
+      ]
+    },
+    {
+      "id": "DATA-version-feature",
+      "name": "VersionFeature",
+      "owner_module": "MOD-scoping",
+      "invariants": [
+        "Comportement/critères et inclusion explicite propres à la version ; pas d’effacement des valeurs antérieures."
+      ],
+      "relationships": [
+        "Lie FeatureIdentity et ProjectVersion ; appartient au catalogue courant ou à sa copie."
+      ],
+      "feature_refs": [
+        "FEAT-008",
+        "FEAT-009",
+        "FEAT-012"
+      ]
+    },
+    {
+      "id": "DATA-question",
+      "name": "Question et Interpretation",
+      "owner_module": "MOD-scoping",
+      "invariants": [
+        "Interprétation corrigeable avant confirmation ; aucune approbation implicite."
+      ],
+      "relationships": [
+        "Contexte de version, réponses et provenance conservés ; fil de question distinct du fil général."
+      ],
+      "feature_refs": [
+        "FEAT-007",
+        "FEAT-010",
+        "FEAT-011"
+      ]
+    },
+    {
+      "id": "DATA-proposal",
+      "name": "Proposal et Decision",
+      "owner_module": "MOD-scoping",
+      "invariants": [
+        "Proposition, arbitrage et inclusion/livraison distincts ; changements manuels tracés."
+      ],
+      "relationships": [
+        "Projet/version/fonctionnalité et provenance ; repris comme contexte sans inclusion automatique."
+      ],
+      "feature_refs": [
+        "FEAT-007",
+        "FEAT-008",
+        "FEAT-012"
+      ]
+    },
+    {
+      "id": "DATA-working-scope",
+      "name": "WorkingScoping",
+      "owner_module": "MOD-scoping",
+      "invariants": [
+        "Contenu courant avec révisions ; validité des validations dépend du contenu et des prérequis."
+      ],
+      "relationships": [
+        "Synthèse, catalogue, final, questions et décisions d’une version."
+      ],
+      "feature_refs": [
+        "FEAT-007",
+        "FEAT-009",
+        "FEAT-010"
+      ]
+    },
+    {
+      "id": "DATA-approval-snapshot",
+      "name": "Approval et ApprovedSnapshot",
+      "owner_module": "MOD-scoping",
+      "invariants": [
+        "Copie immuable des valeurs/révision/dépendances à chaque validation ; nouvelle copie après revalidation ; historique distinct de validité courante."
+      ],
+      "relationships": [
+        "Contexte version, identités stables et validations amont ; référence finale réutilisable."
+      ],
+      "feature_refs": [
+        "FEAT-004",
+        "FEAT-006",
+        "FEAT-010",
+        "FEAT-012"
+      ]
+    },
+    {
+      "id": "DATA-delivery",
+      "name": "DeliveryFact",
+      "owner_module": "MOD-versions",
+      "invariants": [
+        "Déclaration explicite distincte de l’approbation ; pas d’inférence depuis un événement IA."
+      ],
+      "relationships": [
+        "Se rapporte à ProjectVersion, séparément de la copie de cadrage."
+      ],
+      "feature_refs": [
+        "FEAT-005",
+        "FEAT-012"
+      ]
+    },
+    {
+      "id": "DATA-conversation-message",
+      "name": "Conversation et Message",
+      "owner_module": "MOD-continuity",
+      "invariants": [
+        "Fil général propre au projet ; fils de questions distincts ; contexte de chaque échange conservé ; pas de double message au réessai."
+      ],
+      "relationships": [
+        "Projet, version consultée lors de l’échange, question éventuelle ; source de tentatives."
+      ],
+      "feature_refs": [
+        "FEAT-007",
+        "FEAT-011",
+        "FEAT-012"
+      ]
+    },
+    {
+      "id": "DATA-draft",
+      "name": "Draft",
+      "owner_module": "MOD-continuity",
+      "invariants": [
+        "Brouillon contextualisé et révisé ; acquittement tardif ne marque pas la nouvelle saisie comme enregistrée."
+      ],
+      "relationships": [
+        "Attaché au projet/discussion/question approprié."
+      ],
+      "feature_refs": [
+        "FEAT-007",
+        "FEAT-011"
+      ]
+    },
+    {
+      "id": "DATA-attempt",
+      "name": "GenerationAttempt",
+      "owner_module": "MOD-continuity",
+      "invariants": [
+        "Contexte, tâche et révisions fixés ; versions instructions/schéma ; état durable distinct du processus ; pas de relance aveugle."
+      ],
+      "relationships": [
+        "Commande et source message si applicable ; thread/turn connus, résultat/proposition lié."
+      ],
+      "feature_refs": [
+        "FEAT-007",
+        "FEAT-009",
+        "FEAT-010",
+        "FEAT-011"
+      ]
+    },
+    {
+      "id": "DATA-command-receipt",
+      "name": "CommandReceipt",
+      "owner_module": "MOD-application",
+      "invariants": [
+        "Identifiant unique, contenu exact et résultat enregistrés avec effet ; même commande retrouve résultat, conflit si contenu différent ; pas de purge arbitraire MVP."
+      ],
+      "relationships": [
+        "Commande, révisions modifiées et tentative éventuelle."
+      ],
+      "feature_refs": [
+        "FEAT-001",
+        "FEAT-002",
+        "FEAT-003",
+        "FEAT-004",
+        "FEAT-005",
+        "FEAT-006",
+        "FEAT-007",
+        "FEAT-008",
+        "FEAT-009",
+        "FEAT-010",
+        "FEAT-011",
+        "FEAT-012"
+      ]
+    },
+    {
+      "id": "DATA-projects-changes",
+      "name": "ChangeRecord (projects)",
+      "owner_module": "MOD-projects",
+      "invariants": [
+        "Changement métier avant/après, contexte, révisions et origine dans la transaction du propriétaire ; historique consultable, pas unique état à rejouer."
+      ],
+      "relationships": [
+        "Ressource du propriétaire et commande/provenance ; famille logique pouvant partager un stockage physique."
+      ],
+      "feature_refs": [
+        "FEAT-001",
+        "FEAT-002",
+        "FEAT-003"
+      ]
+    },
+    {
+      "id": "DATA-versions-changes",
+      "name": "ChangeRecord (versions)",
+      "owner_module": "MOD-versions",
+      "invariants": [
+        "Changement métier avant/après, contexte, révisions et origine dans la transaction du propriétaire ; historique consultable, pas unique état à rejouer."
+      ],
+      "relationships": [
+        "Ressource du propriétaire et commande/provenance ; famille logique pouvant partager un stockage physique."
+      ],
+      "feature_refs": [
+        "FEAT-004",
+        "FEAT-005",
+        "FEAT-006"
+      ]
+    },
+    {
+      "id": "DATA-scoping-changes",
+      "name": "ChangeRecord (scoping)",
+      "owner_module": "MOD-scoping",
+      "invariants": [
+        "Changement métier avant/après, contexte, révisions et origine dans la transaction du propriétaire ; historique consultable, pas unique état à rejouer."
+      ],
+      "relationships": [
+        "Ressource du propriétaire et commande/provenance ; famille logique pouvant partager un stockage physique."
+      ],
+      "feature_refs": [
+        "FEAT-007",
+        "FEAT-008",
+        "FEAT-009",
+        "FEAT-010"
+      ]
+    },
+    {
+      "id": "DATA-continuity-changes",
+      "name": "ChangeRecord (continuity)",
+      "owner_module": "MOD-continuity",
+      "invariants": [
+        "Changement métier avant/après, contexte, révisions et origine dans la transaction du propriétaire ; historique consultable, pas unique état à rejouer."
+      ],
+      "relationships": [
+        "Ressource du propriétaire et commande/provenance ; famille logique pouvant partager un stockage physique."
+      ],
+      "feature_refs": [
+        "FEAT-011",
+        "FEAT-012"
+      ]
+    }
+  ],
+  "quality_requirements": [
+    {
+      "id": "QUAL-integrity",
+      "requirement": "Courant/copies/journal/reçu cohérents ; pas de validation obsolète, référence écrasée ou double version active.",
+      "source_refs": [
+        "FEAT-004",
+        "FEAT-006",
+        "FEAT-010",
+        "ADR-0008"
+      ],
+      "verification": "Tests transactionnels SQLite réels avec panne, conflit et réponse perdue.",
+      "target_status": "approved"
+    },
+    {
+      "id": "QUAL-continuity",
+      "requirement": "Reprise des saisies/messages sauvegardés sans duplication ; sauvegarde échouée honnêtement signalée.",
+      "source_refs": [
+        "FEAT-011",
+        "ADR-0007"
+      ],
+      "verification": "Coupure/rechargement, multi-onglets, réponses tardives, tentative incertaine et resynchronisation.",
+      "target_status": "approved"
+    },
+    {
+      "id": "QUAL-local-access",
+      "requirement": "Loopback/même origine, Host et mutations contrôlés ; pas de SQL/shell/fichiers exposés.",
+      "source_refs": [
+        "docs/docs-project/architecture/ARCHITECTURE.md",
+        "docs/docs-project/versions/v1/architecture/TECHNICAL-DESIGN.md"
+      ],
+      "verification": "Contrôles de requêtes étrangères, chemins, méthodes et état métier avant données réelles.",
+      "target_status": "approved"
+    },
+    {
+      "id": "QUAL-ai-control",
+      "requirement": "Permissions effectives limitées ; handler explicite refusant demandes techniques/inconnues ; aucun rôle métier accordé au modèle.",
+      "source_refs": [
+        "ADR-0003",
+        "ADR-0009",
+        "docs/docs-project/versions/v1/architecture/TECHNICAL-DESIGN.md"
+      ],
+      "verification": "Test SDK/runtime sous Windows, y compris refus/inventaire outils et structured ; désactiver l’IA en cas d’échec.",
+      "target_status": "approved"
+    },
+    {
+      "id": "QUAL-cost",
+      "requirement": "Aucun achat/recharge/API payante de secours ; ne pas générer si droit d’usage inclus non établi.",
+      "source_refs": [
+        "ADR-0001",
+        "docs/docs-project/versions/v1/architecture/TECHNICAL-DESIGN.md"
+      ],
+      "verification": "Vérifier compte, ordinary_usage_allowed et politique fournisseur avant usage réel ; aucune gratuité attestée.",
+      "target_status": "approved"
+    },
+    {
+      "id": "QUAL-backup",
+      "requirement": "Sauvegarde cohérente avant migration et à la demande ; restauration vérifiée avant données réelles.",
+      "source_refs": [
+        "ADR-0005",
+        "docs/docs-project/versions/v1/architecture/TECHNICAL-DESIGN.md"
+      ],
+      "verification": "Exercice backup/restauration, intégrité/FK/schéma et lecture des copies ; fréquence/rétention documentées à la mise en service.",
+      "target_status": "approved"
+    },
+    {
+      "id": "QUAL-ux",
+      "requirement": "Respect des onze écrans/sept parcours, Markdown sécurisé, clavier/IME, focus, thèmes et adaptation mobile.",
+      "source_refs": [
+        "docs/docs-project/versions/v1/ux/UX-CONTRACT.json"
+      ],
+      "verification": "Vérification UI sur application réelle ; les maquettes ne démontrent pas le backend.",
+      "target_status": "approved"
+    },
+    {
+      "id": "QUAL-skills",
+      "requirement": "Structured explicite propagé ; aucune bascule files sur erreur ; fonctionnement documentaire historique conservé.",
+      "source_refs": [
+        "ADR-0009"
+      ],
+      "verification": "Exercer chaque tâche structurée et la branche files après adaptation des skills.",
+      "target_status": "approved"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "ADR-0001",
+      "title": "Codex local et accès existant visé",
+      "status": "accepted",
+      "adr_path": "docs/adr/0001-codex-local-mvp.md",
+      "source_refs": [
+        "docs/adr/0001-codex-local-mvp.md"
+      ]
+    },
+    {
+      "id": "ADR-0002",
+      "title": "App-server stdio, risque expérimental accepté",
+      "status": "accepted",
+      "adr_path": "docs/adr/0002-codex-app-server.md",
+      "source_refs": [
+        "docs/adr/0002-codex-app-server.md"
+      ]
+    },
+    {
+      "id": "ADR-0003",
+      "title": "Backend Python/FastAPI et SDK officiel",
+      "status": "accepted",
+      "adr_path": "docs/adr/0003-python-fastapi-backend.md",
+      "source_refs": [
+        "docs/adr/0003-python-fastapi-backend.md"
+      ]
+    },
+    {
+      "id": "ADR-0004",
+      "title": "Frontend Vue/TypeScript compilé",
+      "status": "accepted",
+      "adr_path": "docs/adr/0004-vue-typescript-frontend.md",
+      "source_refs": [
+        "docs/adr/0004-vue-typescript-frontend.md"
+      ]
+    },
+    {
+      "id": "ADR-0005",
+      "title": "SQLite local",
+      "status": "accepted",
+      "adr_path": "docs/adr/0005-sqlite-local-storage.md",
+      "source_refs": [
+        "docs/adr/0005-sqlite-local-storage.md"
+      ]
+    },
+    {
+      "id": "ADR-0006",
+      "title": "Une application organisée par métier",
+      "status": "accepted",
+      "adr_path": "docs/adr/0006-organize-backend-by-business.md",
+      "source_refs": [
+        "docs/adr/0006-organize-backend-by-business.md"
+      ]
+    },
+    {
+      "id": "ADR-0007",
+      "title": "HTTP JSON et SSE",
+      "status": "accepted",
+      "adr_path": "docs/adr/0007-http-json-and-sse.md",
+      "source_refs": [
+        "docs/adr/0007-http-json-and-sse.md"
+      ]
+    },
+    {
+      "id": "ADR-0008",
+      "title": "Courant, copies approuvées et journal",
+      "status": "accepted",
+      "adr_path": "docs/adr/0008-current-state-approved-copies-and-audit.md",
+      "source_refs": [
+        "docs/adr/0008-current-state-approved-copies-and-audit.md"
+      ]
+    },
+    {
+      "id": "ADR-0009",
+      "title": "Skills files/structured, Python pilote le métier",
+      "status": "accepted",
+      "adr_path": "docs/adr/0009-dual-output-skills-and-structured-proposals.md",
+      "source_refs": [
+        "docs/adr/0009-dual-output-skills-and-structured-proposals.md"
+      ]
+    },
+    {
+      "id": "DEC-local-runtime",
+      "title": "MVP personnel en boucle locale, serveur privé ultérieur",
+      "status": "accepted",
+      "source_refs": [
+        "docs/docs-project/architecture/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "id": "DEC-local-delivery",
+      "title": "Lancement depuis le projet et environnement Python isolé pour le moment",
+      "status": "accepted",
+      "source_refs": [
+        "docs/docs-project/architecture/ARCHITECTURE.md",
+        "docs/docs-project/versions/v1/architecture/TECHNICAL-DESIGN.md"
+      ]
+    },
+    {
+      "id": "DESIGN-integrated",
+      "title": "Contrats, dépendances et contrôles du dossier intégré approuvés",
+      "status": "accepted",
+      "source_refs": [
+        "docs/docs-project/versions/v1/architecture/TECHNICAL-DESIGN.md"
+      ]
+    }
+  ],
+  "change_impact": {
+    "summary": "Fondations entièrement nouvelles pour V1 ; aucune application de production ou livraison confirmée. Skills à adapter durant la réalisation.",
+    "affected_module_refs": [
+      "MOD-frontend",
+      "MOD-application",
+      "MOD-projects",
+      "MOD-versions",
+      "MOD-scoping",
+      "MOD-continuity",
+      "MOD-codex",
+      "MOD-storage"
+    ],
+    "migration_notes": [
+      "Créer schéma et migrations versionnées ; pas de base produit existante à migrer.",
+      "Historique de copies/journal versionné et consultable ; sauvegarde cohérente avant migration, restauration compatible.",
+      "Ne pas migrer automatiquement les maquettes/sessions Codex comme données métier."
+    ],
+    "compatibility_notes": [
+      "Référence SDK/runtime auditée 0.167.0 ; CLI installé observé 0.163.0 inchangé. Compatibilité d’ensemble à tester.",
+      "Files par défaut pour usages historiques ; structured explicite dans Aura Forge, y compris reprise et dépendances.",
+      "Serveur privé/API directe/modèles locaux hors MVP ; accès et credentials non supposés transférables."
+    ]
+  },
+  "open_questions": [
+    {
+      "id": "Q-runtime-verification",
+      "question": "Quelles versions compatibles et configuration effective SDK/runtime sous Windows ? Préalable à l’intégration réelle, pas un choix de périmètre.",
+      "blocking": false,
+      "affected_refs": [
+        "MOD-codex",
+        "QUAL-ai-control"
+      ],
+      "owner": "Réalisation de l’intégration, avec arrêt IA si contrôle non établi"
+    },
+    {
+      "id": "Q-account-verification",
+      "question": "Usage inclus et politique réelle du compte établis avant génération ? Aucune inférence si inconnu, aucun secours payant.",
+      "blocking": false,
+      "affected_refs": [
+        "MOD-codex",
+        "QUAL-cost"
+      ],
+      "owner": "Utilisateur et réalisation de l’intégration avant activation IA"
+    },
+    {
+      "id": "Q-backup-operation",
+      "question": "Quels emplacement séparé, fréquence et rétention de sauvegarde au moment de la mise en service, sans SLA présumé ?",
+      "blocking": false,
+      "affected_refs": [
+        "MOD-storage",
+        "QUAL-backup"
+      ],
+      "owner": "Utilisateur/opérateur ; backup avant migration et test de restauration requis"
+    }
+  ],
+  "traceability": [
+    {
+      "feature_ref": "FEAT-001",
+      "module_refs": [
+        "MOD-projects",
+        "MOD-application",
+        "MOD-frontend"
+      ],
+      "interface_refs": [
+        "IFACE-http",
+        "IFACE-projects",
+        "IFACE-persistence"
+      ],
+      "data_entity_refs": [
+        "DATA-project",
+        "DATA-projects-changes"
+      ],
+      "ux_refs": [
+        "FLOW-001",
+        "SCREEN-001",
+        "SCREEN-002",
+        "SCREEN-003"
+      ]
+    },
+    {
+      "feature_ref": "FEAT-002",
+      "module_refs": [
+        "MOD-projects",
+        "MOD-application",
+        "MOD-frontend"
+      ],
+      "interface_refs": [
+        "IFACE-http",
+        "IFACE-projects",
+        "IFACE-persistence"
+      ],
+      "data_entity_refs": [
+        "DATA-project",
+        "DATA-projects-changes"
+      ],
+      "ux_refs": [
+        "FLOW-001",
+        "SCREEN-003"
+      ]
+    },
+    {
+      "feature_ref": "FEAT-003",
+      "module_refs": [
+        "MOD-projects",
+        "MOD-application",
+        "MOD-frontend"
+      ],
+      "interface_refs": [
+        "IFACE-http",
+        "IFACE-projects",
+        "IFACE-persistence"
+      ],
+      "data_entity_refs": [
+        "DATA-project",
+        "DATA-projects-changes"
+      ],
+      "ux_refs": [
+        "FLOW-001",
+        "SCREEN-003",
+        "FLOW-006",
+        "SCREEN-010"
+      ]
+    },
+    {
+      "feature_ref": "FEAT-004",
+      "module_refs": [
+        "MOD-versions",
+        "MOD-application",
+        "MOD-frontend"
+      ],
+      "interface_refs": [
+        "IFACE-http",
+        "IFACE-versions",
+        "IFACE-persistence"
+      ],
+      "data_entity_refs": [
+        "DATA-version",
+        "DATA-feature",
+        "DATA-approval-snapshot"
+      ],
+      "ux_refs": [
+        "FLOW-002",
+        "SCREEN-004"
+      ]
+    },
+    {
+      "feature_ref": "FEAT-005",
+      "module_refs": [
+        "MOD-versions",
+        "MOD-application",
+        "MOD-frontend"
+      ],
+      "interface_refs": [
+        "IFACE-http",
+        "IFACE-versions",
+        "IFACE-persistence"
+      ],
+      "data_entity_refs": [
+        "DATA-version",
+        "DATA-delivery",
+        "DATA-versions-changes"
+      ],
+      "ux_refs": [
+        "FLOW-002",
+        "SCREEN-004"
+      ]
+    },
+    {
+      "feature_ref": "FEAT-006",
+      "module_refs": [
+        "MOD-versions",
+        "MOD-application",
+        "MOD-frontend",
+        "MOD-scoping"
+      ],
+      "interface_refs": [
+        "IFACE-http",
+        "IFACE-versions",
+        "IFACE-persistence"
+      ],
+      "data_entity_refs": [
+        "DATA-version",
+        "DATA-working-scope",
+        "DATA-approval-snapshot",
+        "DATA-versions-changes",
+        "DATA-scoping-changes"
+      ],
+      "ux_refs": [
+        "FLOW-002",
+        "SCREEN-004",
+        "FLOW-006",
+        "SCREEN-010"
+      ]
+    },
+    {
+      "feature_ref": "FEAT-007",
+      "module_refs": [
+        "MOD-scoping",
+        "MOD-application",
+        "MOD-frontend",
+        "MOD-codex"
+      ],
+      "interface_refs": [
+        "IFACE-http",
+        "IFACE-scoping",
+        "IFACE-persistence",
+        "IFACE-codex",
+        "IFACE-events"
+      ],
+      "data_entity_refs": [
+        "DATA-question",
+        "DATA-proposal",
+        "DATA-working-scope",
+        "DATA-draft",
+        "DATA-conversation-message",
+        "DATA-attempt"
+      ],
+      "ux_refs": [
+        "FLOW-003",
+        "SCREEN-005",
+        "FLOW-007",
+        "SCREEN-011"
+      ]
+    },
+    {
+      "feature_ref": "FEAT-008",
+      "module_refs": [
+        "MOD-scoping",
+        "MOD-application",
+        "MOD-frontend"
+      ],
+      "interface_refs": [
+        "IFACE-http",
+        "IFACE-scoping",
+        "IFACE-persistence"
+      ],
+      "data_entity_refs": [
+        "DATA-proposal",
+        "DATA-version-feature",
+        "DATA-scoping-changes"
+      ],
+      "ux_refs": [
+        "FLOW-004",
+        "SCREEN-007"
+      ]
+    },
+    {
+      "feature_ref": "FEAT-009",
+      "module_refs": [
+        "MOD-scoping",
+        "MOD-application",
+        "MOD-frontend",
+        "MOD-codex"
+      ],
+      "interface_refs": [
+        "IFACE-http",
+        "IFACE-scoping",
+        "IFACE-persistence",
+        "IFACE-codex",
+        "IFACE-events"
+      ],
+      "data_entity_refs": [
+        "DATA-feature",
+        "DATA-version-feature",
+        "DATA-working-scope",
+        "DATA-scoping-changes"
+      ],
+      "ux_refs": [
+        "FLOW-004",
+        "SCREEN-008"
+      ]
+    },
+    {
+      "feature_ref": "FEAT-010",
+      "module_refs": [
+        "MOD-scoping",
+        "MOD-application",
+        "MOD-frontend",
+        "MOD-codex"
+      ],
+      "interface_refs": [
+        "IFACE-http",
+        "IFACE-scoping",
+        "IFACE-persistence",
+        "IFACE-codex",
+        "IFACE-events"
+      ],
+      "data_entity_refs": [
+        "DATA-working-scope",
+        "DATA-approval-snapshot",
+        "DATA-command-receipt",
+        "DATA-scoping-changes"
+      ],
+      "ux_refs": [
+        "FLOW-005",
+        "SCREEN-006",
+        "SCREEN-008",
+        "SCREEN-009"
+      ]
+    },
+    {
+      "feature_ref": "FEAT-011",
+      "module_refs": [
+        "MOD-continuity",
+        "MOD-application",
+        "MOD-frontend",
+        "MOD-codex"
+      ],
+      "interface_refs": [
+        "IFACE-http",
+        "IFACE-continuity",
+        "IFACE-persistence",
+        "IFACE-codex",
+        "IFACE-events"
+      ],
+      "data_entity_refs": [
+        "DATA-draft",
+        "DATA-conversation-message",
+        "DATA-attempt",
+        "DATA-command-receipt"
+      ],
+      "ux_refs": [
+        "FLOW-003",
+        "SCREEN-005",
+        "FLOW-007",
+        "SCREEN-011"
+      ]
+    },
+    {
+      "feature_ref": "FEAT-012",
+      "module_refs": [
+        "MOD-continuity",
+        "MOD-application",
+        "MOD-frontend"
+      ],
+      "interface_refs": [
+        "IFACE-http",
+        "IFACE-continuity",
+        "IFACE-persistence"
+      ],
+      "data_entity_refs": [
+        "DATA-approval-snapshot",
+        "DATA-delivery",
+        "DATA-proposal",
+        "DATA-version-feature",
+        "DATA-projects-changes",
+        "DATA-versions-changes",
+        "DATA-scoping-changes",
+        "DATA-continuity-changes"
+      ],
+      "ux_refs": [
+        "FLOW-006",
+        "SCREEN-010"
+      ]
+    }
+  ],
+  "handoff": {
+    "planning_ready": true,
+    "blockers": [],
+    "notes": [
+      "Dossier intégré explicitement approuvé le 10 novembre 2026 ; planification autorisée comme phase suivante, sans déclaration d’implémentation ou de livraison.",
+      "Les prérequis de compatibilité, compte/coût, confinement et restauration sont des conditions de réalisation avant données réelles, pas des essais attestés.",
+      "Aucun code produit, skill modifié, appel authentifié, inférence, installation, commit, push ou ticket réalisé par ce dossier."
+    ]
+  },
+  "approval": {
+    "status": "approved",
+    "approved_by": "Utilisateur",
+    "approved_on": "2026-11-10",
+    "evidence_ref": "Conversation du 10 novembre 2026 : « je valide », en réponse à la demande de validation du dossier d’architecture V1, contrats et contrôles proposés compris."
+  }
+}
