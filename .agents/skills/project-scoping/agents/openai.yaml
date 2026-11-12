@@ -1,5 +1,5 @@
 interface:
-  display_name: "Aura Forge — Functional Scoping"
+  display_name: "Project - Functional Scoping"
   short_description: "Scope the MVP and its evolutions independently of releases"
 policy:
   allow_implicit_invocation: false

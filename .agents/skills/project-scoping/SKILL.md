@@ -4,7 +4,7 @@ description: "Scope the MVP or a functional evolution independently of SemVer re
 disable-model-invocation: true
 ---
 
-# Aura Forge — Functional scoping and MVP
+# Functional scoping and MVP
 
 This is a **user-invoked orchestration skill**, not an autonomous coding agent. Scope the global MVP or an approved functional evolution independently of software releases. Communicate in **French**. Follow `AGENTS.md` and already approved decisions. Read [shared conventions](references/versioning.md) before changing documents and [functional documentation](references/functional-documents.md) before preview/apply/audit.
 

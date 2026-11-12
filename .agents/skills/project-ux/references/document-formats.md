@@ -1,4 +1,4 @@
-# Aura Forge UX output contract — reference for Codex
+# UX output contract — reference for Codex
 
 Instructions here are **in English**. Generated UX summaries, HTML UI text and JSON human-readable values must be **in French**. Stable IDs, JSON property names, file names and controlled values remain English.
 

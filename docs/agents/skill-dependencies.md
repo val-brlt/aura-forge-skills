@@ -1,4 +1,4 @@
-# Skills utilisés par les workflows Aura Forge
+# Skills utilisés par les workflows de projet
 
 Copier ensemble `project-scoping`, `project-ux`, `project-architecture` et `structure-project`, avec leurs références, schémas et scripts. `project-scoping` fournit les conventions et les validateurs partagés ; `structure-project` fournit la procédure et les formats fonctionnels.
 

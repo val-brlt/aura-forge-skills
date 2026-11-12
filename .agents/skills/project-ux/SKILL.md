@@ -4,7 +4,7 @@ description: "Design and validate the global MVP UX and progressive deliveries t
 disable-model-invocation: true
 ---
 
-# Aura Forge — MVP UX/UI and progressive delivery
+# MVP UX/UI and progressive delivery
 
 This is a **user-started workflow**, not a production implementation agent. Run after the MVP or requested functional change is approved with `project-scoping`. Preserve a coherent UX for the **whole MVP**, with progressive delivery subsets when already approved. Talk **in French** and follow `AGENTS.md`. Read `references/document-formats.md` and [shared versioning conventions](../project-scoping/references/versioning.md) before writing; the shared reference owns path, backlog, progress and re-entry rules.
 

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Aura Forge UX contract envelope (nested UX checked by validate_ux_docs.py)",
+  "title": "UX contract envelope (nested UX checked by validate_ux_docs.py)",
   "type": "object",
   "required": ["schemaVersion", "version", "status", "scope", "flows", "screens", "featureCoverage", "futureConsiderations"],
   "properties": {

@@ -83,7 +83,7 @@ Treat scratch as noncanonical working history. Keep it available for resuming th
 [What the user actually said; status and consequences. Do not invent approval.]
 ```
 
-All visible comparison explanations are normally **French** for Aura Forge; the template's headings may be translated. Be concrete, not verbose for its own sake. A one-screen table and a short recommendation may suffice for a medium decision; higher-risk decisions deserve more depth and source checking.
+All visible comparison explanations are normally **French**; the template's headings may be translated. Be concrete, not verbose for its own sake. A one-screen table and a short recommendation may suffice for a medium decision; higher-risk decisions deserve more depth and source checking.
 
 ## Review checklist
 

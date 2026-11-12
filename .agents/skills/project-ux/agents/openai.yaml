@@ -1,5 +1,5 @@
 interface:
-  display_name: "Aura Forge — UX/UI Design"
+  display_name: "Project - UX/UI Design"
   short_description: "Design the global MVP UX and progressive deliveries"
 policy:
   allow_implicit_invocation: false

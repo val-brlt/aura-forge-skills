@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate an Aura Forge UX JSON contract and promoted HTML gallery.
+"""Validate a UX JSON contract and promoted HTML gallery.
 
 Standard library only. Static checks do not establish design quality, visual
 approval, runtime JavaScript correctness or delivery status.

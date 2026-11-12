@@ -1,5 +1,5 @@
 interface:
-  display_name: "Aura Forge — Technical Architecture"
+  display_name: "Project - Technical Architecture"
   short_description: "Design MVP foundations and proportionate technical evolutions"
   default_prompt: "Use $project-architecture to reuse or evolve the approved MVP architecture and its progressive deliveries, compare consequential choices independently of installed tools, obtain decision approval and prepare for planning. Leave release numbers unset until approved, keep implementation and issue creation outside this phase, and obtain separate authorization for commit and push."
 policy:

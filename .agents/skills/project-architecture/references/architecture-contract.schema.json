@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://auraforge.local/schemas/architecture-contract-v1.json",
-  "title": "Aura Forge Version Architecture Contract",
+  "$id": "https://project-toolkit-skills.local/schemas/architecture-contract-v1.json",
+  "title": "Version Architecture Contract",
   "description": "Compact planning handoff for an explicitly reviewed and versioned architecture design.",
   "type": "object",
   "additionalProperties": false,

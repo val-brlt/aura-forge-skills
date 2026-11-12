@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate Aura Forge architecture contract structure, references and handoff gate.
+"""Validate architecture contract structure, references and handoff gate.
 
 Usage (repository root): python .agents/skills/project-architecture/scripts/validate_contract.py path/to/ARCHITECTURE-CONTRACT.json
 Requires only Python stdlib; checks the bundled schema and shared delivery

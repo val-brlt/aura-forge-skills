@@ -10,7 +10,7 @@ If any of these files don't exist, **proceed silently**. Don't flag their absenc
 
 ## Layout : Single-context or multi-context?
 
-**Single-context**: the project shares one business vocabulary and a common set of decisions. Use one root `GLOSSARY.md` and `docs/adr/`. This is the default and the current choice for Aura Forge.
+**Single-context**: the project shares one business vocabulary and a common set of decisions. Use one root `GLOSSARY.md` and `docs/adr/`. This is the default and the current choice for this project.
 
 **Multi-context**: distinct business areas need their own vocabulary and decisions, for example when the same word means different things in different areas. Each context has its own `GLOSSARY.md` and may have ADRs in `src/<context>/docs/adr/`. A root `GLOSSARY-MAP.md` points to the contexts and explains their relationships; shared ADRs stay in `docs/adr/`.
 

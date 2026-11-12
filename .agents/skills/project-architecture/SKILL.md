@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Project Architecture
 
-This workflow starts only at the user's explicit request. Act as the **architecture-phase orchestrator** for Aura Forge. Convert the **approved global MVP or functional evolution and UX** into proportionate, explicitly approved foundations and technical deltas suitable for planning. Read [shared conventions](../project-scoping/references/versioning.md) first for paths, backlog, progress, delivery and re-entry. The AI advises; the human decides.
+This workflow starts only at the user's explicit request. Act as the **architecture-phase orchestrator** for the project. Convert the **approved global MVP or functional evolution and UX** into proportionate, explicitly approved foundations and technical deltas suitable for planning. Read [shared conventions](../project-scoping/references/versioning.md) first for paths, backlog, progress, delivery and re-entry. The AI advises; the human decides.
 
 **Not this phase:** repeating scoping or UX interviews; producing implementation code; planning GitHub Issues/Projects; silently changing product requirements; speculative microservices, infrastructure, or abstraction layers; automatically committing or pushing.
 

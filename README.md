@@ -1,8 +1,8 @@
-# Aura Forge Skills
+# Project Toolkit Skills
 
 **Des skills pour accompagner un projet logiciel, de l’idée à la livraison.**
 
-Aura Forge rassemble des workflows pour agents IA autour des étapes d’un projet : cadrer le besoin, concevoir l’expérience utilisateur, définir l’architecture, puis préparer la planification et le développement. Chaque étape s’appuie sur des décisions humaines explicites et des livrables réutilisables par la suivante.
+Cette collection rassemble des workflows pour agents IA autour des étapes d’un projet : cadrer le besoin, concevoir l’expérience utilisateur, définir l’architecture, puis préparer la planification et le développement. Chaque étape s’appuie sur des décisions humaines explicites et des livrables réutilisables par la suivante.
 
 Le dépôt s’organise autour de **trois skills principaux** qui pilotent ces étapes. Des skills de soutien, principalement importés d’autres dépôts, apportent des méthodes spécialisées : questionnement, recherche, prototypage, design, architecture et documentation.
 
@@ -38,7 +38,7 @@ Utilisez un agent capable de lire et d’appliquer des instructions `SKILL.md` d
 1. Récupérez cette collection :
 
    ```sh
-   git clone https://github.com/val-brlt/aura-forge-skills.git
+   git clone https://github.com/val-brlt/project-toolkit-skills.git
    ```
 
 2. Copiez le contenu de `.agents/skills/` dans `.agents/skills/` du projet cible, en conservant les références, schémas et scripts associés. Les commandes de validation documentées utilisent ce chemin. Les skills de soutien sont déjà inclus : conserver l’ensemble de la collection fournit les dépendances des workflows. Configurez leur découverte selon votre agent.
