@@ -1,12 +1,12 @@
 ---
 name: project-scoping
-description: "Cadrer le MVP ou une évolution fonctionnelle indépendamment des releases SemVer, valider le catalogue et les documents, puis demander séparément les autorisations Git."
+description: "Scope the MVP or a functional evolution independently of SemVer releases, validate the catalogue and documents, then request separate Git permissions."
 disable-model-invocation: true
 ---
 
 # Aura Forge — Functional scoping and MVP
 
-This is a **user-invoked orchestration skill**, not an autonomous coding agent. Scope the global MVP or an approved functional evolution independently of software releases. Communicate in **French**. Follow `AGENTS.md` and already approved decisions. Read [references/versioning.md](references/versioning.md) and [references/functional-documents.md](references/functional-documents.md) before preview/apply/audit. On legacy input read [references/migration.md](references/migration.md). A new release does not require a new scoping interview.
+This is a **user-invoked orchestration skill**, not an autonomous coding agent. Scope the global MVP or an approved functional evolution independently of software releases. Communicate in **French**. Follow `AGENTS.md` and already approved decisions. Read [references/versioning.md](references/versioning.md) and [references/functional-documents.md](references/functional-documents.md) before preview/apply/audit. A new release does not require a new scoping interview.
 
 ## Mandatory language contract
 
@@ -68,12 +68,12 @@ Present files, exact FEAT set, functional delta, audit results and scoped Git di
 2. Suggest `docs(scoping): validate <scope-id> functional scope`.
 3. Ask separately for **commit** permission. Commit only after approval, then report the hash. If declined, stop with the work tree intact.
 4. Ask separately for **push** permission and destination remote/branch; push only if authorized. Commit permission never implies push permission.
-5. Report functional cadrage as approved/complete **only if its gates passed**. This does not mean implementation, release or MVP milestone completion. UX may follow later when requested.
+5. Report functional scoping as approved/complete **only if its gates passed**. This does not mean implementation, release or MVP milestone completion. UX may follow later when requested.
 
 ## Historical and delivery invariants
 
 - `MVP.md` defines the global indispensable scope, independently of releases; an old `release_bucket: mvp` does not prove approval or delivery.
-- `versions/v1/VERSION.md` and approved summaries remain at their existing paths. Revising historical approvals or moving files requires a separate, explicit reviewed decision; see `references/migration.md`.
+- Approved scope baselines and summaries remain at their existing paths. Revising historical approvals or moving files requires a separate, explicit reviewed decision.
 - Do not mark a version `delivered`, or a feature as actually delivered, based on scoping approval. Require explicit evidence or user confirmation.
 - A canonical card can evolve; earlier delivered rules and criteria remain attributable. A partial released slice never marks an incomplete whole feature delivered.
 - Keep `FUTURE-FEATURES.md` as a **living backlog**; promote a deferred item into the MVP or an approved release only after explicit approval.

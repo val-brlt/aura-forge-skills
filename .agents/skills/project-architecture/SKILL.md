@@ -1,12 +1,12 @@
 ---
 name: project-architecture
-description: "Concevoir et valider l'architecture technique du MVP et de ses évolutions pour préparer la planification."
+description: "Design and validate the technical architecture of the MVP and its evolutions in preparation for planning."
 disable-model-invocation: true
 ---
 
 # Project Architecture
 
-This workflow starts only at the user's explicit request. Act as the **architecture-phase orchestrator** for Aura Forge. Convert the **approved global MVP or functional evolution and UX** into proportionate, explicitly approved foundations and technical deltas suitable for planning. Read [shared versioning conventions](../project-scoping/references/versioning.md) first, and the [migration plan](../project-scoping/references/migration.md) for legacy inputs. The AI advises; the human decides. Architecture can be planning-ready before any release number is assigned. Reuse validated architecture and ADRs across releases.
+This workflow starts only at the user's explicit request. Act as the **architecture-phase orchestrator** for Aura Forge. Convert the **approved global MVP or functional evolution and UX** into proportionate, explicitly approved foundations and technical deltas suitable for planning. Read [shared versioning conventions](../project-scoping/references/versioning.md) first. The AI advises; the human decides. Architecture can be planning-ready before any release number is assigned. Reuse validated architecture and ADRs across releases.
 
 **Not this phase:** repeating scoping or UX interviews; producing implementation code; planning GitHub Issues/Projects; silently changing product requirements; speculative microservices, infrastructure, or abstraction layers; automatically committing or pushing.
 
@@ -48,7 +48,7 @@ If a dependency is unavailable, explain the limitation briefly, continue with th
 5. Inspect relevant future features **only to avoid costly design dead ends**; do not design or implement future-only scope.
 6. Build a concise internal evidence map: fact/decision, source path/ID, approval status, affected version and any uncertainty. Report material conflicts before proceeding.
 
-If a required input is absent or the final UX contract migration is unverified, perform whatever bounded analysis remains possible, clearly identify the blocker, and **do not mark the architecture handoff planning-ready** or silently fabricate UX details.
+If a required approved input is absent or inconsistent, perform whatever bounded analysis remains possible, clearly identify the blocker, and **do not mark the architecture handoff planning-ready** or silently fabricate UX details.
 
 ## Workflow
 

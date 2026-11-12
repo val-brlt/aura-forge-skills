@@ -1,5 +1,5 @@
 interface:
-  display_name: "Aura Forge — Cadrage fonctionnel"
-  short_description: "Cadrer le MVP et ses évolutions indépendamment des releases"
+  display_name: "Aura Forge — Functional Scoping"
+  short_description: "Scope the MVP and its evolutions independently of releases"
 policy:
   allow_implicit_invocation: false

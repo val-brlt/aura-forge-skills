@@ -7,7 +7,7 @@ description: "Structure approved MVP or functional change summaries into a featu
 
 Convert an **approved functional summary** into a reviewable catalogue and canonical project documents. This model-invoked skill can be used directly or by `project-scoping`. Communicate in **French** and follow `AGENTS.md`, approved decisions and glossary conventions.
 
-Read [shared scope and delivery conventions](../project-scoping/references/versioning.md) before preview/apply/audit. Read [document formats](references/document-formats.md) before proposing or writing files. For an unchanged historical V1/V2 audit only, read [legacy formats](references/legacy-document-formats.md). For proposed migration of approved documents, read the [migration procedure](../project-scoping/references/migration.md).
+Read [shared scope and delivery conventions](../project-scoping/references/versioning.md) before preview/apply/audit. Read [document formats](references/document-formats.md) before proposing or writing files. For an unchanged historical V1/V2 audit only, read [legacy formats](references/legacy-document-formats.md).
 
 ## Inputs and modes
 

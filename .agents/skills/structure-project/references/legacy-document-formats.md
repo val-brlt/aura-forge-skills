@@ -2,7 +2,7 @@
 
 Read only when auditing an unchanged V1/V2 document tree. The formats below describe historical outputs, not templates for new scopes or migrations. For new or revised functional scopes use [document-formats.md](document-formats.md); preserve existing approved paths and snapshots. Run the legacy audit with `python .agents/skills/structure-project/scripts/validate_docs.py <DOCS_ROOT> --legacy` from the project repository root.
 
-This file is **agent-facing reference material**. Its instructions are in English, while the Markdown examples intentionally show the **French output** expected in project-facing documents.
+This file is **agent-facing reference material**. Its instructions and angle-bracket placeholders are in English, while the Markdown examples intentionally show the **French output** expected in project-facing documents.
 
 ## Non-negotiable conventions
 
@@ -37,16 +37,16 @@ docs/docs-project/
 **Example output in French:**
 
 ```markdown
-# Présentation du projet — <nom>
+# Présentation du projet — <name>
 
 ## Objectif et utilisateurs
 ## Problèmes rencontrés et résultats attendus
 ## Périmètre fonctionnel
 ## Modules
-- [<Nom français>](modules/<slug>/MODULE.md)
+- [<French name>](modules/<slug>/MODULE.md)
 ## Versions
-- [V1 — MVP](versions/v1/VERSION.md) : <objectif en français>
-- [V2](versions/v2/VERSION.md) : <objectif en français>  <!-- seulement si elle existe -->
+- [V1 — MVP](versions/v1/VERSION.md) : <objective in French>
+- [V2](versions/v2/VERSION.md) : <objective in French>  <!-- only if it exists -->
 ## Évolutions futures et points à clarifier
 Voir [le backlog](FUTURE-FEATURES.md).
 ## Décisions encore ouvertes
@@ -70,7 +70,7 @@ status: draft
 # Version V1 — MVP
 
 ## Objectif de la version
-<Le bénéfice utilisateur qui motive cette version>
+<The user benefit motivating this version>
 
 ## Référence précédente
 Première version du produit.
@@ -82,10 +82,10 @@ Première version du produit.
 Aucune pour la première version.
 
 ## Limites et fonctionnalités reportées
-<Limites expressément décidées>
+<Explicitly agreed limits>
 
 ## Dépendances et décisions ouvertes
-<Questions fonctionnelles seulement>
+<Functional questions only>
 
 ## Source de cadrage
 [Synthèse validée pour V1](SCOPING-SUMMARY.md)
@@ -106,7 +106,7 @@ After the documentation review, the orchestrator may change `draft` to `approved
 **Example output in French:**
 
 ```markdown
-# Module — <nom en français>
+# Module — <name in French>
 
 ## Objectif
 ## Périmètre
@@ -130,33 +130,33 @@ source: versions/v1/SCOPING-SUMMARY.md
 # FEAT-001 — Créer un projet
 
 ## Objectif utilisateur
-<Besoin en français>
+<Need in French>
 
 ## Comportement attendu
-<Description fonctionnelle actuelle, en français, sans effacer l'historique>
+<Current functional description in French, preserving history>
 
 ## Historique fonctionnel par version
 ### V1
-**Comportement validé :** <périmètre V1>
-**Critères d'acceptation validés :** <uniquement les éléments approuvés>
+**Comportement validé :** <V1 scope>
+**Critères d'acceptation validés :** <Approved items only>
 **Source :** [Synthèse V1](../../versions/v1/SCOPING-SUMMARY.md)
 
 ### V2
-**Évolution validée :** <nouveau besoin approuvé en V2>
-**Critères d'acceptation validés :** <les critères V2, sans réécrire ceux de V1>
+**Évolution validée :** <New need approved in V2>
+**Critères d'acceptation validés :** <V2 criteria, preserving V1 criteria>
 **Source :** [Synthèse V2](../../versions/v2/SCOPING-SUMMARY.md)
 
 ## Critères d'acceptation proposés
-<Propositions clairement identifiées, ou « Aucun »>
+<Clearly labeled proposals, or state in French that there are none>
 
 ## Dépendances fonctionnelles
-<FEAT-xxx ou « Aucune documentée »>
+<FEAT-xxx or state in French that none are documented>
 
 ## Questions ouvertes
-<Points non tranchés ou « Aucune consignée »>
+<Unresolved questions or state in French that none are recorded>
 
 ## Traçabilité
-<Origine initiale de la fonctionnalité et décisions d'évolution>
+<Original feature source and evolution decisions>
 ```
 
 **Metadata rules:**
@@ -177,7 +177,7 @@ Preserve earlier approved version-specific requirements when a later version cha
 # Évolutions futures et autres propositions
 
 ## Évolutions futures envisagées (sans engagement)
-- [FEAT-003 — ...](modules/<module>/<feature>.md) : <changement différé>
+- [FEAT-003 — ...](modules/<module>/<feature>.md) : <Deferred change>
 
 ## Fonctionnalités approuvées sans version prévue
 - [FEAT-004 — ...](modules/<module>/<feature>.md)
@@ -205,6 +205,6 @@ Le périmètre validé du MVP est consultable dans [la fiche de la version V1](v
 
 Do not generate a new `MVP.md` for V2. Never overwrite an existing legacy `MVP.md` without explicit approval.
 
-## Migration from earlier skill outputs
+## Historical source preservation
 
-If root-level `SCOPING-SUMMARY.md` and `MVP.md` already exist, or feature cards still contain `release_bucket: mvp`, **propose a migration diff instead of applying it automatically**. Derive `versions/v1/VERSION.md` only from the approved V1 MVP scope, preserve existing feature IDs, and link to the original scoping summary without rewriting it if it must remain at the root. Never renumber features or alter V1 scope to accommodate V2. Obtain explicit user approval before making migration changes.
+Use this reference only to inspect existing historical documents. Preserve their paths, feature IDs and approved scope. Any change to an approved snapshot requires an explicit reviewed diff and user approval.

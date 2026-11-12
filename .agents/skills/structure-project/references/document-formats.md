@@ -20,7 +20,7 @@ Discover and reuse DOCS_ROOT. A new global MVP has this layout, with no release 
         └── <feature-slug>.md
 ```
 
-For an evolution reuse the existing approved scope and source paths. A new change document's path belongs in the reviewed manifest. Preserve existing historical scopes, summaries and delivered baselines; migration of approved paths/content follows the [reviewed migration procedure](../../project-scoping/references/migration.md).
+For an evolution reuse the existing approved scope and source paths. A new change document's path belongs in the reviewed manifest. Preserve existing historical scopes, summaries and delivered baselines; changes to approved paths or snapshots require an explicit reviewed diff and user approval.
 
 ## PROJECT.md
 
@@ -28,7 +28,7 @@ Describe purpose/users, outcomes and product scope. Link the global MVP, module 
 
 ## MVP.md and change scopes
 
-`MVP.md` is the global indispensable scope, not a navigation pointer to a release. Example output (illustrative IDs):
+`MVP.md` is the global indispensable scope, not a navigation pointer to a release. Output examples retain the required French labels; angle-bracket placeholders provide instructions in English. IDs are illustrative.
 
 ```markdown
 ---
@@ -39,15 +39,15 @@ source: SCOPING-SUMMARY.md
 ---
 # Objectif MVP
 ## Objectifs et critères de réussite
-<Critères fonctionnels explicitement approuvés>
+<Explicitly approved functional criteria>
 ## Fonctionnalités incluses
 - [FEAT-001 — Créer un projet](modules/project-management/create-project.md)
 ## Dépendances et décisions ouvertes
-<Dépendances FEAT et questions non résolues>
+<FEAT dependencies and unresolved questions>
 ## Limites et exclusions
-<Fonctionnalités futures dans FUTURE-FEATURES.md>
+<Future features in FUTURE-FEATURES.md>
 ## Avancement de l'objectif MVP
-<Jalon ouvert ; preuves requises pour chaque critère>
+<Open milestone; evidence required for each criterion>
 ## Source de cadrage
 [Synthèse validée](SCOPING-SUMMARY.md)
 ```
@@ -76,15 +76,15 @@ source: SCOPING-SUMMARY.md
 ---
 # FEAT-001 — Créer un projet
 ## Objectif utilisateur
-<Besoin approuvé>
+<Approved need>
 ## Comportement attendu
-<Comportement actuel accepté>
+<Current accepted behavior>
 ## Critères d'acceptation validés
-<Critères explicitement approuvés>
+<Explicitly approved criteria>
 ## Dépendances fonctionnelles
-<FEAT-xxx ou « Aucune documentée »>
+<FEAT-xxx or state in French that none are documented>
 ## Questions ouvertes
-<Points non tranchés ou « Aucune consignée »>
+<Unresolved questions or state in French that none are recorded>
 ## Traçabilité
 [Synthèse validée](../../SCOPING-SUMMARY.md)
 ```

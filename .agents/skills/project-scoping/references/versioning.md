@@ -1,6 +1,6 @@
 # Shared scope, version and delivery conventions
 
-Read this reference before changing functional, UX or architecture documents. All three project skills use this model; reading it does not invoke another workflow. Preserve existing canonical paths and approvals. For legacy documents also read [migration.md](migration.md).
+Read this reference before changing functional, UX or architecture documents. All three project skills use this model; reading it does not invoke another workflow. Preserve existing canonical paths and approvals.
 
 ## Four independent concepts
 

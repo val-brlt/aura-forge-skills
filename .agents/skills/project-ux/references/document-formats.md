@@ -40,19 +40,19 @@ scope: MVP.md
 # Conception UX/UI — Objectif MVP
 
 ## Objectifs et parcours principaux
-<Description brève des tâches et parcours retenus, pas de fiche par écran>
+<Brief description of selected tasks and journeys, without per-screen documents>
 
 ## Navigation et décisions de conception
-<Organisation globale, raisons des décisions qui ne ressortent pas de la maquette>
+<Overall organization and rationale for decisions not evident from the mockup>
 
 ## Maquettes validées
 [Ouvrir les maquettes HTML](mockups/index.html)
 
 ## Anticipation des évolutions futures (hors périmètre)
-<Impacts sur la navigation de la vision du produit et des fonctionnalités futures, sans nouveaux écrans maquettés>
+<Navigation implications of the product vision and future features, without new mockup screens>
 
 ## Accessibilité, limites et questions ouvertes
-<Conventions et exceptions utiles, ou « Aucun point bloquant »>
+<Useful conventions and exceptions, or state in French that no blockers remain>
 ```
 
 For a scope with **unchanged UI**, replace the mockup link with a real link to the existing approved HTML. For an **entirely no-UI scope**, retain `Maquettes validées` and explain that no mockup applies, linking the approved functional source and summarizing each user-approved `no_ui` justification; create no HTML or mockup folder. Its contract has empty `flows`/`screens`, one justified `no_ui` coverage record per scoped feature and only the corresponding FEAT delivery items. `status` stays `draft` until the applicable visuals or no-UI justifications are explicitly approved and validation passes, then becomes `approved`. Neither approval proves software delivery.
@@ -141,4 +141,4 @@ For an **already delivered version**, keep its functional baseline unchanged; do
 
 ## Validation rules
 
-Run `python .agents/skills/project-ux/scripts/validate_ux_docs.py <DOCS_ROOT> --contract <contract-path>` (path relative to working directory). Legacy `--version <baseline>` is supported, including `v1`; SemVer directories are also accepted. With neither option, discover global and legacy contracts. Validate shape, coverage, IDs, dependency/delivery metadata, anchors/assets and scratch isolation. Static checks do not verify user authority, evidence contents, JavaScript behavior or visual quality; for UI scopes open final HTML and compare against the approved preview. For an entirely no-UI scope manually verify each justification and its explicit approval instead. Review functional edits in the scoped diff before separate commit/push permissions. Upgrading a document/contract or removing legacy files requires the reviewed migration procedure; never delete them automatically.
+Run `python .agents/skills/project-ux/scripts/validate_ux_docs.py <DOCS_ROOT> --contract <contract-path>` (path relative to working directory). Legacy `--version <baseline>` is supported, including `v1`; SemVer directories are also accepted. With neither option, discover global and legacy contracts. Validate shape, coverage, IDs, dependency/delivery metadata, anchors/assets and scratch isolation. Static checks do not verify user authority, evidence contents, JavaScript behavior or visual quality; for UI scopes open final HTML and compare against the approved preview. For an entirely no-UI scope manually verify each justification and its explicit approval instead. Review functional edits in the scoped diff before separate commit/push permissions. Changes to approved documents/contracts or removal of historical files require an explicit reviewed diff and user approval.

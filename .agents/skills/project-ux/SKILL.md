@@ -1,12 +1,12 @@
 ---
 name: project-ux
-description: "Concevoir et valider l'UX globale du MVP et ses livraisons progressives avec maquettes HTML, contrat UX et validations humaines distinctes."
+description: "Design and validate the global MVP UX and progressive deliveries through HTML mockups, a UX contract and separate human approvals."
 disable-model-invocation: true
 ---
 
 # Aura Forge — MVP UX/UI and progressive delivery
 
-This is a **user-started workflow**, not a production implementation agent. Run after the MVP or requested functional change is approved with `project-scoping`. Preserve a coherent UX for the **whole MVP**, with progressive delivery subsets when already approved. Talk **in French** and follow `AGENTS.md`. Read `references/document-formats.md` and [shared versioning conventions](../project-scoping/references/versioning.md) before writing. For legacy inputs read the [migration plan](../project-scoping/references/migration.md). A release partition alone reuses validated design and HTML, without restarting UX.
+This is a **user-started workflow**, not a production implementation agent. Run after the MVP or requested functional change is approved with `project-scoping`. Preserve a coherent UX for the **whole MVP**, with progressive delivery subsets when already approved. Talk **in French** and follow `AGENTS.md`. Read `references/document-formats.md` and [shared versioning conventions](../project-scoping/references/versioning.md) before writing. A release partition alone reuses validated design and HTML, without restarting UX.
 
 **Core principle:** For scopes with UI, the user reviews **interactive HTML mockups**, not one Markdown document per screen. Preserve these complementary outputs:
 1. Validated, browser-viewable HTML/CSS/JavaScript mockups when the scope has UI: the visual reference.

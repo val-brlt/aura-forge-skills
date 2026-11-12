@@ -1,5 +1,5 @@
 interface:
-  display_name: "Aura Forge — Conception UX/UI"
-  short_description: "Concevoir l'UX globale du MVP et ses livraisons progressives"
+  display_name: "Aura Forge — UX/UI Design"
+  short_description: "Design the global MVP UX and progressive deliveries"
 policy:
   allow_implicit_invocation: false
