@@ -2,11 +2,11 @@
 
 Read this reference when producing or revising documentation. These are **logical roles**; never duplicate a repository's existing canonical documents merely to match example filenames.
 
-Read [shared versioning conventions](../../project-scoping/references/versioning.md). MVP objective, software version, actual release and milestone are independent. Existing `versions/v1/` is an approved scope baseline without an inferred software version.
+Use [shared conventions](../../project-scoping/references/versioning.md) for canonical paths, backlog, progress, delivery and re-entry; the sections below specify artifact contents.
 
 ## First discover current paths
 
-Use the repository's existing docs root. If it is `docs/docs-project`, relative targets below are rooted there. Otherwise substitute the discovered root; do not create competing `docs-project` / `docs-projet` directories. Respect an existing architecture or ADR directory and numbering scheme.
+Resolve the logical paths below against the discovered DOCS_ROOT and existing ADR location. Step D prepares the complete package as draft; step E approves those exact files after validation; step F changes only approval/readiness metadata.
 
 ```text
 <existing-docs-root>/
@@ -88,9 +88,7 @@ The structured contract is **an index/hand-off**, not a copy of the prose docs. 
 
 ## When a requirement changes after approval
 
-- If current version **not delivered**: update the canonical feature/UX document with authorized product decision, then update affected architecture sections, version design and contract. Maintain stable IDs.
-- If version **delivered**: do not silently rewrite its approved historical version to include a new feature. Handle as proposed scope in a later version. The global architecture must accurately distinguish current deployed state from approved future target.
-- Integrate the accepted decision into its canonical section and retain traceability via ADR/Git.
+Apply the shared preservation rules to the affected feature/UX sources before updating the architecture package. Route changed package content through D–F, retaining stable IDs and attributable decision evidence.
 
 ## Planning gate checklist
 
@@ -102,5 +100,5 @@ The structured contract is **an index/hand-off**, not a copy of the prose docs. 
 - [ ] Consequential newly proposed choices were compared in `.scratch/` before approval, with credible alternatives, recommendation and evidence; significant trade-offs expressly accepted; ADRs written only when warranted.
 - [ ] No unresolved blocking question, migration or interface conflict.
 - [ ] Global and version architecture, UX, functional specs and JSON contract agree.
-- [ ] Final architecture approval is verifiable, separate from Git permissions.
+- [ ] The complete draft files and scoped diff were validated and shown before final package approval; evidence identifies that exact content. Later substantive edits reopen E.
 - [ ] Commit and push not performed without two distinct explicit approvals.

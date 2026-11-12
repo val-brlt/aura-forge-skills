@@ -53,7 +53,12 @@ class ContractChecks(unittest.TestCase):
         scope = self.ux["scope"]
         self.write(scope, f"---\nversion: {self.ux['version']}\nstatus: approved\n---\n\n## Fonctionnalités incluses\n- FEAT-001\n")
         self.write("modules/projects/create.md", "---\nid: FEAT-001\n---\n# Créer un projet\n")
-        self.write("FUTURE-FEATURES.md", "# Fonctions futures\nAucun engagement de livraison.\n")
+        backlog_name = "FUTURE-FEATURES.md" if legacy else "BACKLOG.md"
+        if legacy:
+            for consideration in self.ux["futureConsiderations"]:
+                if consideration["source"] == "BACKLOG.md":
+                    consideration["source"] = backlog_name
+        self.write(backlog_name, "# Backlog\nAucun engagement de livraison.\n")
         headings = ["Objectifs et parcours principaux", "Navigation et décisions de conception", "Maquettes validées", "Anticipation des évolutions futures (hors périmètre)"]
         self.write(f"{directory}/UX-SUMMARY.md", f"---\nversion: {self.ux['version']}\nstatus: {self.ux['status']}\nscope: {scope}\n---\n" + "\n".join(f"## {h}\n" for h in headings) + "\n[Maquettes](mockups/index.html)\n")
         self.write(f"{directory}/mockups/index.html", '<!doctype html><html lang="fr"><a href="#SCREEN-001">Créer</a><main id="SCREEN-001"><form><label>Projet<input></label><button>Créer</button></form></main></html>')
@@ -109,7 +114,7 @@ class ContractChecks(unittest.TestCase):
         self.assert_error(self.check_ux(), "missing delivery progress item for ACT-001")
 
     def test_scope_mismatch_rejected(self):
-        self.ux["delivery"]["scope"]["path"] = "FUTURE-FEATURES.md"
+        self.ux["delivery"]["scope"]["path"] = "BACKLOG.md"
         self.assert_error(self.check_ux(), "functional scope differs")
 
     def test_html_and_scratch_checks_preserved(self):
@@ -252,7 +257,7 @@ class ContractChecks(unittest.TestCase):
         self.write("PROJECT.md", "# Projet\n[MVP](MVP.md)\n[Projets](modules/projects/MODULE.md)\n")
         self.write("MVP.md", "---\nscope_id: mvp\nstatus: approved\n---\n# Objectif MVP\n## Objectifs et critères de réussite\nCréer et retrouver un projet.\n## Fonctionnalités incluses\n- [FEAT-001 — Créer](modules/projects/create.md)\n## Source de cadrage\n[Synthèse](SCOPING-SUMMARY.md)\n")
         self.write("SCOPING-SUMMARY.md", "# Synthèse approuvée\nCréer un projet.\n")
-        self.write("FUTURE-FEATURES.md", "# Fonctionnalités futures\nAucune planifiée.\n")
+        self.write("BACKLOG.md", "# Backlog\nAucune évolution planifiée.\n")
         self.write("modules/projects/MODULE.md", "# Projets\n[FEAT-001 — Créer](create.md)\n")
         self.write("modules/projects/create.md", "---\nid: FEAT-001\nmodule: projects\ndecision_status: approved\nsource: SCOPING-SUMMARY.md\n---\n## Objectif utilisateur\nCréer un projet.\n## Comportement attendu\nLa saisie valide crée un projet.\n## Critères d'acceptation validés\nLe projet apparaît dans la liste après création.\n## Questions ouvertes\nAucune.\n")
 
@@ -296,6 +301,7 @@ class ContractChecks(unittest.TestCase):
 
     def test_structure_entry_point_keeps_explicit_legacy_audit(self):
         self.functional_docs()
+        (self.root / "BACKLOG.md").rename(self.root / "FUTURE-FEATURES.md")
         self.write("versions/v1/VERSION.md", "---\nversion: v1\nrelease_kind: mvp\nstatus: approved\n---\n## Objectif de la version\nCréer un projet.\n## Référence précédente\nAucune.\n## Fonctionnalités incluses\n- [FEAT-001 — Créer](../../modules/projects/create.md)\n## Source de cadrage\n[Synthèse](../../SCOPING-SUMMARY.md)\n")
         project = self.root / "PROJECT.md"
         project.write_text(project.read_text(encoding="utf-8") + "\n[V1](versions/v1/VERSION.md)\n", encoding="utf-8")
@@ -304,6 +310,73 @@ class ContractChecks(unittest.TestCase):
         before = {str(p): p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
         self.assert_ok(run("structure-project/scripts/validate_docs.py", self.root, "--legacy"))
         self.assertEqual(before, {str(p): p.read_bytes() for p in self.root.rglob("*") if p.is_file()})
+
+    def change_scope(self):
+        self.functional_docs()
+        self.write("CHANGE.md", "---\nscope_id: search\nscope_kind: change\nstatus: approved\n---\n## Fonctionnalités incluses\n- [FEAT-002 — Rechercher](modules/projects/search.md)\n## Source de cadrage\n[Source](CHANGE-SUMMARY.md)\n")
+        self.write("CHANGE-SUMMARY.md", "# Recherche approuvée\n")
+        card = (self.root / "modules/projects/create.md").read_text(encoding="utf-8")
+        self.write("modules/projects/search.md", card.replace("FEAT-001", "FEAT-002").replace("SCOPING-SUMMARY.md", "CHANGE-SUMMARY.md"))
+        for filename, link in [("PROJECT.md", "[Changement](CHANGE.md)"), ("modules/projects/MODULE.md", "[FEAT-002](search.md)")]:
+            path = self.root / filename
+            path.write_text(path.read_text(encoding="utf-8") + "\n" + link + "\n", encoding="utf-8")
+
+    def test_change_backlog_preserves_approved_mvp_and_card(self):
+        self.change_scope()
+        self.write("BACKLOG.md", "# Backlog\n## Fonctionnalités approuvées hors du changement\n- [FEAT-001](modules/projects/create.md), approved, développement/livraison inconnus ; [périmètre MVP](MVP.md).\n")
+        baseline = {name: (self.root / name).read_bytes() for name in ["MVP.md", "modules/projects/create.md"]}
+        self.assert_ok(run("structure-project/scripts/validate_docs.py", self.root, "--scope", "CHANGE.md"))
+        self.assertEqual(baseline, {name: (self.root / name).read_bytes() for name in baseline})
+
+    def test_change_requires_backlog_reference_for_excluded_feature(self):
+        self.change_scope()
+        self.assert_error(run("structure-project/scripts/validate_docs.py", self.root, "--scope", "CHANGE.md"), "FEAT-001: outside selected scope and absent from canonical backlog")
+
+    def test_current_functional_audit_reuses_legacy_backlog_filename(self):
+        self.functional_docs()
+        (self.root / "BACKLOG.md").rename(self.root / "FUTURE-FEATURES.md")
+        self.assert_ok(run("structure-project/scripts/validate_docs.py", self.root))
+        self.assertFalse((self.root / "BACKLOG.md").exists())
+
+    def test_two_backlogs_require_resolution(self):
+        self.functional_docs()
+        self.write("FUTURE-FEATURES.md", "# Second catalogue\n")
+        self.assert_error(run("structure-project/scripts/validate_docs.py", self.root), "Both BACKLOG.md and FUTURE-FEATURES.md exist")
+        path = self.ux_docs()
+        self.assert_error(run("project-ux/scripts/validate_ux_docs.py", self.root, "--contract", path), "Both BACKLOG.md and FUTURE-FEATURES.md exist")
+
+    def test_ux_modification_retains_reused_screens_and_assets(self):
+        path = self.ux_docs()
+        self.write("ux/mockups/style.css", "main { display: block; }\n")
+        gallery = path.parent / "mockups/index.html"
+        original_html = gallery.read_text(encoding="utf-8").replace("</html>", '<link rel="stylesheet" href="style.css"></html>')
+        gallery.write_text(original_html, encoding="utf-8")
+        second_flow = copy.deepcopy(self.ux["flows"][0])
+        second_flow.update(id="FLOW-002", screenIds=["SCREEN-002"])
+        second_flow["steps"][0]["screenId"] = "SCREEN-002"
+        second_screen = copy.deepcopy(self.ux["screens"][0])
+        second_screen.update(id="SCREEN-002", flowIds=["FLOW-002"], mockup="mockups/index.html#SCREEN-002")
+        second_screen["interactions"][0]["id"] = "ACT-002"
+        self.ux["screens"][0]["change"] = "reused"
+        self.ux["flows"].append(second_flow)
+        self.ux["screens"].append(second_screen)
+        self.ux["featureCoverage"][0]["screenIds"].append("SCREEN-002")
+        self.ux["featureCoverage"][0]["flowIds"].append("FLOW-002")
+        for old, new in [("FLOW-001", "FLOW-002"), ("SCREEN-001", "SCREEN-002"), ("ACT-001", "ACT-002")]:
+            item = copy.deepcopy(next(item for item in self.ux["delivery"]["items"] if item["ref"] == old))
+            item["ref"] = new
+            self.ux["delivery"]["items"].append(item)
+        path.write_text(json.dumps(self.ux, ensure_ascii=False), encoding="utf-8")
+        delta = '<a href="#SCREEN-002">Ajouter</a><main id="SCREEN-002"><button>Valider</button></main>'
+        gallery.write_text(original_html.replace("</html>", delta + "</html>"), encoding="utf-8")
+        self.assert_ok(run("project-ux/scripts/validate_ux_docs.py", self.root, "--contract", path))
+        # A delta-only replacement loses the approved reused screen.
+        gallery.write_text("<!doctype html><html>" + delta + "</html>", encoding="utf-8")
+        self.assert_error(run("project-ux/scripts/validate_ux_docs.py", self.root, "--contract", path), "missing HTML container #SCREEN-001")
+        # Restoring screens but deleting an old asset still invalidates the gallery.
+        gallery.write_text(original_html.replace("</html>", delta + "</html>"), encoding="utf-8")
+        (path.parent / "mockups/style.css").unlink()
+        self.assert_error(run("project-ux/scripts/validate_ux_docs.py", self.root, "--contract", path), "missing file ux")
 
     def test_shared_reference_links_exist(self):
         for skill in ["project-scoping", "project-ux", "project-architecture", "structure-project"]:

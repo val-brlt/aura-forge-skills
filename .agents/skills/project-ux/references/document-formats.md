@@ -6,14 +6,14 @@ Instructions here are **in English**. Generated UX summaries, HTML UI text and J
 
 **HTML** is the approved visual/interaction example; it is offline-capable, non-production and navigable. **`UX-CONTRACT.json`** is the structured, implementation-independent UX behavior and traceability source used by later agents. **`UX-SUMMARY.md`** provides a concise overview for the user, without copying each screen's content. **`ux/DESIGN-GUIDELINES.md`** is optional and describes stable shared patterns only when validated. No standard `USER-FLOWS.md`, `SCREEN-INVENTORY.md` or `ux/screens/<screen>.md` is needed. Exceptional complex-pattern notes are permitted when they add genuinely unique context; reference them from the summary.
 
-Read [shared versioning conventions](../../project-scoping/references/versioning.md). Use the existing DOCS_ROOT, never a second tree. Work in `.scratch/project-ux/<project>/<scope-id>/preview/`. After explicit visual approval promote **the same files** to the existing canonical UX directory, or `<DOCS_ROOT>/ux/mockups/` for a new global MVP. Keep approved legacy paths and stable SCREEN anchors/navigation. Reused screens link to approved HTML; release partitioning never requires another gallery or renewed design of unchanged screens. Final files cannot reference scratch.
+Use [shared conventions](../../project-scoping/references/versioning.md) for paths, backlog, progress and re-entry. Step 2 of the UX workflow owns gallery construction and preservation; promote that exact approved result. The paths below describe a new MVP; existing and reviewed scope-specific UX directories take precedence. Final files reference canonical HTML.
 
 ## Final file tree
 
 ```text
 <DOCS_ROOT>/
 ├── PROJECT.md                             # existing, maintained by functional scoping
-├── FUTURE-FEATURES.md                     # existing roadmap
+├── BACKLOG.md                             # or the existing canonical backlog
 ├── modules/<module>/<feature>.md           # canonical functional features
 ├── MVP.md                                 # indispensable global scope, independent of releases
 └── ux/                                    # or existing versions/<baseline>/ux/, preserve paths
@@ -111,7 +111,7 @@ Use the following schema shape. This is an *illustrative* dataset, not a claim t
   },
   "futureConsiderations": [
     {
-      "source": "FUTURE-FEATURES.md",
+      "source": "BACKLOG.md",
       "item": "Phases ultérieures du projet",
       "navigationImplication": "Prévoir une navigation pouvant accueillir les nouvelles phases sans les activer dans cette version"
     }
@@ -123,21 +123,19 @@ Use the following schema shape. This is an *illustrative* dataset, not a claim t
 
 **Flow:** `id` (`FLOW-###`), `name` (French), `featureIds`, `screenIds`, `steps` (objects with `screenId`, `action`, `result`), `alternatives` (French strings; may be empty). Flows with UI must reference at least one scoped feature and screen. Keep stable flow IDs across versions when a journey evolves.
 
-**Screen:** `id` (`SCREEN-###`), `name`, `featureIds` and `flowIds` (only approved functional-scope connections), `change` (`new`, `modified`, `reused`), `mockup` (relative `.html#SCREEN-###` path, possibly an older approved gallery), nonempty `states`, interactions with unique `ACT-###` IDs / `trigger` / `result`, and `accessibilityNotes` (possibly empty). Exact matching HTML IDs are required. Reused paths may point to a legacy gallery; new/modified screens point to this contract directory's promoted `mockups/index.html`. Prototype behavior is illustrative; JSON records approved observable behavior.
+**Screen:** `id` (`SCREEN-###`), `name`, `featureIds` and `flowIds` (only approved functional-scope connections), `change` (`new`, `modified`, `reused`), `mockup` (relative `.html#SCREEN-###` path, possibly an older approved gallery), nonempty `states`, interactions with unique `ACT-###` IDs / `trigger` / `result`, and `accessibilityNotes` (possibly empty). Exact matching HTML IDs are required. Reused paths may point to an existing approved gallery, including retained containers in the current gallery. New/modified screens point to this contract directory's promoted `mockups/index.html`, built with the workflow's preservation procedure. Prototype behavior is illustrative; JSON records approved observable behavior.
 
 **Coverage:** one entry for **every FEAT in the canonical functional scope's `Fonctionnalités incluses` / `Évolutions des fonctionnalités existantes` sections**, whether global MVP or an approved change; none for future-only scope. Each entry has `featureId`, `coverage`, `screenIds` and `flowIds`. `covered` requires reciprocal screen/flow references; `no_ui` requires empty arrays and a meaningful **user-approved** justification; `unresolved` is draft-only and blocks approval. Coverage describes design completeness, not development or delivery.
 
 **Delivery:** a progress item per scoped FEAT, FLOW, SCREEN and ACT. `delivery.scope.path` equals `scope`, and `feature_refs` matches functional coverage. Preserve MVP-wide journeys even when only a subset of their steps/interactions is in a release change. Change `item_refs` and slice acceptance criteria identify exactly what ships; remaining item criteria keep full delivery incomplete. UI mockups and `status: approved` never set development/delivery state. Known UX dependency edges and release-slice prerequisites are planning inputs, not a generated plan. Empty release/assignment arrays are valid, including after visual approval.
 
-**Future considerations:** optional entries with `source` pointing to an **existing** project/roadmap source, `item`, `navigationImplication`. These entries cannot create current-version `FEAT-*`, screens, journeys, Issue scope or clickable future features. They preserve future-aware navigation decisions without mocking future phases.
+**Future considerations:** optional entries with `source` pointing to an **existing** project/roadmap source, `item`, `navigationImplication`. Choose only future/deferred needs for these entries; the backlog can also contain already-approved features outside this change. These entries cannot create current-version `FEAT-*`, screens, journeys, Issue scope or clickable future features. They preserve future-aware navigation decisions without mocking future phases.
 
 **JSON is the authoritative UX *data* handoff**, but the approved MVP/change scope and feature cards remain the functional truth; never overwrite them merely because JSON or prototype code suggests new behavior. The `UX-SUMMARY.md` summarizes instead of duplicating fields, allowing the future architecture/planning skill to use the JSON without re-parsing long Markdown tables.
 
-## Incorporating approved functional refinements discovered during UX
+## Functional refinements
 
-For approved **undelivered behavior**, update the canonical feature requirements, module, MVP/change scope and affected living indexes **in place**, preserving attributable delivered baselines. Integrate the behavior naturally into the accepted specification; retain historical headings without inventing new release sections. Show provenance in conversation/diff and preserve the original approved summary. Do not create appendix-style functional addenda.
-
-For an **already delivered version**, keep its functional baseline unchanged; document genuinely new behavior under the next version's normal scope. If it is uncertain whether a change belongs in the current or a later version, ask before finalization. Never invent approval or change a feature ID to disguise a scope change.
+Use the functional-refinement procedure in [the UX workflow](../SKILL.md) when a user decision changes behavior during design; it owns canonical updates and the corresponding approvals.
 
 ## Validation rules
 

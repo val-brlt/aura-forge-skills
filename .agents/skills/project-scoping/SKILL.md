@@ -6,11 +6,11 @@ disable-model-invocation: true
 
 # Aura Forge — Functional scoping and MVP
 
-This is a **user-invoked orchestration skill**, not an autonomous coding agent. Scope the global MVP or an approved functional evolution independently of software releases. Communicate in **French**. Follow `AGENTS.md` and already approved decisions. Read [references/versioning.md](references/versioning.md) and [references/functional-documents.md](references/functional-documents.md) before preview/apply/audit. A new release does not require a new scoping interview.
+This is a **user-invoked orchestration skill**, not an autonomous coding agent. Scope the global MVP or an approved functional evolution independently of software releases. Communicate in **French**. Follow `AGENTS.md` and already approved decisions. Read [shared conventions](references/versioning.md) before changing documents and [functional documentation](references/functional-documents.md) before preview/apply/audit.
 
 ## Mandatory language contract
 
-Write all **new user-facing functional documentation** in **French**: `PROJECT.md`, `MVP.md` (when relevant), `FUTURE-FEATURES.md`, `versions/<version>/VERSION.md`, module indexes and feature cards. This includes section titles, descriptions and acceptance criteria. Keep stable feature IDs, machine-readable frontmatter keys/values, slugs and file names in English. The **approved scoping summary is kept verbatim in its original language**. Preserve existing `GLOSSARY.md` conventions (English canonical terms plus *FR*) and ADR conventions. All review/approval exchanges are in French.
+Write all **new user-facing functional documentation** in **French**: `PROJECT.md`, `MVP.md` (when relevant), the canonical backlog, `versions/<version>/VERSION.md`, module indexes and feature cards. This includes section titles, descriptions and acceptance criteria. Keep stable feature IDs, machine-readable frontmatter keys/values, slugs and file names in English. The **approved scoping summary is kept verbatim in its original language**. Preserve existing `GLOSSARY.md` conventions (English canonical terms plus *FR*) and ADR conventions. All review/approval exchanges are in French.
 
 ## Scope and dependencies
 
@@ -25,8 +25,8 @@ Use Matt Pocock's installed **model-invoked** `grilling` and `domain-modeling` f
 Accept an idea, a source path, an existing MVP or a functional change request. Read relevant existing docs and `AGENTS.md`. Identify a stable `scope_id` (`mvp` for a new global MVP, otherwise an existing ID or approved change slug), not an invented software version.
 
 - **New MVP:** read the description or `docs/product/00-IDEA.md`. Define indispensable features and success criteria in `MVP.md`, without choosing release numbers.
-- **Existing project:** read `PROJECT.md`, `MVP.md`, existing `versions/*/VERSION.md`, canonical module/feature cards, backlog, glossary/ADRs and the request. Reuse the **approved baseline**, identify what is approved, planned, developed, actually delivered, deferred or unresolved. **Never infer delivery from approval or Git history.**
-- Honor an explicitly approved release target as planning context; otherwise leave it unset. A legacy `v1` names an approved functional baseline, with no automatic `0.1.0` or `1.0.0` mapping. Never renumber or relocate it silently.
+- **Existing project:** read `PROJECT.md`, `MVP.md`, existing `versions/*/VERSION.md`, canonical module/feature cards, backlog, glossary/ADRs and the request. Reuse the **approved baseline** and identify evidenced progress using the shared conventions.
+- Read already-approved release assignments as planning context using the shared conventions.
 - Record `initial_scope` or `scope_evolution`, known delivery evidence and unresolved status. Prior delivery is not a prerequisite for planning ahead. Resume answered questions and decisions rather than repeating interviews.
 
 Maintain resumable state under `.scratch/project-scoping/<project-slug>/<scope-id>/state.md`; reuse existing version-named workspaces when present. Track source paths, stage, findings, decisions, unanswered questions, summary/catalogue/doc approval, modified files and separate Git permissions. Read state first on restart. Keep drafts distinct from approved docs, never treat silence as consent, and do not store secrets.
@@ -70,12 +70,5 @@ Present files, exact FEAT set, functional delta, audit results and scoped Git di
 4. Ask separately for **push** permission and destination remote/branch; push only if authorized. Commit permission never implies push permission.
 5. Report functional scoping as approved/complete **only if its gates passed**. This does not mean implementation, release or MVP milestone completion. UX may follow later when requested.
 
-## Historical and delivery invariants
 
-- `MVP.md` defines the global indispensable scope, independently of releases; an old `release_bucket: mvp` does not prove approval or delivery.
-- Approved scope baselines and summaries remain at their existing paths. Revising historical approvals or moving files requires a separate, explicit reviewed decision.
-- Do not mark a version `delivered`, or a feature as actually delivered, based on scoping approval. Require explicit evidence or user confirmation.
-- A canonical card can evolve; earlier delivered rules and criteria remain attributable. A partial released slice never marks an incomplete whole feature delivered.
-- Keep `FUTURE-FEATURES.md` as a **living backlog**; promote a deferred item into the MVP or an approved release only after explicit approval.
-- Preserve an existing root `MVP.md` or `SCOPING-SUMMARY.md` during migration. Reorganize them only with documented user approval; do not create conflicting copies.
-- Never publish issues, implement code, commit, push, merge, delete or overwrite unrelated user work without the appropriate permission.
+Never publish issues, implement code, commit, push, merge, delete or overwrite unrelated user work without the appropriate permission.

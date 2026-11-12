@@ -26,6 +26,7 @@ SCREEN = re.compile(r"SCREEN-\d{3,}\Z")
 ACT = re.compile(r"ACT-\d{3,}\Z")
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "project-scoping/scripts"))
 from validate_delivery import delivery_errors, schema_errors
+from documentation_paths import resolve_backlog
 
 UX_SCHEMA = Path(__file__).resolve().parents[1] / "references/ux-contract.schema.json"
 FEAT_FIND = re.compile(r"FEAT-\d{3,}\b")
@@ -441,8 +442,13 @@ class Validation:
             self.require_str(raw, "navigationImplication", ctx)
             if source:
                 self.local_path(self.root, source, ctx)
-        if (self.root / "FUTURE-FEATURES.md").is_file() and not considerations:
-            self.warn(f"{version}: futureConsiderations is empty; check that roadmap context was actually reviewed")
+        try:
+            backlog = resolve_backlog(self.root)
+        except ValueError as exc:
+            self.err(str(exc))
+            backlog = None
+        if backlog is not None and backlog.is_file() and not considerations:
+            self.warn(f"{version}: futureConsiderations is empty; verify whether the backlog has relevant future needs (outside-change does not imply future)")
 
         if screens:
             # The user-facing summary must point to a real gallery, including

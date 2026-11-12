@@ -11,6 +11,8 @@ import re
 import sys
 from urllib.parse import unquote, urlsplit
 
+from documentation_paths import resolve_backlog
+
 FEAT = re.compile(r"FEAT-\d{3,}\Z")
 FIND_FEAT = re.compile(r"\bFEAT-\d{3,}\b")
 LINK = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
@@ -54,7 +56,12 @@ def main():
             documents[path.resolve()] = path.read_text(encoding="utf-8")
         except (OSError, UnicodeError) as exc:
             errors.append(f"{path}: {exc}")
-    for required in [root / "PROJECT.md", root / "FUTURE-FEATURES.md", scope_path]:
+    try:
+        backlog_path = resolve_backlog(root)
+    except ValueError as exc:
+        errors.append(str(exc))
+        backlog_path = root / "BACKLOG.md"
+    for required in [root / "PROJECT.md", backlog_path, scope_path]:
         if required not in documents:
             errors.append(f"Missing document: {required.relative_to(root)}")
     def local_links(path, text):
@@ -126,10 +133,10 @@ def main():
             errors.append(f"{fid}: only approved features belong in scope")
         if not section(documents[path], "Critères d'acceptation validés").strip():
             errors.append(f"{fid}: missing approved acceptance criteria")
-    backlog_links = links.get(root / "FUTURE-FEATURES.md", set())
+    backlog_links = links.get(backlog_path, set())
     for fid, (path, _) in features.items():
         if fid not in included and path not in backlog_links:
-            errors.append(f"{fid}: outside scope and absent from future/proposal/rejected catalogue")
+            errors.append(f"{fid}: outside selected scope and absent from canonical backlog (retain actual status and original scope)")
     for error in errors:
         print("ERROR:", error)
     print(f"Functional scope: {len(included)} feature(s), {len(errors)} error(s); verify approvals, history and evidence manually")

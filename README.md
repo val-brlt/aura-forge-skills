@@ -13,9 +13,9 @@ Le dépôt s’organise autour de **trois skills principaux** qui pilotent ces �
 
 | Étape | Skill | Rôle et livrables |
 | --- | --- | --- |
-| Cadrage | [`project-scoping`](.agents/skills/project-scoping/SKILL.md) | Clarifier le MVP ou une évolution fonctionnelle, définir les critères de réussite et structurer les modules, fiches fonctionnalités et besoins futurs. |
+| Cadrage | [`project-scoping`](.agents/skills/project-scoping/SKILL.md) | Clarifier le MVP ou une évolution fonctionnelle, définir les critères de réussite et structurer les modules, fiches fonctionnalités et backlog. |
 | UX/UI | [`project-ux`](.agents/skills/project-ux/SKILL.md) | Concevoir les parcours et les interactions avec des maquettes HTML interactives, une synthèse `UX-SUMMARY.md` et un contrat `UX-CONTRACT.json`. |
-| Architecture | [`project-architecture`](.agents/skills/project-architecture/SKILL.md) | Comparer les solutions techniques, définir les responsabilités et contrats partagés, puis produire l’architecture, le design technique, les ADR utiles et `ARCHITECTURE-CONTRACT.json`. |
+| Architecture | [`project-architecture`](.agents/skills/project-architecture/SKILL.md) | Comparer les solutions techniques, préparer l’architecture, le design technique, les ADR utiles et `ARCHITECTURE-CONTRACT.json`, puis valider le package avant son approbation finale. |
 
 Ces étapes se lancent à la demande et se reprennent à partir des documents existants. Leurs livrables transmettent les besoins, les décisions et les dépendances à la suite du projet ; terminer une étape ne lance pas automatiquement la suivante.
 
@@ -25,6 +25,7 @@ Ces étapes se lancent à la demande et se reprennent à partir des documents ex
 - **Le MVP reste un objectif fonctionnel.** Il peut être livré progressivement sur plusieurs releases. Son achèvement et la première version stable sont deux décisions distinctes.
 - **Les décisions restent traçables.** Les fonctionnalités conservent leurs identifiants `FEAT-*`, reliés aux parcours, écrans, interactions et éléments d’architecture.
 - **Les documents évoluent avec le projet.** Les skills reprennent les chemins et décisions existants, mettent à jour les sections concernées et préservent les éléments déjà livrés.
+- **Le backlog reste unique.** Un nouveau projet utilise `BACKLOG.md` ; un projet existant conserve son backlog canonique, y compris l’ancien nom `FUTURE-FEATURES.md`, jusqu’à une migration approuvée. Les besoins futurs et les fonctionnalités hors du changement courant y sont distingués avec leur état réel.
 - **L’avancement reste explicite.** Validation, planification, développement et livraison sont suivis séparément ; une maquette approuvée ne prouve pas une fonctionnalité développée.
 - **Les livrables destinés à l’utilisateur sont en français par défaut**, avec des identifiants et clés de contrats en anglais.
 
@@ -40,7 +41,7 @@ Utilisez un agent capable de lire et d’appliquer des instructions `SKILL.md` d
    git clone https://github.com/val-brlt/aura-forge-skills.git
    ```
 
-2. Copiez le contenu de `.agents/skills/` dans `.agents/skills/` du projet cible, en conservant les références, schémas et scripts associés. Les commandes de validation documentées utilisent ce chemin. Configurez la découverte des skills selon votre agent ; garder l’ensemble de la collection permet de disposer des dépendances méthodologiques des workflows principaux.
+2. Copiez le contenu de `.agents/skills/` dans `.agents/skills/` du projet cible, en conservant les références, schémas et scripts associés. Les commandes de validation documentées utilisent ce chemin. Les skills de soutien sont déjà inclus : conserver l’ensemble de la collection fournit les dépendances des workflows. Configurez leur découverte selon votre agent.
 3. Intégrez les conventions utiles de [`AGENTS.md`](AGENTS.md) et de [`docs/agents/`](docs/agents/) à celles du projet cible. Remplacez `NOM_GITHUB/NOM_REPO_GITHUB` par son dépôt GitHub et conservez ses règles et documents existants.
 4. Demandez explicitement à l’agent d’utiliser le skill correspondant à votre étape, en lui donnant votre idée ou les documents déjà approuvés.
 
@@ -76,12 +77,26 @@ Les workflows principaux sélectionnent les méthodes utiles à leur étape. Cer
 | Rechercher et explorer | [`research`](.agents/skills/research/SKILL.md), [`prototype`](.agents/skills/prototype/SKILL.md) |
 | Concevoir et évaluer l’interface | [`frontend-design`](.agents/skills/frontend-design/SKILL.md), [`design-critique`](.agents/skills/design-critique/SKILL.md) |
 | Structurer la documentation fonctionnelle | [`structure-project`](.agents/skills/structure-project/SKILL.md) |
-| Approfondir l’architecture | [`codebase-design`](.agents/skills/codebase-design/SKILL.md), [`software-architecture`](.agents/skills/software-architecture/SKILL.md), [`architect-specify`](.agents/skills/architect-specify/SKILL.md) |
+| Approfondir l’architecture | [`codebase-design`](.agents/skills/codebase-design/SKILL.md), [`software-architecture`](.agents/skills/software-architecture/SKILL.md) |
 | Rédiger la documentation | [`writing-for-agents`](.agents/skills/writing-for-agents/SKILL.md), [`create-readme`](.agents/skills/create-readme/SKILL.md) |
 
-`structure-project` est un soutien local au cadrage. Dans `project-scoping`, son utilisation suit l’[adaptateur de documentation fonctionnelle](.agents/skills/project-scoping/references/functional-documents.md), qui sépare le MVP des releases.
+La [liste des dépendances](docs/agents/skill-dependencies.md) précise les skills utilisés, leurs sources et leur rôle. `research` et `prototype` sont mobilisés selon les besoins de la phase.
 
-Les origines des imports sont enregistrées dans [`skills-lock.json`](skills-lock.json) : [Matt Pocock](https://github.com/mattpocock/skills), [Anthropic Skills](https://github.com/anthropics/skills), [Anthropic Knowledge Work Plugins](https://github.com/anthropics/knowledge-work-plugins), [Tikalk](https://github.com/tikalk/adlc-team-skills), [magnus919](https://github.com/magnus919/agent-skills) et [GitHub Awesome Copilot](https://github.com/github/awesome-copilot).
+`structure-project` fournit la procédure de structuration documentaire utilisée par `project-scoping`. La [référence fonctionnelle](.agents/skills/project-scoping/references/functional-documents.md) précise leur articulation ; les [conventions communes](.agents/skills/project-scoping/references/versioning.md) définissent le backlog, les états d’avancement et la séparation du MVP et des releases.
+
+La méthode de discussion et de comparaison architecturale est intégrée à la [référence locale de comparaison technique](.agents/skills/project-architecture/references/technical-comparisons.md), directement utilisée par `project-architecture`.
+
+Les origines des imports présents sont enregistrées dans [`skills-lock.json`](skills-lock.json) : [Matt Pocock](https://github.com/mattpocock/skills), [Anthropic Skills](https://github.com/anthropics/skills), [Anthropic Knowledge Work Plugins](https://github.com/anthropics/knowledge-work-plugins), [magnus919](https://github.com/magnus919/agent-skills) et [GitHub Awesome Copilot](https://github.com/github/awesome-copilot).
+
+## Vérifier la collection
+
+Depuis la racine du dépôt, lancez les tests des contrats, des références et de la compatibilité avec les anciens formats :
+
+```sh
+python -B .agents/skills/project-scoping/tests/test_contracts.py
+```
+
+Sous Windows, utilisez `py` si nécessaire. Chaque workflow indique aussi sa commande pour auditer les documents du projet accompagné ; l’approbation humaine porte sur les besoins, les maquettes et les décisions effectivement présentés.
 
 ## Évolutions prévues
 

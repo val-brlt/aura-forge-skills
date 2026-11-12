@@ -23,7 +23,7 @@ If summary approval or functional scope identity is unclear, obtain the missing 
 
 Read the complete approved summary, current project/MVP/backlog, relevant cards, existing scope baselines, glossary and ADRs. Classify each requested change as a new concept or evolution of an existing feature.
 
-Maintain **one canonical card per `FEAT-*`** under `modules/<module>/<feature>.md`. Reuse IDs and functional module slugs. Separate approval, functional scope, planned release, development and evidenced delivery. Keep proposed, unresolved, rejected and future-only work outside the approved MVP/change scope.
+Map requirements to canonical FEAT cards and functional module slugs using the shared conventions. Put items outside the selected scope in the canonical backlog with their actual status and original scope links.
 
 Present module, FEAT ID, French name, new/evolution, scope, decision state, provenance, approved acceptance criteria, dependencies and independent progress fields. Include assumptions, contradictions, the exact manifest and diffs to existing approved prose. Every approved requirement must trace to the summary or an explicit user decision; unsupported criteria remain proposed.
 
@@ -35,8 +35,8 @@ Use the current [document formats](references/document-formats.md):
 
 1. Preserve the approved summary verbatim in its original language, at its existing canonical path or `SCOPING-SUMMARY.md` under DOCS_ROOT for a new MVP.
 2. Create/update the authoritative functional scope with `status: draft` pending document review. `MVP.md` holds the global indispensable scope and success criteria, independently of releases. For a change, reuse its existing scope path or include a new scope path in the approved manifest.
-3. Update the living `PROJECT.md`, module indexes, canonical feature cards and `FUTURE-FEATURES.md` in place. Integrate accepted refinements into ordinary sections; preserve attributable delivered requirements, historical baselines and original summary snapshots. Corrections to an approved snapshot require separate explicit approval.
-4. Record only already-approved release assignments. Preserve historical `versions/v1/` paths without inferring a SemVer number. A new MVP needs no release directory; release partitioning alone creates no new feature cards or functional interview.
+3. Update `PROJECT.md`, module indexes, canonical feature cards and the canonical backlog in place, following the shared preservation rules. Index approved features outside this change separately from future/proposed work.
+4. Record existing release assignments using the shared conventions; a new functional scope needs no release directory.
 
 **Done:** every file in the approved manifest reflects the accepted catalogue, drafts are distinct from approvals, and the diff contains only authorized functional changes. Approval of documentation changes never proves development or delivery.
 

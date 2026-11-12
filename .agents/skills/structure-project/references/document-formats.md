@@ -13,18 +13,18 @@ Discover and reuse DOCS_ROOT. A new global MVP has this layout, with no release 
 ├── PROJECT.md
 ├── MVP.md
 ├── SCOPING-SUMMARY.md
-├── FUTURE-FEATURES.md
+├── BACKLOG.md
 └── modules/
     └── <module-slug>/
         ├── MODULE.md
         └── <feature-slug>.md
 ```
 
-For an evolution reuse the existing approved scope and source paths. A new change document's path belongs in the reviewed manifest. Preserve existing historical scopes, summaries and delivered baselines; changes to approved paths or snapshots require an explicit reviewed diff and user approval.
+Include a new change document's path in the reviewed manifest. Resolve canonical paths and backlog compatibility using the shared conventions above.
 
 ## PROJECT.md
 
-Describe purpose/users, outcomes and product scope. Link the global MVP, module indexes, active change scopes and future backlog. Keep existing legacy scopes, approved release plans and actual release evidence in separate indexes. Link only existing files.
+Describe purpose/users, outcomes and product scope. Link the global MVP, module indexes, active change scopes and canonical backlog. Keep existing legacy scopes, approved release plans and actual release evidence in separate indexes. Link only existing files.
 
 ## MVP.md and change scopes
 
@@ -45,7 +45,7 @@ source: SCOPING-SUMMARY.md
 ## Dépendances et décisions ouvertes
 <FEAT dependencies and unresolved questions>
 ## Limites et exclusions
-<Future features in FUTURE-FEATURES.md>
+<Excluded items linked from the canonical backlog>
 ## Avancement de l'objectif MVP
 <Open milestone; evidence required for each criterion>
 ## Source de cadrage
@@ -91,11 +91,13 @@ source: SCOPING-SUMMARY.md
 
 `id` is globally unique (`FEAT-` plus at least three digits). `module` matches the containing directory. `decision_status` is `approved`, `proposed`, `rejected` or `unresolved`; it describes the concept, not every future enhancement. `source` is relative to DOCS_ROOT and points to an existing approved source. Use `scope: mvp` or `future` only when established; a legacy `release_bucket` does not establish membership.
 
-Integrate approved undelivered refinements into ordinary sections with a reviewed diff. Preserve existing historical headings and attributable delivered requirements; a new requirement needs no invented version heading. Label proposed criteria separately. Record planning, development and actual delivery independently, using unknown when unverified; incomplete slices retain their remaining criteria.
+Keep historical headings and label proposed criteria separately. Apply shared preservation and progress rules to refinements and incomplete slices.
 
-## FUTURE-FEATURES.md
+## Canonical backlog (`BACKLOG.md` for new projects)
 
-Separate deferred enhancements, approved future concepts without a schedule, proposals/unresolved decisions and rejected items. A pending enhancement may reuse an existing FEAT; name the pending change instead of relabeling the whole shipped feature. Link catalogue cards outside the selected scope from the appropriate backlog section.
+Use the shared backlog definition and compatibility rules. Link every canonical card outside the selected scope under the appropriate French section: `Fonctionnalités approuvées hors du changement`, `Besoins futurs et évolutions différées`, `Propositions et décisions ouvertes`, or `Éléments rejetés`. Empty sections may be omitted.
+
+For each entry give the FEAT link, concise reason for exclusion, actual decision/development/delivery state (unknown where unverified), and original approved scope link when applicable. For example, an existing delivered FEAT omitted from a new search change stays linked to its approved MVP under the first section; it is not reclassified as future work. Reference acceptance criteria in the canonical card instead of copying them.
 
 ## Historical scopes and approved release plans
 

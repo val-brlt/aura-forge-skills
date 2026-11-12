@@ -1,12 +1,6 @@
 {
   "version": 2,
   "skills": {
-    "architect-specify": {
-      "source": "tikalk/adlc-team-skills",
-      "sourceType": "github",
-      "skillPath": "skills/architect/architect-specify/SKILL.md",
-      "computedHash": "0d6752204388ba553651e6248169fc1fe5c1db3d8fbf417d47bb871c8b6d7832"
-    },
     "codebase-design": {
       "source": "mattpocock/skills",
       "sourceType": "github",

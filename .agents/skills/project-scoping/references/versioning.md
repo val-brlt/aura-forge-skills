@@ -1,10 +1,10 @@
 # Shared scope, version and delivery conventions
 
-Read this reference before changing functional, UX or architecture documents. All three project skills use this model; reading it does not invoke another workflow. Preserve existing canonical paths and approvals.
+Read this reference before changing functional, UX or architecture documents. This is the authoritative reference for shared paths, backlog, progress, delivery and re-entry rules; phase workflows specify their own actions and approval gates. Reading it does not invoke another workflow.
 
 ## Four independent concepts
 
-- **MVP**: the global functional objective, indispensable `FEAT-*` and measurable success criteria in `MVP.md`. It may span several `0.x.y` deliveries. Keep future-only capabilities in `FUTURE-FEATURES.md`.
+- **MVP**: the global functional objective, indispensable `FEAT-*` and measurable success criteria in `MVP.md`. It may span several `0.x.y` deliveries. Index future-only capabilities in the canonical backlog.
 - **Software version**: an identified software state, normally `MAJOR.MINOR.PATCH`, without a `v` prefix. Historical identifiers such as `v1` remain documentation identities, without an inferred SemVer equivalent.
 - **Release**: actual delivery of a version. Proposed/planned release records are intentions, not evidence of delivery.
 - **Milestone**: a functional or delivery objective with success criteria. Achieving the MVP milestone is independent of declaring the first stable version.
@@ -16,6 +16,14 @@ Read this reference before changing functional, UX or architecture documents. Al
 Follow [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html): incompatible public-contract changes increment MAJOR; compatible functionality (including public deprecation) increments MINOR; compatible fixes increment PATCH. Reset lower components on a MAJOR/MINOR increment. Feature importance, effort and commercial priority do not determine the bump. Published contents are immutable.
 
 For `0.x.y`, use this explicit project convention until a different convention is approved: compatible fixes increment PATCH; new functionality or incompatible changes increment MINOR and reset PATCH. Document every incompatibility and migration even while MAJOR is zero. `0.x.y` contracts remain unstable. The first delivery number and release assignments stay undecided until dependency analysis and human validation. Store normal `X.Y.Z` numbers in the release ledger; prerelease/build labels, if needed, require an explicit extension of this model and must never be silently stripped.
+
+## Canonical paths and backlog
+
+Discover the existing DOCS_ROOT, glossary, ADRs and approved source paths before writing. Reuse their authoritative locations. Reviewed changes update ordinary canonical sections; preserve delivered baselines, original approved summaries and approval evidence. Moving or revising a historical snapshot requires an explicit reviewed decision. A new change scope is identified by its functional ID, without requiring a software version.
+
+Use one living backlog: `BACKLOG.md` for a new project; reuse an existing `FUTURE-FEATURES.md` until an explicitly reviewed migration updates its links. If both root files exist, resolve which is canonical before applying or completing an audit; do not create competing catalogues.
+
+The backlog indexes future needs **and features outside the selected change**. Distinguish approved features outside this change (link their original scope), deferred enhancements, proposals/unresolved decisions and rejected items. Reference the same canonical FEAT cards and keep decision, development and delivery states as evidenced. Being outside one change never removes a feature from its approved MVP or makes it future, unapproved or undelivered. A pending enhancement references its existing FEAT and names the delta. Scope documents remain authoritative for membership; backlog entries link them rather than copy their requirements. Promotion into an approved scope requires explicit functional approval.
 
 ## Canonicals, progress and partial delivery
 
