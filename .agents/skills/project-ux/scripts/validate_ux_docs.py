@@ -24,6 +24,10 @@ FEAT = re.compile(r"FEAT-\d{3,}\Z")
 FLOW = re.compile(r"FLOW-\d{3,}\Z")
 SCREEN = re.compile(r"SCREEN-\d{3,}\Z")
 ACT = re.compile(r"ACT-\d{3,}\Z")
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "project-scoping/scripts"))
+from validate_delivery import delivery_errors, schema_errors
+
+UX_SCHEMA = Path(__file__).resolve().parents[1] / "references/ux-contract.schema.json"
 FEAT_FIND = re.compile(r"FEAT-\d{3,}\b")
 HEADING = re.compile(r"^##\s+(.+?)\s*$", re.M)
 STATUS = {"draft", "approved"}
@@ -114,7 +118,7 @@ class Validation:
                 end = heads[i + 1].start() if i + 1 < len(heads) else len(text)
                 found.update(FEAT_FIND.findall(text[h.end():end]))
         if not found:
-            self.err(f"{self.rel(path)}: no FEAT-* IDs in the version's included/evolving features sections")
+            self.err(f"{self.rel(path)}: no FEAT-* IDs in the functional scope's included/evolving sections")
         return found
 
     def canonical_features(self) -> set[str]:
@@ -208,19 +212,39 @@ class Validation:
         if path in self.html_cache and expected_screen not in self.html_cache[path].screens:
             self.err(f"{self.rel(path)}: missing HTML container #{expected_screen}")
 
-    def check_version(self, version: str, available_features: set[str]) -> None:
-        directory = self.root / "versions" / version
-        scope_path = directory / "VERSION.md"
-        summary_path = directory / "ux" / "UX-SUMMARY.md"
-        contract_path = directory / "ux" / "UX-CONTRACT.json"
+    def check_version(self, version: str | None, available_features: set[str], contract_path: Path | None = None) -> None:
+        contract_path = (contract_path or self.root / "versions" / str(version) / "ux/UX-CONTRACT.json").resolve()
+        if not contract_path.is_relative_to(self.root):
+            self.err("Contract path leaves DOCS_ROOT")
+            return
+        contract_txt = self.read(contract_path)
+        if contract_txt is None:
+            return
+        try:
+            data = json.loads(contract_txt)
+        except json.JSONDecodeError as exc:
+            self.err(f"{self.rel(contract_path)}: invalid JSON: {exc}")
+            return
+        schema = json.loads(UX_SCHEMA.read_text(encoding="utf-8"))
+        shape_errors = schema_errors(data, schema, UX_SCHEMA)
+        if shape_errors:
+            self.errors.extend(shape_errors)
+            return
+        legacy = data["schemaVersion"] == 1
+        version = version or data["version"]
+        scope_url = f"versions/{version}/VERSION.md" if legacy else data["scope"]
+        checked_scope = self.local_path(self.root, scope_url, "scope")
+        if checked_scope is None:
+            return
+        scope_path = checked_scope[0]
+        summary_path = contract_path.parent / "UX-SUMMARY.md"
         scope_txt = self.read(scope_path)
         summary_txt = self.read(summary_path)
-        contract_txt = self.read(contract_path)
         if any(x is None for x in (scope_txt, summary_txt, contract_txt)):
             return
         assert scope_txt is not None and summary_txt is not None and contract_txt is not None
         scope_meta = self.frontmatter(scope_path, scope_txt)
-        if scope_meta.get("version") != version or scope_meta.get("status") not in {"approved", "delivered"}:
+        if (legacy and scope_meta.get("version") != version) or scope_meta.get("status") not in {"approved", "delivered"}:
             self.err(f"{self.rel(scope_path)}: UX requires approved/delivered scope for {version}")
         included = self.scope_features(scope_path, scope_txt)
         for missing in sorted(included - available_features):
@@ -228,7 +252,7 @@ class Validation:
         summary_meta = self.frontmatter(summary_path, summary_txt)
         if summary_meta.get("version") != version:
             self.err(f"{self.rel(summary_path)}: version metadata mismatch")
-        if summary_meta.get("scope") != f"versions/{version}/VERSION.md":
+        if summary_meta.get("scope") != scope_url:
             self.err(f"{self.rel(summary_path)}: wrong scope path")
         if summary_meta.get("status") not in STATUS:
             self.err(f"{self.rel(summary_path)}: status must be draft or approved")
@@ -237,17 +261,7 @@ class Validation:
                 self.err(f"{self.rel(summary_path)}: missing ## {heading}")
         if ".scratch/" in summary_txt or ".scratch\\" in summary_txt:
             self.err(f"{self.rel(summary_path)}: links to scratch")
-        try:
-            data = json.loads(contract_txt)
-        except json.JSONDecodeError as exc:
-            self.err(f"{self.rel(contract_path)}: invalid JSON: {exc}")
-            return
-        if not isinstance(data, dict):
-            self.err(f"{self.rel(contract_path)}: expected JSON object")
-            return
-        if type(data.get("schemaVersion")) is not int or data["schemaVersion"] != 1:
-            self.err(f"{self.rel(contract_path)}: schemaVersion must be integer 1")
-        if data.get("version") != version or data.get("scope") != f"versions/{version}/VERSION.md":
+        if data.get("version") != version or data.get("scope") != scope_url:
             self.err(f"{self.rel(contract_path)}: version or scope mismatch")
         if data.get("status") not in STATUS:
             self.err(f"{self.rel(contract_path)}: status must be draft or approved")
@@ -318,7 +332,7 @@ class Validation:
                     self.err(f"{sid}: mockup URL fragment must be #{sid}")
                 self.html_check(path, sid)
                 if change in {"new", "modified"} and path != (contract_path.parent / "mockups" / "index.html").resolve():
-                    self.err(f"{sid}: new/modified screen must point to current version's approved mockups/index.html")
+                    self.err(f"{sid}: new/modified screen must point to this contract's approved mockups/index.html")
             states = self.require_list(raw, "states", sid)
             if not states or any(not isinstance(x, str) or not x.strip() for x in states):
                 self.err(f"{sid}: states must be a nonempty string list")
@@ -372,7 +386,7 @@ class Validation:
                 self.err(f"{version}: duplicate coverage for {feat}")
             coverage_seen.add(feat)
             if feat not in included:
-                self.err(f"{version}: {feat} covered but not in target version scope")
+                self.err(f"{version}: {feat} covered but not in functional scope")
             kind = self.require_str(raw, "coverage", feat)
             sids = self.id_list(raw, "screenIds", feat, SCREEN)
             fids = self.id_list(raw, "flowIds", feat, FLOW)
@@ -400,6 +414,21 @@ class Validation:
                 self.err(f"{feat}: invalid coverage {kind!r}")
         for fid in sorted(included - coverage_seen):
             self.err(f"{version}: missing featureCoverage entry for {fid}")
+
+        if "delivery" in data:
+            required_items = included | set(flows) | set(screens) | used_actions
+            allowed = available_features | set(flows) | set(screens) | used_actions
+            delivery_issues = delivery_errors(data["delivery"], allowed)
+            self.errors.extend(delivery_issues)
+            if not delivery_issues:
+                delivery = data["delivery"]
+                if delivery["scope"]["path"] != scope_url or set(delivery["scope"]["feature_refs"]) != included:
+                    self.err(f"{version}: delivery functional scope differs from canonical scope")
+                item_refs = {item["ref"] for item in delivery["items"]}
+                for ref in sorted(required_items - item_refs):
+                    self.err(f"{version}: missing delivery progress item for {ref}")
+        elif legacy:
+            self.warn(f"{version}: legacy contract; implementation/release state remains unknown")
 
         considerations = self.require_list(data, "futureConsiderations", version)
         for idx, raw in enumerate(considerations):
@@ -430,7 +459,9 @@ class Validation:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("docs_root", type=Path)
-    parser.add_argument("--version", help="Only check this version (e.g. v1)")
+    selection = parser.add_mutually_exclusive_group()
+    selection.add_argument("--version", help="Check an existing document baseline directory (legacy v1 or X.Y.Z)")
+    selection.add_argument("--contract", type=Path, help="Contract path relative to working directory; accepts global MVP UX")
     args = parser.parse_args()
     root = args.docs_root
     if not root.is_dir():
@@ -438,23 +469,25 @@ def main() -> int:
         return 2
     check = Validation(root)
     features = check.canonical_features()
-    if args.version:
-        versions = [args.version]
+    if args.contract:
+        contracts = [(None, args.contract)]
+    elif args.version:
+        if re.fullmatch(r"(?:v\d+(?:\.\d+)*|(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*))", args.version) is None:
+            print("ERROR: invalid version directory", file=sys.stderr)
+            return 2
+        contracts = [(args.version, None)]
     else:
-        versions = sorted(p.name for p in (root / "versions").iterdir() if p.is_dir() and (p / "ux" / "UX-CONTRACT.json").exists()) if (root / "versions").is_dir() else []
-    if not versions:
+        contracts = [(None, p) for p in sorted(root.rglob("UX-CONTRACT.json"))]
+    if not contracts:
         print("ERROR: no UX contract versions found", file=sys.stderr)
         return 2
-    for version in versions:
-        if re.fullmatch(r"v\d+", version) is None:
-            check.err(f"Invalid version directory {version}")
-        else:
-            check.check_version(version, features)
+    for version, path in contracts:
+        check.check_version(version, features, path)
     for warning in check.warnings:
         print("WARNING:", warning)
     for error in check.errors:
         print("ERROR:", error)
-    print(f"Checked {len(versions)} version(s): {len(check.errors)} error(s), {len(check.warnings)} warning(s)")
+    print(f"Checked {len(contracts)} contract(s): {len(check.errors)} error(s), {len(check.warnings)} warning(s)")
     return 1 if check.errors else 0
 
 

@@ -10,6 +10,7 @@ This reference governs **the analysis shown to the user before approval** and it
 - A comparative table should be understandable by the user without reading source code or opening the scratch file. The scratch copy retains more detail and sources for session continuity.
 - Prefer qualitative comparison unless measured values and meaningful weights are known. Avoid invented ratings, costs, scales, benchmarks or deployment promises.
 - An approved choice should not be relitigated for variety. Reopen only for a verified conflict, new requirement, failed assumption or an explicit user request.
+- Compare technologies independently of what is installed on the user's machine. Existing shipped architecture and verified hosting constraints matter; incidental local tool availability never selects a stack.
 
 ## Exact scratch convention
 
@@ -18,7 +19,7 @@ Default relative to **repository root**:
 ```text
 .scratch/
 └── project-architecture/
-    └── vN/
+    └── <scope-id>/
         └── comparisons/
             ├── frontend-framework.md
             ├── backend-runtime-and-framework.md
@@ -26,7 +27,7 @@ Default relative to **repository root**:
             └── codex-integration.md
 ```
 
-These filenames are **illustrative**, not mandatory deliverables. Write only comparisons for real, open, consequential decisions. If an existing `.scratch` convention differs, follow that convention while keeping project/phase/version separation clear. If a repo contains multiple distinct projects, include a stable project slug before `vN` to avoid collisions.
+These filenames are **illustrative**, not mandatory deliverables. `<scope-id>` can be `mvp`, an existing legacy baseline or an already-approved release. Preserve existing workspaces; a new software version does not duplicate comparisons. Write only for real open consequential decisions, with a project slug when needed to avoid collisions.
 
 Before asking for user approval, create/update the choice's Markdown file. Use a **stable kebab-case slug** to update the same comparison after discussion. No date-stamped duplicate files or addenda. If the choice is rejected, revised, or approved, update its status and decision record in the same file. Do not turn a discussion draft into an accepted ADR without approval. Existing files from older attempts should be revised in place, never wholesale overwritten without reading their decisions first.
 
@@ -37,7 +38,7 @@ Treat scratch as noncanonical working history. Keep it available for resuming th
 ```markdown
 # [Choice title]
 
-- Project/version: [existing ID] / [vN]
+- Project/scope: [existing ID] / [MVP, change or existing baseline; release only if approved]
 - Status: proposed | accepted | rejected | deferred
 - Current recommendation: [option or explicitly provisional]
 - User decision: [none yet / approved option + exact verifiable reference]

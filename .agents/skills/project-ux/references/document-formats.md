@@ -6,7 +6,7 @@ Instructions here are **in English**. Generated UX summaries, HTML UI text and J
 
 **HTML** is the approved visual/interaction example; it is offline-capable, non-production and navigable. **`UX-CONTRACT.json`** is the structured, implementation-independent UX behavior and traceability source used by later agents. **`UX-SUMMARY.md`** provides a concise overview for the user, without copying each screen's content. **`ux/DESIGN-GUIDELINES.md`** is optional and describes stable shared patterns only when validated. No standard `USER-FLOWS.md`, `SCREEN-INVENTORY.md` or `ux/screens/<screen>.md` is needed. Exceptional complex-pattern notes are permitted when they add genuinely unique context; reference them from the summary.
 
-Use the existing documentation root (`docs/docs-project` or `docs/docs-projet`), never both. An approved preview begins in `.scratch/project-ux/<project>/<version>/preview/` and **the same files** are copied to `<DOCS_ROOT>/versions/<version>/ux/mockups/` after explicit visual approval. No final asset/URL may point to `.scratch`. Local HTML screens have `id="SCREEN-001"` and usable `href="#SCREEN-001"` navigation. A screen may link to the previous version's promoted HTML if unchanged; no duplicate gallery is needed merely for documentation.
+Read [shared versioning conventions](../../project-scoping/references/versioning.md). Use the existing DOCS_ROOT, never a second tree. Work in `.scratch/project-ux/<project>/<scope-id>/preview/`. After explicit visual approval promote **the same files** to the existing canonical UX directory, or `<DOCS_ROOT>/ux/mockups/` for a new global MVP. Keep approved legacy paths and stable SCREEN anchors/navigation. Reused screens link to approved HTML; release partitioning never requires another gallery or renewed design of unchanged screens. Final files cannot reference scratch.
 
 ## Final file tree
 
@@ -15,17 +15,15 @@ Use the existing documentation root (`docs/docs-project` or `docs/docs-projet`),
 ├── PROJECT.md                             # existing, maintained by functional scoping
 ├── FUTURE-FEATURES.md                     # existing roadmap
 ├── modules/<module>/<feature>.md           # canonical functional features
-├── ux/
-│   └── DESIGN-GUIDELINES.md               # optional
-└── versions/<version>/
-    ├── VERSION.md                         # approved feature scope
-    └── ux/
-        ├── UX-SUMMARY.md
-        ├── UX-CONTRACT.json
-        └── mockups/
-            ├── index.html                # only if new/changed UI
-            ├── style.css                 # if needed by HTML
-            └── app.js                    # if needed by HTML
+├── MVP.md                                 # indispensable global scope, independent of releases
+└── ux/                                    # or existing versions/<baseline>/ux/, preserve paths
+    ├── DESIGN-GUIDELINES.md               # optional
+    ├── UX-SUMMARY.md
+    ├── UX-CONTRACT.json
+    └── mockups/
+        ├── index.html                    # only if new/changed UI
+        ├── style.css                     # if needed by HTML
+        └── app.js                        # if needed by HTML
 ```
 
 Do not create empty folders or force every HTML file to have external CSS/JS. Keep version history, but avoid per-screen documentation and duplicate data.
@@ -34,12 +32,12 @@ Do not create empty folders or force every HTML file to have external CSS/JS. Ke
 
 ```markdown
 ---
-version: v1
+version: mvp
 status: draft
-scope: versions/v1/VERSION.md
+scope: MVP.md
 ---
 
-# Conception UX/UI — V1
+# Conception UX/UI — Objectif MVP
 
 ## Objectifs et parcours principaux
 <Description brève des tâches et parcours retenus, pas de fiche par écran>
@@ -65,10 +63,10 @@ Use the following schema shape. This is an *illustrative* dataset, not a claim t
 
 ```json
 {
-  "schemaVersion": 1,
-  "version": "v1",
+  "schemaVersion": 2,
+  "version": "mvp",
   "status": "draft",
-  "scope": "versions/v1/VERSION.md",
+  "scope": "MVP.md",
   "flows": [
     {
       "id": "FLOW-001",
@@ -99,6 +97,18 @@ Use the following schema shape. This is an *illustrative* dataset, not a claim t
   "featureCoverage": [
     {"featureId": "FEAT-001", "coverage": "covered", "screenIds": ["SCREEN-001"], "flowIds": ["FLOW-001"]}
   ],
+  "delivery": {
+    "scope": {"id": "mvp", "kind": "mvp", "path": "MVP.md", "feature_refs": ["FEAT-001"]},
+    "items": [
+      {"ref": "FEAT-001", "scope": "mvp", "decision_status": "approved", "acceptance_criteria": ["Le projet valide peut être créé"], "planned_versions": [], "development_status": "unknown", "delivery_status": "unknown", "delivered_versions": [], "evidence_refs": []},
+      {"ref": "FLOW-001", "scope": "mvp", "decision_status": "approved", "acceptance_criteria": ["Le parcours de création aboutit"], "planned_versions": [], "development_status": "unknown", "delivery_status": "unknown", "delivered_versions": [], "evidence_refs": []},
+      {"ref": "SCREEN-001", "scope": "mvp", "decision_status": "approved", "acceptance_criteria": ["Le formulaire présente les états validés"], "planned_versions": [], "development_status": "unknown", "delivery_status": "unknown", "delivered_versions": [], "evidence_refs": []},
+      {"ref": "ACT-001", "scope": "mvp", "decision_status": "approved", "acceptance_criteria": ["La création affiche un résultat ou une erreur"], "planned_versions": [], "development_status": "unknown", "delivery_status": "unknown", "delivered_versions": [], "evidence_refs": []}
+    ],
+    "releases": [], "dependencies": [],
+    "milestones": [{"id": "MVP", "kind": "mvp", "criteria": ["Les fonctionnalités indispensables satisfont les critères approuvés"], "status": "open", "evidence_refs": []}],
+    "public_contracts": [], "stability_criteria": [], "stability_approval_ref": null
+  },
   "futureConsiderations": [
     {
       "source": "FUTURE-FEATURES.md",
@@ -109,13 +119,15 @@ Use the following schema shape. This is an *illustrative* dataset, not a claim t
 }
 ```
 
-**Required top-level fields:** `schemaVersion` (integer `1`), `version` (`vN`), `status` (`draft` or `approved`), `scope` (`versions/<version>/VERSION.md`), `flows`, `screens`, `featureCoverage`, `futureConsiderations` (arrays, possibly empty when roadmap has no known implication).
+**Required fields:** `schemaVersion` (integer `2` for new contracts, legacy `1` still accepted), `version` (stable documentation baseline ID, not software release), `status` (`draft` / `approved`), `scope` (existing canonical path relative to DOCS_ROOT), `flows`, `screens`, `featureCoverage`, `futureConsiderations` (arrays). New format `2` requires `delivery` using the shared schema. Validate the top-level envelope with [ux-contract.schema.json](ux-contract.schema.json), nested UX behavior with the UX validator and delivery invariants with the shared validator. Keep all old fields; do not rewrite approved data merely to upgrade its format.
 
 **Flow:** `id` (`FLOW-###`), `name` (French), `featureIds`, `screenIds`, `steps` (objects with `screenId`, `action`, `result`), `alternatives` (French strings; may be empty). Flows with UI must reference at least one scoped feature and screen. Keep stable flow IDs across versions when a journey evolves.
 
-**Screen:** `id` (`SCREEN-###`), `name`, `featureIds` and `flowIds` (only current-version relevant connections), `change` (`new`, `modified`, `reused`), `mockup` (relative file path ending in `.html#SCREEN-###`, potentially a **prior version's** approved gallery), `states` (nonempty list of states), `interactions` (objects with unique `ACT-###` IDs, `trigger`, `result`), and `accessibilityNotes` (array, possibly empty). HTML screen elements must have the exact matching `id`. The mockup can be a reused prior-version link such as `../../v1/ux/mockups/index.html#SCREEN-001`. Simulated HTML behavior is illustrative, while this contract records the **approved observable behavior**.
+**Screen:** `id` (`SCREEN-###`), `name`, `featureIds` and `flowIds` (only approved functional-scope connections), `change` (`new`, `modified`, `reused`), `mockup` (relative `.html#SCREEN-###` path, possibly an older approved gallery), nonempty `states`, interactions with unique `ACT-###` IDs / `trigger` / `result`, and `accessibilityNotes` (possibly empty). Exact matching HTML IDs are required. Reused paths may point to a legacy gallery; new/modified screens point to this contract directory's promoted `mockups/index.html`. Prototype behavior is illustrative; JSON records approved observable behavior.
 
-**Coverage:** one entry for **every `FEAT-*` in the target version's `VERSION.md`**, and none for future-only or untouched historic features. Each entry has `featureId`, `coverage` and `screenIds` / `flowIds` arrays. `covered` requires at least one screen and flow and matching reciprocal references; `no_ui` requires empty arrays plus a meaningful **user-approved** `justification`; `unresolved` is allowed only while `draft` and blocks approval. Never use `no_ui` to hide missing design.
+**Coverage:** one entry for **every FEAT in the canonical functional scope's `Fonctionnalités incluses` / `Évolutions des fonctionnalités existantes` sections**, whether global MVP or an approved change; none for future-only scope. Each entry has `featureId`, `coverage`, `screenIds` and `flowIds`. `covered` requires reciprocal screen/flow references; `no_ui` requires empty arrays and a meaningful **user-approved** justification; `unresolved` is draft-only and blocks approval. Coverage describes design completeness, not development or delivery.
+
+**Delivery:** a progress item per scoped FEAT, FLOW, SCREEN and ACT. `delivery.scope.path` equals `scope`, and `feature_refs` matches functional coverage. Preserve MVP-wide journeys even when only a subset of their steps/interactions is in a release change. Change `item_refs` and slice acceptance criteria identify exactly what ships; remaining item criteria keep full delivery incomplete. UI mockups and `status: approved` never set development/delivery state. Known UX dependency edges and release-slice prerequisites are planning inputs, not a generated plan. Empty release/assignment arrays are valid, including after visual approval.
 
 **Future considerations:** optional entries with `source` pointing to an **existing** project/roadmap source, `item`, `navigationImplication`. These entries cannot create current-version `FEAT-*`, screens, journeys, Issue scope or clickable future features. They preserve future-aware navigation decisions without mocking future phases.
 
@@ -123,10 +135,10 @@ Use the following schema shape. This is an *illustrative* dataset, not a claim t
 
 ## Incorporating approved functional refinements discovered during UX
 
-For a **not-yet-delivered version**, update the canonical feature card and its existing version-specific section **in place**, the module description, the version `VERSION.md` and relevant living indexes (only where affected). Example: if the user explicitly approves a general project discussion as part of V1 during UX, the existing V1 project-discussion feature should simply contain that general discussion behavior and its acceptance criteria. Do not insert a paragraph like “Complément V1 acté pendant la revue UX — D17”, “Source complémentaire”, `SCOPING-ADDENDUM.md`, or any narrative provenance inside the feature/module pages. The existing requirements should read as a unified, current specification. Mention the scope refinement in the **conversation and Git diff**, not as an addendum in user documentation. Preserve the original `SCOPING-SUMMARY.md` as the historical first synthesis unless the user explicitly approves editing it.
+For approved **undelivered behavior**, update the canonical feature requirements, module, MVP/change scope and affected living indexes **in place**, preserving attributable delivered baselines. Integrate the behavior naturally into the accepted specification; retain historical headings without inventing new release sections. Show provenance in conversation/diff and preserve the original approved summary. Do not create appendix-style functional addenda.
 
 For an **already delivered version**, keep its functional baseline unchanged; document genuinely new behavior under the next version's normal scope. If it is uncertain whether a change belongs in the current or a later version, ask before finalization. Never invent approval or change a feature ID to disguise a scope change.
 
 ## Validation rules
 
-Run `scripts/validate_ux_docs.py <DOCS_ROOT> --version <version>` from the repository root. Validate coverage, IDs and cross-references, file and anchor links, and scratch isolation. HTML cannot be fully behavior-tested by static validation; manually open the final gallery and compare it to the user-approved preview. Review changes to functional docs in the Git diff before asking for separate commit and push permissions. Do not auto-delete legacy Markdown files; when upgrading an existing UX output, propose removal of obsolete files **only after** all references have been updated and the user agrees.
+Run `python .agents/skills/project-ux/scripts/validate_ux_docs.py <DOCS_ROOT> --contract <contract-path>` (path relative to working directory). Legacy `--version <baseline>` is supported, including `v1`; SemVer directories are also accepted. With neither option, discover global and legacy contracts. Validate shape, coverage, IDs, dependency/delivery metadata, anchors/assets and scratch isolation. Static checks do not verify user authority, evidence contents, JavaScript behavior or visual quality; open final HTML and compare against the approved preview. Review functional edits in the scoped diff before separate commit/push permissions. Upgrading a document/contract or removing legacy files requires the reviewed migration procedure; never delete them automatically.

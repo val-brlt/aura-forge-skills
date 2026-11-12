@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.1",
+  "version": {"id": "mvp", "status": "in_design", "technical_design_path": "architecture/TECHNICAL-DESIGN.md", "baseline_version": null},
+  "sources": {"functional_paths": ["MVP.md", "modules/projects/create-project.md"], "ux_paths": ["ux/UX-CONTRACT.json", "ux/mockups/index.html"]},
+  "modules": [{"id": "MOD-projects", "name": "Projets", "responsibility": "Gérer la création des projets", "depends_on": [], "feature_refs": ["FEAT-001"], "ux_refs": ["FLOW-001", "SCREEN-001", "ACT-001"], "change_type": "new"}],
+  "decisions": [],
+  "open_questions": [{"id": "Q-storage", "question": "Quel stockage répond aux contraintes validées ?", "blocking": true, "affected_refs": ["MOD-projects"]}],
+  "traceability": [{"feature_ref": "FEAT-001", "module_refs": ["MOD-projects"], "ux_refs": ["FLOW-001", "SCREEN-001", "ACT-001"]}],
+  "handoff": {"planning_ready": false, "blockers": ["Choix de stockage non approuvé"], "notes": ["Aucune release affectée avant analyse des dépendances et validation humaine"]},
+  "approval": {"status": "draft", "evidence_ref": null},
+  "delivery": {
+    "scope": {"id": "mvp", "kind": "mvp", "path": "MVP.md", "feature_refs": ["FEAT-001"]},
+    "items": [
+      {"ref": "FEAT-001", "scope": "mvp", "decision_status": "approved", "acceptance_criteria": ["Un projet valide est créé"], "planned_versions": [], "development_status": "unknown", "delivery_status": "unknown", "delivered_versions": [], "evidence_refs": []},
+      {"ref": "MOD-projects", "scope": "supporting", "decision_status": "proposed", "acceptance_criteria": [], "planned_versions": [], "development_status": "unknown", "delivery_status": "unknown", "delivered_versions": [], "evidence_refs": []}
+    ],
+    "releases": [],
+    "dependencies": [{"from_ref": "FEAT-001", "to_ref": "MOD-projects", "kind": "technical", "reason": "La création nécessite le module responsable", "status": "proposed"}],
+    "milestones": [{"id": "MVP", "kind": "mvp", "criteria": ["Les critères fonctionnels indispensables sont atteints"], "status": "open", "evidence_refs": []}],
+    "public_contracts": [], "stability_criteria": [], "stability_approval_ref": null
+  }
+}

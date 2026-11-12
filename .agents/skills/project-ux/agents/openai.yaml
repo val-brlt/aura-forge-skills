@@ -1,5 +1,5 @@
 interface:
   display_name: "Aura Forge — Conception UX/UI"
-  short_description: "Concevoir l'UX de V1/V2+, valider parcours et écrans, préparer la planification"
+  short_description: "Concevoir l'UX globale du MVP et ses livraisons progressives"
 policy:
   allow_implicit_invocation: false

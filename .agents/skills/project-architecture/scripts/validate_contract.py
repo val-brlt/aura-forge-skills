@@ -2,8 +2,8 @@
 """Validate Aura Forge architecture contract structure, references and handoff gate.
 
 Usage: python scripts/validate_contract.py path/to/ARCHITECTURE-CONTRACT.json
-Requires only Python stdlib; installs no dependencies. If jsonschema is already
-available, also checks the complete JSON Schema. This does not verify that external
+Requires only Python stdlib; checks the bundled schema and shared delivery
+invariants with no optional dependency or network access. This does not verify that external
 FEAT/FLOW/SCREEN references or approval evidence actually exist in the repository.
 """
 import json
@@ -12,6 +12,8 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SCHEMA = ROOT / "references" / "architecture-contract.schema.json"
+sys.path.insert(0, str(ROOT.parent / "project-scoping/scripts"))
+from validate_delivery import delivery_errors, schema_errors
 
 
 def main() -> int:
@@ -22,34 +24,15 @@ def main() -> int:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
         schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
         print(f"ERROR: {exc}")
         return 1
-    errors = []
-    try:
-        import jsonschema  # optional
-        jsonschema.Draft202012Validator(schema).validate(data)
-        print("Schema validation: OK (jsonschema)")
-    except ImportError:
-        print("NOTICE: jsonschema not installed; checking core structure and references only")
-        if not isinstance(data, dict):
-            errors.append("Contract must be a JSON object")
-        else:
-            for key in schema['required']:
-                if key not in data:
-                    errors.append(f"Missing required key: {key}")
-            if data.get('schema_version') != '1.0':
-                errors.append("schema_version must be '1.0'")
-            for key in ('modules', 'decisions', 'open_questions'):
-                if not isinstance(data.get(key), list):
-                    errors.append(f"{key} must be an array")
-    except Exception as exc:
-        errors.append(f"JSON Schema violation: {exc}")
-
-    if not isinstance(data, dict):
+    errors = schema_errors(data, schema, SCHEMA)
+    if errors:
         for msg in errors:
             print("ERROR:", msg)
         return 1
+    print("Bundled schema validation: OK (stdlib)")
 
     modules = data.get('modules') or []
     interfaces = data.get('interfaces') or []
@@ -102,6 +85,24 @@ def main() -> int:
     impact = data.get('change_impact') or {}
     if isinstance(impact, dict):
         check_refs('change_impact.affected_module_refs', impact.get('affected_module_refs'), mid)
+
+    if "delivery" in data:
+        features = {ref for m in modules for ref in m.get('feature_refs', [])}
+        features.update(tr['feature_ref'] for tr in data.get('traceability', []))
+        ux = {ref for m in modules for ref in m.get('ux_refs', [])}
+        ux.update(ref for tr in data.get('traceability', []) for ref in tr.get('ux_refs', []))
+        required = features | mid | iid | eid
+        problems = delivery_errors(data['delivery'], required | ux)
+        errors.extend(problems)
+        if not problems:
+            scoped = set(data['delivery']['scope']['feature_refs'])
+            if scoped != features:
+                errors.append("delivery.scope.feature_refs must match scoped module/traceability features")
+            item_refs = {item['ref'] for item in data['delivery']['items']}
+            for ref in sorted(required - item_refs):
+                errors.append(f"Missing delivery progress item for {ref}")
+    else:
+        print("NOTICE: legacy 1.0 contract; implementation/release state remains unknown")
 
     approval = data.get('approval') or {}
     handoff = data.get('handoff') or {}
