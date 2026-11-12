@@ -4,7 +4,7 @@
 
 Aura Forge rassemble des workflows pour agents IA autour des étapes d’un projet : cadrer le besoin, concevoir l’expérience utilisateur, définir l’architecture, puis préparer la planification et le développement. Chaque étape s’appuie sur des décisions humaines explicites et des livrables réutilisables par la suivante.
 
-Le dépôt s’organise autour de **skills principaux** qui pilotent ces étapes. Des skills de soutien, principalement importés d’autres dépôts, apportent des méthodes spécialisées : questionnement, recherche, design, architecture, tests ou revue de code.
+Le dépôt s’organise autour de **trois skills principaux** qui pilotent ces étapes. Des skills de soutien, principalement importés d’autres dépôts, apportent des méthodes spécialisées : questionnement, recherche, prototypage, design, architecture et documentation.
 
 > [!NOTE]
 > Le parcours actuel couvre le cadrage, l’UX et l’architecture. La planification avec GitHub Projects et l’orchestration du développement font partie des évolutions prévues.
@@ -40,7 +40,7 @@ Utilisez un agent capable de lire et d’appliquer des instructions `SKILL.md` d
    git clone https://github.com/val-brlt/aura-forge-skills.git
    ```
 
-2. Copiez les dossiers de `.agents/skills/` dans le répertoire de skills reconnu par votre agent pour le projet cible. Conservez les références, schémas et scripts associés. Garder l’ensemble de la collection permet de disposer des dépendances méthodologiques des workflows principaux.
+2. Copiez le contenu de `.agents/skills/` dans `.agents/skills/` du projet cible, en conservant les références, schémas et scripts associés. Les commandes de validation documentées utilisent ce chemin. Configurez la découverte des skills selon votre agent ; garder l’ensemble de la collection permet de disposer des dépendances méthodologiques des workflows principaux.
 3. Intégrez les conventions utiles de [`AGENTS.md`](AGENTS.md) et de [`docs/agents/`](docs/agents/) à celles du projet cible. Remplacez `NOM_GITHUB/NOM_REPO_GITHUB` par son dépôt GitHub et conservez ses règles et documents existants.
 4. Demandez explicitement à l’agent d’utiliser le skill correspondant à votre étape, en lui donnant votre idée ou les documents déjà approuvés.
 
@@ -72,14 +72,12 @@ Les workflows principaux sélectionnent les méthodes utiles à leur étape. Cer
 
 | Besoin | Skills présents |
 | --- | --- |
-| Clarifier le besoin et le vocabulaire | `grilling`, `grill-me`, `grill-with-docs`, `domain-modeling`, `to-questionnaire` |
-| Rechercher et explorer | `research`, `prototype` |
-| Concevoir et évaluer l’interface | `frontend-design`, `design-critique` |
-| Structurer la documentation fonctionnelle | `structure-project` |
-| Approfondir l’architecture | `codebase-design`, `software-architecture`, `architect-specify`, `improve-codebase-architecture` |
-| Préparer et suivre le travail | `to-spec`, `to-tickets`, `triage`, `wayfinder` |
-| Développer, tester et revoir | `implement`, `implement-spec`, `tdd`, `diagnosing-bugs`, `code-review`, `pr` |
-| Accompagner les sessions et la documentation | `ask-matt`, `handoff`, `retro`, `teach`, `wait-what`, `wizard`, `writing-for-agents`, `create-readme` |
+| Clarifier le besoin et le vocabulaire | [`grilling`](.agents/skills/grilling/SKILL.md), [`domain-modeling`](.agents/skills/domain-modeling/SKILL.md) |
+| Rechercher et explorer | [`research`](.agents/skills/research/SKILL.md), [`prototype`](.agents/skills/prototype/SKILL.md) |
+| Concevoir et évaluer l’interface | [`frontend-design`](.agents/skills/frontend-design/SKILL.md), [`design-critique`](.agents/skills/design-critique/SKILL.md) |
+| Structurer la documentation fonctionnelle | [`structure-project`](.agents/skills/structure-project/SKILL.md) |
+| Approfondir l’architecture | [`codebase-design`](.agents/skills/codebase-design/SKILL.md), [`software-architecture`](.agents/skills/software-architecture/SKILL.md), [`architect-specify`](.agents/skills/architect-specify/SKILL.md) |
+| Rédiger la documentation | [`writing-for-agents`](.agents/skills/writing-for-agents/SKILL.md), [`create-readme`](.agents/skills/create-readme/SKILL.md) |
 
 `structure-project` est un soutien local au cadrage. Dans `project-scoping`, son utilisation suit l’[adaptateur de documentation fonctionnelle](.agents/skills/project-scoping/references/functional-documents.md), qui sépare le MVP des releases.
 
@@ -92,7 +90,7 @@ Les origines des imports sont enregistrées dans [`skills-lock.json`](skills-loc
 | `project-planning` | Exploiter le cadrage, l’UX, l’architecture et leurs dépendances pour organiser le travail avec GitHub Projects, les issues et les releases. | Prévu, absent du dépôt. |
 | Volet développement | Orchestrer des agents pour l’implémentation, les tests, la revue de code, la sécurité et la préparation de la livraison. | À définir ; nom provisoire : `project-developpement`. |
 
-Des skills individuels de planification et de développement sont déjà présents dans la collection. Les futurs workflows principaux doivent les articuler dans la continuité du parcours projet.
+Ces futurs workflows prolongeront le cadrage, l’UX et l’architecture en réutilisant leurs livrables approuvés. Le choix des skills de soutien et l’organisation des agents pour ces étapes restent à définir.
 
 ## Organisation du dépôt
 
@@ -109,4 +107,4 @@ GLOSSARY.md              # Vocabulaire partagé
 skills-lock.json         # Provenance et empreintes des skills importés
 ```
 
-Les conventions du dépôt couvrent le [suivi des issues](docs/agents/issue-tracker.md), les [labels de triage](docs/agents/triage-labels.md) et le [glossaire et les ADR](docs/agents/domain.md). Les livrables produits par les workflows se placent dans le projet accompagné, en respectant sa documentation existante.
+Les conventions du dépôt couvrent le [suivi des issues](docs/agents/issue-tracker.md) et le [glossaire et les ADR](docs/agents/domain.md). Les livrables produits par les workflows se placent dans le projet accompagné, en respectant sa documentation existante.
