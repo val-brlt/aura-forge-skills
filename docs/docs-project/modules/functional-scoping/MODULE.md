@@ -25,4 +25,4 @@ Les parcours et écrans des projets gérés, leur architecture, leurs choix tech
 
 Le cadrage est rattaché à une [version de projet](../version-management/prepare-project-versions.md). Il est [sauvegardé et reprenable](../continuity/save-and-resume-scoping.md), avec un [historique consultable](../continuity/view-functional-history.md).
 
-Aucune question fonctionnelle bloquante consignée. Les adaptations techniques des workflows existants et le fournisseur IA restent à étudier. Sources : description initiale et D02, D06, D07, D10 à D14 de la [synthèse V1](../../versions/v1/SCOPING-SUMMARY.md).
+Aucune question fonctionnelle bloquante pour la référence V1. Les [choix techniques et l’adaptation des skills](../../architecture/ARCHITECTURE.md) sont approuvés, sans intégration attestée. Le cadrage autonome et l’appartenance MVP indépendante des releases ont des conséquences proposées sur synthèse, catalogue et validations ; elles suivent la décision attendue dans FEAT-004/005/006 sans rouvrir les exigences historiques. Sources : description initiale et D02, D06, D07, D10 à D14 de la [synthèse V1](../../versions/v1/SCOPING-SUMMARY.md).

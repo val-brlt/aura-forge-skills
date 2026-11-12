@@ -2,6 +2,7 @@
 id: FEAT-010
 module: functional-scoping
 decision_status: approved
+scope: mvp
 source: versions/v1/SCOPING-SUMMARY.md
 ---
 
@@ -36,6 +37,10 @@ Des questions non bloquantes peuvent rester ouvertes dans le résultat final. Un
 
 **Source :** [Synthèse V1](../../versions/v1/SCOPING-SUMMARY.md), D03, D05, D06, D07, D09, D11, D13.
 
+## Critères d'acceptation validés
+
+Les critères approuvés sont conservés dans la [section historique V1](#v1) ci-dessus. Ils fondent l’appartenance au [MVP global](../../MVP.md), sans attribuer de release ni attester de développement ou de livraison. Les critères proposés ci-dessous ne sont pas approuvés.
+
 ## Critères d’acceptation proposés
 
 Aucun critère supplémentaire proposé.
@@ -49,7 +54,7 @@ Aucun critère supplémentaire proposé.
 
 ## Questions ouvertes
 
-Aucune question fonctionnelle consignée pour V1. La présentation des validations figure dans les [livrables UX approuvés](../../versions/v1/ux/UX-SUMMARY.md) ; leurs mécanismes techniques d’exécution restent à concevoir.
+Aucune question fonctionnelle consignée pour V1. La présentation des validations figure dans les [livrables UX approuvés](../../versions/v1/ux/UX-SUMMARY.md) ; leurs mécanismes techniques cibles sont définis dans la [conception approuvée](../../versions/v1/architecture/TECHNICAL-DESIGN.md), sans exécution réelle attestée. Les trois validations restent sous l’autorité humaine et ne valident ni un plan de releases ni une livraison.
 
 ## Traçabilité
 

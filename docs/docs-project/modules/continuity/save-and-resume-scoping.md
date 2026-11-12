@@ -2,6 +2,7 @@
 id: FEAT-011
 module: continuity
 decision_status: approved
+scope: mvp
 source: versions/v1/SCOPING-SUMMARY.md
 ---
 
@@ -43,6 +44,10 @@ L’archivage conserve les échanges en consultation seule ; la restauration pr�
 
 **Source :** [Synthèse V1 — persistance, interruption et reprise](../../versions/v1/SCOPING-SUMMARY.md#5-persistance-interruption-et-reprise), description initiale et D09, D13.
 
+## Critères d'acceptation validés
+
+Les critères approuvés sont conservés dans la [section historique V1](#v1) ci-dessus. Ils fondent l’appartenance au [MVP global](../../MVP.md), sans attribuer de release ni attester de développement ou de livraison. Les critères proposés ci-dessous ne sont pas approuvés.
+
 ## Critères d’acceptation proposés
 
 Aucun critère supplémentaire proposé.
@@ -55,7 +60,7 @@ Aucun critère supplémentaire proposé.
 
 ## Questions ouvertes
 
-Aucune question fonctionnelle bloquante consignée. Les mécanismes de sauvegarde, de gestion des erreurs et de stockage seront définis dans la phase technique, sans promesse supplémentaire de disponibilité ou de délai dans ce cadrage.
+Aucune question fonctionnelle bloquante consignée. Les mécanismes cibles de sauvegarde, erreurs et stockage sont définis dans la [conception technique approuvée](../../versions/v1/architecture/TECHNICAL-DESIGN.md). Aucune sauvegarde/restauration applicative réelle n’est attestée. Toute opération IA, reprise de thread comprise, doit redemander explicitement `output_mode=structured` ; le backend garde contexte, révisions, provenance et idempotence, sans nouvelle promesse de disponibilité ou de délai.
 
 ## Traçabilité
 

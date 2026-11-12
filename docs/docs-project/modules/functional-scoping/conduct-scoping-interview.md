@@ -2,6 +2,7 @@
 id: FEAT-007
 module: functional-scoping
 decision_status: approved
+scope: mvp
 source: versions/v1/SCOPING-SUMMARY.md
 ---
 
@@ -49,6 +50,10 @@ Les discussions acceptent du texte saisi ou collé et affichent les réponses en
 
 **Source :** [Synthèse V1](../../versions/v1/SCOPING-SUMMARY.md), description initiale et D02, D06, D10, D12, D14.
 
+## Critères d'acceptation validés
+
+Les critères approuvés sont conservés dans la [section historique V1](#v1) ci-dessus. Ils fondent l’appartenance au [MVP global](../../MVP.md), sans attribuer de release ni attester de développement ou de livraison. Les critères proposés ci-dessous ne sont pas approuvés.
+
 ## Critères d’acceptation proposés
 
 Aucun critère supplémentaire proposé.
@@ -61,7 +66,7 @@ Aucun critère supplémentaire proposé.
 
 ## Questions ouvertes
 
-Aucune question fonctionnelle bloquante consignée. Le fournisseur IA, ses coûts, sa configuration et l’adaptation technique des skills seront étudiés ultérieurement.
+Aucune question fonctionnelle bloquante pour la référence approuvée. L’[architecture](../../architecture/ARCHITECTURE.md) retient Codex local et l’adaptation structured de l’ADR-0009 ; compte/coût, permissions effectives et intégration restent à vérifier. L’entretien autonome sans release suivra la décision de FEAT-004 ; aucune nouvelle question d’entretien n’est requise pour un simple découpage de livraison.
 
 ## Traçabilité
 

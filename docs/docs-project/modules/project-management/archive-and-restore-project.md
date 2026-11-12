@@ -2,6 +2,7 @@
 id: FEAT-003
 module: project-management
 decision_status: approved
+scope: mvp
 source: versions/v1/SCOPING-SUMMARY.md
 ---
 
@@ -30,6 +31,10 @@ Un projet peut être archivé puis restauré. Tant qu’il est archivé, il rest
 - L’archivage conserve les informations nécessaires à la reprise du projet.
 
 **Source :** [Synthèse V1](../../versions/v1/SCOPING-SUMMARY.md), D04 et D16.
+
+## Critères d'acceptation validés
+
+Les critères approuvés sont conservés dans la [section historique V1](#v1) ci-dessus. Ils fondent l’appartenance au [MVP global](../../MVP.md), sans attribuer de release ni attester de développement ou de livraison. Les critères proposés ci-dessous ne sont pas approuvés.
 
 ## Critères d’acceptation proposés
 

@@ -2,6 +2,7 @@
 id: FEAT-002
 module: project-management
 decision_status: approved
+scope: mvp
 source: versions/v1/SCOPING-SUMMARY.md
 ---
 
@@ -29,6 +30,10 @@ L’utilisateur modifie le texte libre décrivant son projet. La modification ne
 - La fonction dédiée d’amélioration de la description par IA ne fait pas partie de V1.
 
 **Source :** [Synthèse V1](../../versions/v1/SCOPING-SUMMARY.md), D04, D10 et D14.
+
+## Critères d'acceptation validés
+
+Les critères approuvés sont conservés dans la [section historique V1](#v1) ci-dessus. Ils fondent l’appartenance au [MVP global](../../MVP.md), sans attribuer de release ni attester de développement ou de livraison. Les critères proposés ci-dessous ne sont pas approuvés.
 
 ## Critères d’acceptation proposés
 

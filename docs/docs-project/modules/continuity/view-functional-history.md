@@ -2,6 +2,7 @@
 id: FEAT-012
 module: continuity
 decision_status: approved
+scope: mvp
 source: versions/v1/SCOPING-SUMMARY.md
 ---
 
@@ -34,6 +35,10 @@ Les modifications manuelles suivent les mêmes règles de traçabilité que les 
 
 **Source :** [Synthèse V1](../../versions/v1/SCOPING-SUMMARY.md), description initiale et D03, D07, D11, D12, D15, D16.
 
+## Critères d'acceptation validés
+
+Les critères approuvés sont conservés dans la [section historique V1](#v1) ci-dessus. Ils fondent l’appartenance au [MVP global](../../MVP.md), sans attribuer de release ni attester de développement ou de livraison. Les critères proposés ci-dessous ne sont pas approuvés.
+
 ## Critères d’acceptation proposés
 
 Aucun critère supplémentaire proposé.
@@ -47,7 +52,7 @@ Aucun critère supplémentaire proposé.
 
 ## Questions ouvertes
 
-Aucune question fonctionnelle bloquante consignée. La présentation de l’historique figure dans les [livrables UX approuvés](../../versions/v1/ux/UX-SUMMARY.md) ; sa représentation technique reste à étudier.
+Aucune question fonctionnelle bloquante consignée. La présentation de l’historique figure dans les [livrables UX approuvés](../../versions/v1/ux/UX-SUMMARY.md) ; sa représentation cible est définie par l’[architecture approuvée](../../architecture/ARCHITECTURE.md). L’historique conserve l’identité de baseline `v1`, sans conversion en release SemVer. La présentation séparée des périmètres, tranches et livraisons dans l’application dépend de l’adaptation proposée dans FEAT-004/005/006.
 
 ## Traçabilité
 

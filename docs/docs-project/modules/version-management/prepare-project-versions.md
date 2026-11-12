@@ -2,6 +2,7 @@
 id: FEAT-004
 module: version-management
 decision_status: approved
+scope: mvp
 source: versions/v1/SCOPING-SUMMARY.md
 ---
 
@@ -12,6 +13,8 @@ source: versions/v1/SCOPING-SUMMARY.md
 Cadrer une première version puis les suivantes d’un même projet sans repartir de zéro ni perdre les décisions précédentes.
 
 ## Comportement attendu
+
+Les règles ci-dessous décrivent la référence V1 approuvée. Le [MVP global](../../MVP.md) est indépendant des releases ; l’adaptation de ces règles dans l’application est présentée dans les critères proposés et questions ouvertes, sans approbation implicite.
 
 Chaque cadrage se rapporte à une version précise du projet. Le premier part de l’idée initiale ; les suivants réutilisent le dernier cadrage approuvé et les éléments reportés. Une seule version par projet est active en cadrage. La préparation d’une version suivante est possible avant livraison de la précédente, en distinguant le prévu du confirmé livré.
 
@@ -34,9 +37,17 @@ Une fonctionnalité conserve son identité au fil des versions ; son comportemen
 
 **Source :** [Synthèse V1 — versions et continuité fonctionnelle](../../versions/v1/SCOPING-SUMMARY.md#4-versions-et-continuité-fonctionnelle), D03, D05, D12 et description initiale.
 
+## Critères d'acceptation validés
+
+Les critères approuvés sont conservés dans la [section historique V1](#v1) ci-dessus. Ils fondent l’appartenance au [MVP global](../../MVP.md), sans attribuer de release ni attester de développement ou de livraison. Les critères proposés ci-dessous ne sont pas approuvés.
+
 ## Critères d’acceptation proposés
 
-Aucun critère supplémentaire proposé.
+Adaptation au MVP indépendant des releases — **proposition à valider**, sans modification des critères historiques approuvés :
+
+- Cadrer le MVP global ou une évolution avec une identité de périmètre stable, sans numéro de release obligatoire ; conserver la même identité FEAT lors des évolutions.
+- Maintenir un seul cadrage fonctionnel actif par projet, indépendamment des releases ; préparer une évolution par son delta sans répéter l’entretien approuvé. Cette transposition de D05 demande une validation explicite.
+- Conserver une référence approuvée exacte et les états décision/développement/livraison ; l’affectation à une release reste absente jusqu’à une planification validée.
 
 ## Dépendances fonctionnelles
 
@@ -47,7 +58,7 @@ Aucun critère supplémentaire proposé.
 
 ## Questions ouvertes
 
-Aucune question fonctionnelle consignée pour V1. Le cas d’une réouverture de la version précédente est couvert par [FEAT-006](reopen-approved-scoping.md).
+À valider pour adapter l’application : séparation entre périmètre fonctionnel, appartenance MVP et release ; transposition de l’activité unique et de la suspension. Le premier numéro SemVer et le découpage ne sont pas décidés. Les critères V1 restent approuvés et inchangés ; les nouveaux critères ci-dessus restent proposés.
 
 ## Traçabilité
 

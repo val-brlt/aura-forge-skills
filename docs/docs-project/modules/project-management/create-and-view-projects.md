@@ -2,6 +2,7 @@
 id: FEAT-001
 module: project-management
 decision_status: approved
+scope: mvp
 source: versions/v1/SCOPING-SUMMARY.md
 ---
 
@@ -29,6 +30,10 @@ L’utilisateur crée et consulte plusieurs projets, chacun identifié par un no
 - La création et la consultation ne nécessitent ni gestion de plusieurs utilisateurs ni authentification dans V1.
 
 **Source :** [Synthèse V1 — usage personnel et projets](../../versions/v1/SCOPING-SUMMARY.md#1-usage-personnel-et-projets), D01, D04 et description initiale.
+
+## Critères d'acceptation validés
+
+Les critères approuvés sont conservés dans la [section historique V1](#v1) ci-dessus. Ils fondent l’appartenance au [MVP global](../../MVP.md), sans attribuer de release ni attester de développement ou de livraison. Les critères proposés ci-dessous ne sont pas approuvés.
 
 ## Critères d’acceptation proposés
 

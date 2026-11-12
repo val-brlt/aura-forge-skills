@@ -4,7 +4,7 @@
 
 Aura Forge Project AI est une application web en français qui permet à une personne de transformer une idée de logiciel en cadrage fonctionnel validé, structuré et reprenable. L’utilisateur conserve la maîtrise des décisions : l’IA questionne, clarifie et propose ; les validations importantes restent explicites.
 
-La V1 est le MVP du produit. Elle vise un usage personnel, avec plusieurs projets, sans gestion de plusieurs utilisateurs ni authentification.
+Le [MVP](MVP.md) est l’objectif fonctionnel global : usage personnel, plusieurs projets, sans gestion de plusieurs utilisateurs ni authentification. Il peut être réalisé par plusieurs livraisons. La référence historique V1 conserve le périmètre approuvé, sans équivalent SemVer attribué.
 
 ## Problèmes rencontrés et résultats attendus
 
@@ -25,14 +25,16 @@ Le résultat attendu est un cadrage consultable dans l’application : synthèse
 ## Règles transversales
 
 - Les contenus fonctionnels et l’interface destinés à l’utilisateur sont en français.
-- Les informations métier sont structurées et persistantes ; leur représentation technique reste à concevoir.
+- Les informations métier sont structurées et persistantes. Leur représentation cible est définie dans la [conception technique approuvée](versions/v1/architecture/TECHNICAL-DESIGN.md) ; aucune base produit ni intégration opérationnelle n’est attestée.
+- Le MVP est indépendant des versions logicielles `MAJOR.MINOR.PATCH`. Approbation, planification, développement et livraison restent distincts ; une livraison partielle ne termine pas automatiquement une fonctionnalité ou le MVP.
+- Le découpage du MVP et le premier numéro de release restent à la future planification, après analyse des dépendances et validation humaine. La première version stable exige ses propres critères, distincts de l’achèvement du MVP.
 - Une proposition, une inclusion dans une version, une validation de cadrage et une livraison sont des informations distinctes.
 - Une fonctionnalité conserve son identité au fil de ses évolutions ; les règles et décisions de chaque version restent attribuables à cette version.
 - Une discussion ne modifie automatiquement ni description, ni arbitrage, ni catalogue, ni validation, ni livraison. Les échanges généraux et leurs brouillons restent propres au projet ; le contexte de version des messages reste identifiable.
 - Un projet archivé reste consultable, échanges compris ; sa restauration précède toute modification ou nouvelle saisie.
 - Une version suivante peut être cadrée avant livraison de la précédente. Le prévu reste distingué du confirmé livré.
 - Les modifications manuelles suivent les mêmes règles de traçabilité et de nouvelle validation que les propositions de l’IA.
-- Les workflows `project-scoping` et `structure-project`, appuyés par les procédures d’entretien et de modélisation métier, servent de référence fonctionnelle. Leur adaptation technique à l’application appartient à une phase ultérieure.
+- Les workflows `project-scoping` et `structure-project` servent de référence fonctionnelle. Leur adaptation est approuvée par l’[ADR-0009](../adr/0009-dual-output-skills-and-structured-proposals.md) : mode documentaire `files`, propositions applicatives `structured`, avec validation et persistance sous l’autorité du backend Python. Les skills installés ne décrivent pas encore `output_mode` ; leur adaptation et leur intégration restent à réaliser et à vérifier.
 
 Le vocabulaire de référence figure dans le [glossaire du projet](../../GLOSSARY.md).
 
@@ -45,7 +47,10 @@ Le vocabulaire de référence figure dans le [glossaire du projet](../../GLOSSAR
 
 ## Versions
 
-- [V1 — MVP](versions/v1/VERSION.md) : première version du produit, centrée sur le cadrage fonctionnel. Cadrage et documentation approuvés, statut `approved`. Aucune livraison du produit n’est confirmée.
+- [Objectif MVP](MVP.md) : consolidation des mêmes douze fonctionnalités approuvées, sans attribution de release.
+- [V1 — référence historique approuvée](versions/v1/VERSION.md) : cadrage, décisions et preuves conservés à leur emplacement, statut `approved`. L’ancien intitulé « V1 — MVP » et `release_kind: mvp` restent historiques ; aucune conversion en `1.0.0` ou `0.1.0`.
+
+Aucune release logicielle du produit n’est attribuée ou confirmée livrée. Les identifiants de baseline `v1` des contrats UX/architecture ne sont pas des numéros de logiciel.
 
 Les références aux versions suivantes des projets gérés décrivent une capacité de V1 ; elles n’engagent pas une future version du produit Aura Forge.
 
@@ -55,10 +60,12 @@ Le [backlog](FUTURE-FEATURES.md) distingue les capacités reportées, la proposi
 
 ## Décisions encore ouvertes
 
-Aucune question fonctionnelle bloquante n’est consignée pour V1. Le fournisseur IA, l’architecture, les coûts, l’exploitation et les adaptations techniques des skills restent à étudier dans leurs phases respectives.
+La référence V1 approuvée ne comporte pas de question fonctionnelle bloquante. La séparation documentaire MVP/releases est retenue ; les modalités produit de cadrage autonome, activité unique, livraison partielle et réouverture du reliquat restent proposées dans [FEAT-004](modules/version-management/prepare-project-versions.md), [FEAT-005](modules/version-management/declare-version-delivery.md) et [FEAT-006](modules/version-management/reopen-approved-scoping.md). Les règles historiques par version restent la baseline tant que cette adaptation fonctionnelle et UX n’est pas validée.
+
+L’[architecture](architecture/ARCHITECTURE.md) est approuvée : exécution locale, Codex app-server, Python/FastAPI, Vue/TypeScript, SQLite et HTTP JSON/SSE. Compte/coût, compatibilité, permissions effectives et restauration restent à vérifier lors de la réalisation ; aucun fonctionnement réel n’est garanti par ces décisions.
 
 La [synthèse UX](versions/v1/ux/UX-SUMMARY.md), le [contrat UX](versions/v1/ux/UX-CONTRACT.json) et les [maquettes HTML approuvées](versions/v1/ux/mockups/index.html) décrivent l’expérience validée de V1. Cette approbation ne confirme aucune livraison.
 
 ## Sources et état du cadrage
 
-La [synthèse de cadrage](versions/v1/SCOPING-SUMMARY.md) est conservée à l’identique. Les approbations de la synthèse, du catalogue et de la documentation sont attestées dans la [fiche V1](versions/v1/VERSION.md).
+La [synthèse de cadrage](versions/v1/SCOPING-SUMMARY.md) est conservée à l’identique. Les approbations de la synthèse, du catalogue et de la documentation sont attestées dans la [fiche V1](versions/v1/VERSION.md). Les mentions historiques de choix techniques encore ouverts décrivent l’état de cette phase ; les décisions techniques courantes figurent dans l’architecture approuvée, sans réécrire ces preuves.

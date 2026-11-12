@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "version": "v1",
   "status": "approved",
   "scope": "versions/v1/VERSION.md",
@@ -1070,5 +1070,1396 @@
       "item": "Export Markdown refusé pour V1 sans report présumé ; synchronisation externe non tranchée.",
       "navigationImplication": "Aucun export ni lien de synchronisation ; ces sujets ne constituent pas des capacités futures approuvées."
     }
-  ]
+  ],
+  "delivery": {
+    "scope": {
+      "id": "v1",
+      "kind": "legacy",
+      "path": "versions/v1/VERSION.md",
+      "feature_refs": [
+        "FEAT-001",
+        "FEAT-002",
+        "FEAT-003",
+        "FEAT-004",
+        "FEAT-005",
+        "FEAT-006",
+        "FEAT-007",
+        "FEAT-008",
+        "FEAT-009",
+        "FEAT-010",
+        "FEAT-011",
+        "FEAT-012"
+      ]
+    },
+    "items": [
+      {
+        "ref": "FEAT-001",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "L’utilisateur peut créer au moins deux projets distincts, chacun avec son nom et sa description.",
+          "Il peut consulter les informations de chaque projet et retrouver les cadrages qui lui sont associés.",
+          "Les informations d’un projet restent distinctes de celles des autres projets.",
+          "La création et la consultation ne nécessitent ni gestion de plusieurs utilisateurs ni authentification dans V1."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FEAT-002",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "La description libre d’un projet peut être modifiée manuellement.",
+          "La nouvelle description est consultable pour le projet concerné.",
+          "Un cadrage approuvé existant conserve son contenu après cette modification tant qu’il n’a pas fait l’objet d’une réouverture et d’une nouvelle validation explicites.",
+          "La fonction dédiée d’amélioration de la description par IA ne fait pas partie de V1."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FEAT-003",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "L’utilisateur peut archiver un projet existant puis le restaurer.",
+          "Le projet archivé et son historique restent consultables.",
+          "Une modification ou la poursuite de son cadrage nécessite d’abord sa restauration.",
+          "Archiver ou restaurer le projet ne change pas les validations déjà accordées ni ses déclarations de livraison.",
+          "L’archivage conserve les informations nécessaires à la reprise du projet."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FEAT-004",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Pour un projet, l’utilisateur peut préparer un premier cadrage, puis celui d’une version suivante.",
+          "Une seule version de ce projet est active en cadrage à un instant donné.",
+          "La version suivante peut être préparée même si la précédente n’est pas encore déclarée livrée.",
+          "L’assistant utilise le dernier cadrage approuvé et les éléments reportés comme contexte, en distinguant les fonctionnalités prévues de celles confirmées livrées.",
+          "Un élément reporté n’est pas inclus dans la nouvelle version sans sélection explicite.",
+          "L’évolution d’une fonctionnalité conserve son identité et l’attribution de ses comportements aux versions concernées."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FEAT-005",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "L’utilisateur peut déclarer explicitement qu’une version identifiée de son projet est livrée.",
+          "La validation d’une synthèse, d’un catalogue ou d’un cadrage final ne déclare pas automatiquement la version livrée.",
+          "Tant qu’aucune livraison n’est confirmée, le contexte des versions suivantes ne présente pas le seul périmètre approuvé comme un comportement livré.",
+          "Archiver un projet ne change pas les déclarations de livraison de ses versions."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FEAT-006",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "L’utilisateur peut rouvrir un cadrage approuvé pour une version non livrée.",
+          "L’état précédemment approuvé reste consultable après réouverture et modification.",
+          "Les éléments affectés par les corrections nécessitent une nouvelle validation, quelle que soit l’origine manuelle ou conversationnelle du changement.",
+          "Si V2 est en cadrage lors d’un retour explicite sur V1 non livrée, V2 est suspendue ; les deux versions ne restent pas actives en cadrage simultanément.",
+          "Après modification de V1, les éléments affectés de V2 doivent être revus sans réécriture automatique de ses décisions.",
+          "Une évolution fonctionnelle postérieure à la livraison est portée par une nouvelle version."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FEAT-007",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "L’utilisateur peut fournir l’idée ou les nouveaux besoins et répondre à l’assistant par texte saisi ou collé.",
+          "L’assistant questionne et propose en français pour clarifier les objectifs et les règles fonctionnelles de la version concernée.",
+          "L’analyse prépare les questions sans approuver le périmètre ni ajouter une quatrième validation.",
+          "Chaque question présente son contexte, une recommandation et sa justification ; l’utilisateur peut appliquer la recommandation ou confirmer sa réponse libre après relecture et correction éventuelle de l’interprétation.",
+          "Une discussion liée à une question conserve son sujet ; ses échanges seuls ne confirment pas une réponse.",
+          "Pour une version suivante, il prend en compte le cadrage approuvé de référence et les éléments reportés sans présenter le prévu comme livré.",
+          "Il produit une synthèse soumise à validation explicite avant la préparation du catalogue.",
+          "Le cadrage n’impose ni parcours d’interface, ni technologies, ni modèles de données, ni tâches de développement.",
+          "La fonction dédiée de reformulation ou d’enrichissement de la description initiale reste hors V1 ; cela ne retire pas l’assistant d’entretien du périmètre.",
+          "L’utilisateur peut discuter du contexte et des besoins d’un projet dans un fil général, distinct des discussions de ses questions de cadrage.",
+          "Le fil appartient au projet et reste accessible lorsque l’utilisateur consulte ses versions successives. Le contexte de version d’un échange est identifiable.",
+          "L’assistant utilise la description, les versions et leurs décisions sans confondre un cadrage approuvé et une livraison déclarée.",
+          "Une discussion générale ne modifie pas automatiquement la description, les propositions, le catalogue, les validations ou la livraison. Les décisions de cadrage restent explicites et rattachées à leur version.",
+          "L’exploration reste possible lorsque la version consultée est approuvée ou livrée. L’archivage impose la consultation seule jusqu’à restauration.",
+          "Les discussions affichent le Markdown ; Entrée envoie, Maj+Entrée ajoute une ligne et une composition en cours ne provoque pas d’envoi."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FEAT-008",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Pour une proposition, l’utilisateur peut discuter son contenu, le modifier, l’accepter, le refuser ou le reporter.",
+          "Une proposition non approuvée ou une question non résolue n’est pas présentée comme une exigence retenue pour la version.",
+          "Les éléments reportés restent disponibles pour les cadrages suivants et n’y sont sélectionnés que sur décision explicite.",
+          "Les décisions modifiées manuellement conservent leur traçabilité et les éléments affectés nécessitent une nouvelle validation.",
+          "Une décision sur une proposition ne vaut pas validation implicite de l’ensemble du cadrage ni déclaration de livraison."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FEAT-009",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Le catalogue est proposé à partir de la synthèse explicitement validée.",
+          "Les fonctionnalités sont regroupées en modules fonctionnels et chaque fonctionnalité retenue dispose de critères d’acceptation.",
+          "Le catalogue distingue les nouvelles fonctionnalités, les évolutions et les éléments retenus pour la version.",
+          "L’utilisateur peut modifier manuellement les modules, fonctionnalités et critères d’acceptation.",
+          "Une modification manuelle conserve sa traçabilité et entraîne une nouvelle validation des éléments affectés.",
+          "Une fonctionnalité évoluée conserve son identité et les comportements précédents restent attribuables à leurs versions."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FEAT-010",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "L’utilisateur valide explicitement la synthèse avant la préparation du catalogue.",
+          "Il valide explicitement le catalogue avant la consolidation finale du cadrage.",
+          "Le cadrage final fait l’objet de sa propre validation explicite.",
+          "Une absence de réponse, une suspension ou une erreur de l’assistant n’approuve aucun résultat.",
+          "Une règle indispensable non clarifiée pour une fonctionnalité retenue empêche la validation finale ; l’utilisateur peut clarifier ou reporter cette fonctionnalité.",
+          "Des questions non bloquantes peuvent rester visibles sans empêcher la validation finale.",
+          "Après correction d’un cadrage approuvé avant livraison, les éléments affectés nécessitent une nouvelle validation.",
+          "Une validation de cadrage ne déclare jamais automatiquement la version livrée."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FEAT-011",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "L’entretien et les décisions sont sauvegardés automatiquement.",
+          "Après fermeture de session, l’utilisateur peut retrouver l’entretien et les décisions sauvegardés pour le projet et la version concernés.",
+          "Après une erreur de l’assistant, le travail sauvegardé reste reprenable.",
+          "Les informations fonctionnelles conservées restent consultables et réutilisables dans l’application.",
+          "L’utilisateur peut suspendre un entretien incomplet avec une couverture partielle indiquée et les questions ouvertes visibles.",
+          "Une suspension, une erreur ou une reprise n’accorde aucune approbation implicite.",
+          "Les échanges et les brouillons du fil général restent associés à leur projet ; la consultation d’un autre projet ne mélange pas ses messages ou sa saisie.",
+          "Le changement de version consultée d’un même projet ne fait pas perdre son fil général ; les échanges restent attribuables à leur contexte de version.",
+          "Après une erreur de réponse, le message utilisateur reste disponible et le réessai ne le duplique pas.",
+          "L’archivage conserve la consultation du fil ; une nouvelle saisie exige la restauration du projet.",
+          "Une erreur de sauvegarde indique que les changements restent dans la session et permet de réessayer sans prétendre qu’ils sont enregistrés."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FEAT-012",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "L’utilisateur peut consulter les cadrages et décisions antérieurs d’un projet en identifiant les versions concernées.",
+          "Lorsqu’un cadrage approuvé est rouvert et corrigé, son état approuvé précédent reste consultable.",
+          "Lorsqu’une fonctionnalité évolue, ses comportements précédents restent attribuables à leurs versions sans perte de son identité.",
+          "Les décisions modifiées manuellement conservent leur traçabilité au même titre que les changements issus du dialogue avec l’IA.",
+          "La consultation distingue les capacités prévues ou approuvées des capacités confirmées livrées.",
+          "L’historique reste consultable pour un projet archivé."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FLOW-001",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "La liste des projets est consultable et la création ouvre SCREEN-002.",
+          "Un projet distinct est créé et sa vue d’ensemble s’ouvre avec sa première version.",
+          "La description est enregistrée sans réécrire les cadrages approuvés.",
+          "L’archive conserve le projet ; sa restauration permet la modification."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FLOW-002",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Les états de cadrage et de livraison sont lisibles séparément.",
+          "Une version suivante est préparée sans inclusion automatique du contexte approuvé ni des reports.",
+          "L’état approuvé est conservé, la suivante active est suspendue et ses éléments affectés sont à revoir sans réécriture automatique.",
+          "Les résultats affectés sont revalidés ; SCREEN-010 conserve la référence précédente.",
+          "La livraison est déclarée explicitement sans approuver un cadrage incomplet."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FLOW-003",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "L’analyse prépare les questions sans approbation métier.",
+          "La question affiche contexte, recommandation et justification.",
+          "La réponse explicitement confirmée devient une décision ; son interprétation reste corrigeable avant confirmation.",
+          "La discussion conserve son sujet et le retour à la question permet de décider.",
+          "La synthèse présente les réponses confirmées et reste à valider."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FLOW-004",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Les propositions et recommandations sont consultables avec leur discussion propre.",
+          "Les arbitrages sont conservés ; acceptation et inclusion restent distinctes.",
+          "Les reports restent du contexte jusqu’à sélection explicite.",
+          "Le catalogue issu de la synthèse validée est modifiable avec ses critères.",
+          "L’identité fonctionnelle et les comportements antérieurs restent consultables ; les résultats affectés sont à revalider."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FLOW-005",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "La synthèse est explicitement approuvée avant préparation du catalogue.",
+          "Le catalogue est explicitement approuvé avant consolidation finale.",
+          "Le périmètre, les décisions, les reports et les questions ouvertes sont relisibles.",
+          "La règle indispensable est clarifiée ou la fonctionnalité reportée ; le catalogue affecté est à revalider.",
+          "Le cadrage final est approuvé ; la livraison conserve sa déclaration distincte."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FLOW-006",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Le projet actif ou archivé est retrouvé ; SCREEN-003 présente son contexte.",
+          "L’historique de la version choisie est affiché.",
+          "Le contenu sélectionné est consultable avec son origine et sa version.",
+          "Les références et comportements antérieurs sont conservés sans réécriture."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "FLOW-007",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Le fil et le brouillon du projet sont retrouvés avec le contexte de version consulté.",
+          "Le message est envoyé ; Maj+Entrée ajoute une ligne sans envoi.",
+          "La réponse est lisible en Markdown avec son contexte de version.",
+          "Le cadrage concerné est accessible pour ses décisions et validations explicites."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "SCREEN-001",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Liste normale",
+          "aucun projet avec invitation à créer",
+          "aucune archive",
+          "projets archivés identifiables et consultables. Le cadrage approuvé et la livraison ne sont pas confondus dans les états affichés."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-001",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Titre « Mes projets », action « Nouveau projet », filtres « En cours » et « Archivés », puis lignes de projets avec description et état de la version. Les archives ne constituent pas une entrée du menu latéral."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-002",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Le formulaire SCREEN-002 s’ouvre."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-003",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "SCREEN-003 s’ouvre pour le projet sélectionné."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-004",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Les projets actifs et archivés restent distingués."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "SCREEN-002",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Formulaire vide ou rempli",
+          "nom ou description absents avec erreur au champ",
+          "création confirmée dans le nouveau contexte. Une saisie invalide ne crée pas de projet."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-005",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Retour aux projets, nom, description libre, aide à la saisie, action « Créer le projet » et annulation. Une explication présente le chemin vers le cadrage validé."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-006",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Le projet ouvre SCREEN-003 avec sa première version ; aucun import ni enrichissement dédié par IA n’est proposé."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-007",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "La liste réapparaît sans création de projet."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-008",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Une erreur est reliée au champ ; aucun projet n’est créé et le premier champ invalide reçoit le focus."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "SCREEN-003",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Projet actif, analyse à commencer, cadrage à poursuivre, suspendu ou approuvé",
+          "archive avec bannière de consultation et action de restauration. Validations et livraisons restent inchangées après archivage."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-009",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Nom dans l’en-tête et le contenu, description modifiable, panneau de reprise et liste des versions. Le menu gauche contient vue d’ensemble, discussion IA, versions, historique, puis les étapes de travail ; il ne répète ni « Projet ouvert », ni le nom, ni un titre « Projet »."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-010",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "La description est conservée sans réécrire les cadrages approuvés."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-011",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "La description enregistrée reste inchangée."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-012",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "L’archive devient consultable en lecture seule ; la restauration permet la modification. Validations et livraisons restent inchangées."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-013",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Le panneau conduit à l’analyse, aux questions, au résultat en cours ou au choix explicite d’une version suspendue."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-014",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "SCREEN-011 présente le fil général du projet."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "SCREEN-004",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Version en préparation, suspendue, approuvée, livrée",
+          "suivante à revoir après modification de sa référence",
+          "refus d’activer deux cadrages",
+          "archive sans action de modification. Une livraison peut être déclarée sans approuver implicitement un cadrage incomplet."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-015",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Action « Préparer la version suivante », règle du cadrage actif unique, lignes de versions, états et actions propres à chacune. Les informations de cadrage et de livraison restent lisibles séparément."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-016",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Le contexte consulté et ses états de cadrage et de livraison restent identifiables séparément."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-017",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Les nouveaux besoins, le contexte approuvé et les reports sont disponibles sans inclusion automatique, y compris avant livraison de la précédente."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-018",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Le cadrage actif doit être terminé ou suspendu avant activation d’un autre ; la règle du cadrage actif unique est expliquée."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-019",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "La référence approuvée est conservée ; la suivante active est suspendue et les éléments affectés sont à revoir, sans réécriture automatique."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-020",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "La réouverture est interdite ; une évolution passe par une nouvelle version."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-021",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "La livraison est déclarée pour la version choisie sans approbation implicite d’un cadrage incomplet. Annuler le dialogue conserve les états précédents."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "SCREEN-005",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Analyse à lancer, en attente ou en erreur avec réessai",
+          "question à examiner, réponse saisie, interprétation à confirmer, réponse enregistrée ou modifiable",
+          "cadrage suspendu ou en consultation seule. Une question bloquante retenue doit être clarifiée ou reportée avant validation finale."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-022",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Contexte de cadrage, navigation locale vers synthèse/catalogue/final et décisions/reportés. Avant analyse : idée et action « Analyser l’idée ». Après analyse : progression du tour, liste des questions et question sélectionnée avec contexte, recommandation, justification, actions et réponse libre."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-023",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "L’analyse prépare les questions sans validation métier ; attente ou erreur permettent un réessai."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-024",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Son contexte, sa recommandation et sa justification apparaissent avec la progression du tour."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-025",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "La réponse est confirmée pour la question ; une recommandation d’inclusion précise la version concernée."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-026",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "La décision confirmée alimente la synthèse à relire ; une réponse non confirmée n’est pas approuvée et peut rester à clarifier."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-027",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Le panneau garde le sujet et ses messages séparés, affiche le Markdown et laisse la décision explicite dans la question. Entrée envoie, Maj+Entrée ajoute une ligne ; la composition est respectée."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-028",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Réponses, questions ouvertes et couverture partielle sont conservées, sans approbation implicite."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-029",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Les textes et décisions sont conservés ; une erreur de sauvegarde indique que les changements restent dans la session et invite à réessayer avant fermeture."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "SCREEN-006",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Synthèse non préparée, à valider, corrigée ou validée",
+          "questions ouvertes visibles",
+          "cadrage approuvé ou livré en consultation. La validation n’approuve ni le catalogue, ni le cadrage final, ni une livraison."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-030",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Objectif, utilisateurs, périmètre retenu, éléments reportés/refusés, points à préciser et décisions issues des réponses. Panneau de première validation avec correction et retour aux questions."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-031",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Les réponses restent consultables ; les corrections sont tracées et invalident les validations affectées."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-032",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "La synthèse est approuvée avant préparation du catalogue ; ni le catalogue, ni le cadrage final, ni une livraison ne sont approuvés par cette action."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-033",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "L’état précédemment approuvé reste accessible dans l’historique."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "SCREEN-007",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Proposition à arbitrer, acceptée sans inclusion, incluse, refusée, reportée ou modifiée à reprendre",
+          "règle indispensable à préciser",
+          "filtre sans résultat. En archive ou sur référence protégée, les actions de mutation sont indisponibles avec explication contextuelle."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-034",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Titre local au cadrage, retour aux questions, filtres « Toutes », « À arbitrer », « Reportées », propositions et recommandation IA, puis actions d’arbitrage et éventuelle sélection du périmètre."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-035",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "La sélection est explicite ; un filtre vide explique où retrouver les autres propositions."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-036",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Le fil garde le bon sujet et ses messages séparés."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-037",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "L’arbitrage est explicite ; modifier une proposition retenue la remet à arbitrer et impose une nouvelle validation des résultats affectés."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-038",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Acceptation et inclusion restent distinctes ; les reports ne sont jamais inclus automatiquement dans une version suivante."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-039",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Les mutations sont indisponibles en archive ou sur référence protégée, avec explication de la restauration ou réouverture requise ; une règle indispensable doit être clarifiée ou la fonctionnalité reportée avant validation finale."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "SCREEN-008",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Catalogue en attente de synthèse, vide pour une nouvelle version, proposé, corrigé ou validé",
+          "aucun élément automatiquement retenu",
+          "référence protégée en consultation. Le périmètre d’une version suivante distingue les évolutions des nouvelles capacités."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-040",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Navigation des validations, module sélectionné, fonctionnalités avec identité, nouveauté/évolution, comportement et critères. Action distincte « Valider le catalogue ». Les comportements antérieurs restent accessibles par l’historique."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-041",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Les modules, fonctionnalités, comportements et critères sont proposés ; une nouvelle version reste vide jusqu’à sélection explicite."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-042",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Les corrections sont tracées ; l’identité de la fonctionnalité est conservée et ses comportements antérieurs restent accessibles dans l’historique."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-043",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Le catalogue est approuvé avant consolidation finale ; un catalogue modifié doit être revalidé avant validation finale."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "SCREEN-009",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Synthèse ou catalogue non validé",
+          "règle indispensable bloquante",
+          "catalogue à revalider",
+          "cadrage prêt",
+          "cadrage approuvé. Une question non bloquante peut rester visible. Aucune absence de réponse, erreur ou suspension ne vaut approbation."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-044",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "État de validation, blocage éventuel et issues proposées, périmètre retenu, reports, décisions structurantes, question non bloquante conservée et liste des prérequis."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-045",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Les validations manquantes et règles indispensables non clarifiées sont signalées ; le bouton final reste indisponible tant que ces blocages subsistent."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-046",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Le blocage propose ces deux issues et le catalogue affecté est à revalider."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-047",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Le cadrage est approuvé par action explicite ; une question non bloquante peut rester visible. Annuler, ne pas répondre, suspendre ou rencontrer une erreur n’approuve rien."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-048",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "La livraison reste une déclaration distincte sur SCREEN-004."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "SCREEN-010",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Historique initial, événements issus de l’IA ou de décisions manuelles, état approuvé initial et référence avant réouverture",
+          "aucune sélection",
+          "version livrée ou non",
+          "archive consultable. Aucun contrôle de réécriture d’une version livrée n’est proposé."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-049",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Choix de la version, liste chronologique des événements avec origine et états approuvés conservés, puis panneau de contenu sélectionné. L’information de livraison reste distincte."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-050",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Ses événements s’affichent sans changer le cadrage actif ; avant sélection, le panneau explique comment ouvrir une entrée."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-051",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Contenu, contexte, origine, modifications et version sont consultables, y compris la référence avant réouverture et les comportements précédents d’une même identité fonctionnelle."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-052",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "L’historique reste lisible ; aucune réécriture rétroactive d’une version livrée n’est proposée."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "SCREEN-011",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Premier échange, fil existant, brouillon, réponse en attente, erreur avec réessai sans duplication, changement de projet/version. En archive, lecture possible et saisie désactivée jusqu’à restauration. L’assistant ne déduit pas une livraison d’une approbation."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-053",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Entrée « Discussion IA » du menu projet, fil général et saisie ; contexte à droite avec description, version consultée et dernière référence approuvée. Sur mobile, ce contexte suit la discussion."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-054",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Le message apparaît dans le fil du projet ; la réponse en attente est annoncée puis affichée en Markdown. Maj+Entrée ajoute une ligne ; la composition du texte est respectée."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-055",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Messages et brouillons restent séparés entre projets. Le fil général est conservé entre versions du même projet, avec contexte des messages identifiable et discussions de questions séparées."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-056",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Description, versions et décisions fournissent le contexte, sans modification automatique de description, propositions, catalogue, validations ou livraison ; approbation et livraison restent distinctes."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-057",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Les décisions de la version concernée restent soumises à leurs questions et validations explicites."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-058",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Le message utilisateur reste disponible ; le réessai ajoute la réponse sans dupliquer la saisie."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      },
+      {
+        "ref": "ACT-059",
+        "scope": "mvp",
+        "decision_status": "approved",
+        "acceptance_criteria": [
+          "Le fil reste lisible ; la saisie est désactivée jusqu’à restauration du projet."
+        ],
+        "planned_versions": [],
+        "development_status": "unknown",
+        "delivery_status": "unknown",
+        "delivered_versions": [],
+        "evidence_refs": []
+      }
+    ],
+    "releases": [],
+    "dependencies": [
+      {
+        "from_ref": "FEAT-002",
+        "to_ref": "FEAT-001",
+        "kind": "functional",
+        "reason": "La description appartient au projet identifié.",
+        "status": "confirmed"
+      },
+      {
+        "from_ref": "FEAT-003",
+        "to_ref": "FEAT-001",
+        "kind": "functional",
+        "reason": "Archivage/restauration d’un projet existant.",
+        "status": "confirmed"
+      },
+      {
+        "from_ref": "FEAT-004",
+        "to_ref": "FEAT-001",
+        "kind": "functional",
+        "reason": "Le cadrage appartient à un projet.",
+        "status": "confirmed"
+      },
+      {
+        "from_ref": "FEAT-005",
+        "to_ref": "FEAT-004",
+        "kind": "functional",
+        "reason": "La déclaration concerne la version identifiée dans la baseline.",
+        "status": "confirmed"
+      },
+      {
+        "from_ref": "FEAT-006",
+        "to_ref": "FEAT-004",
+        "kind": "functional",
+        "reason": "La réouverture conserve la référence et le contexte de cadrage.",
+        "status": "confirmed"
+      },
+      {
+        "from_ref": "FEAT-007",
+        "to_ref": "FEAT-004",
+        "kind": "functional",
+        "reason": "L’entretien réutilise le contexte et la référence identifiés.",
+        "status": "confirmed"
+      },
+      {
+        "from_ref": "FEAT-008",
+        "to_ref": "FEAT-007",
+        "kind": "functional",
+        "reason": "L’entretien fournit les propositions à arbitrer.",
+        "status": "confirmed"
+      },
+      {
+        "from_ref": "FEAT-009",
+        "to_ref": "FEAT-007",
+        "kind": "functional",
+        "reason": "Le catalogue utilise la synthèse de l’entretien validée.",
+        "status": "confirmed"
+      },
+      {
+        "from_ref": "FEAT-010",
+        "to_ref": "FEAT-009",
+        "kind": "functional",
+        "reason": "La validation finale exige le catalogue validé.",
+        "status": "confirmed"
+      },
+      {
+        "from_ref": "FEAT-011",
+        "to_ref": "FEAT-001",
+        "kind": "functional",
+        "reason": "Le travail conservé reste attaché au bon projet.",
+        "status": "confirmed"
+      },
+      {
+        "from_ref": "FEAT-012",
+        "to_ref": "FEAT-004",
+        "kind": "functional",
+        "reason": "L’historique attribue les comportements à leur référence.",
+        "status": "confirmed"
+      }
+    ],
+    "milestones": [
+      {
+        "id": "MVP",
+        "kind": "mvp",
+        "criteria": [
+          "Satisfaire tous les critères approuvés des douze fonctionnalités indispensables référencées par MVP.md et confirmer leur livraison."
+        ],
+        "status": "open",
+        "evidence_refs": []
+      }
+    ],
+    "public_contracts": [],
+    "stability_criteria": [],
+    "stability_approval_ref": null
+  }
 }

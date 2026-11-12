@@ -2,6 +2,7 @@
 id: FEAT-009
 module: functional-scoping
 decision_status: approved
+scope: mvp
 source: versions/v1/SCOPING-SUMMARY.md
 ---
 
@@ -34,6 +35,10 @@ L’utilisateur peut modifier manuellement les modules, fonctionnalités et crit
 
 **Source :** [Synthèse V1](../../versions/v1/SCOPING-SUMMARY.md), description initiale et D03, D06, D11.
 
+## Critères d'acceptation validés
+
+Les critères approuvés sont conservés dans la [section historique V1](#v1) ci-dessus. Ils fondent l’appartenance au [MVP global](../../MVP.md), sans attribuer de release ni attester de développement ou de livraison. Les critères proposés ci-dessous ne sont pas approuvés.
+
 ## Critères d’acceptation proposés
 
 Aucun critère supplémentaire proposé.
@@ -47,8 +52,8 @@ Aucun critère supplémentaire proposé.
 
 ## Questions ouvertes
 
-Aucune question fonctionnelle bloquante consignée. La présentation figure dans les [livrables UX approuvés](../../versions/v1/ux/UX-SUMMARY.md) ; le format technique des informations reste à définir.
+Aucune question fonctionnelle bloquante consignée. La présentation figure dans les [livrables UX approuvés](../../versions/v1/ux/UX-SUMMARY.md) ; les propositions structurées par tâche et la validation backend sont définies dans la [conception technique approuvée](../../versions/v1/architecture/TECHNICAL-DESIGN.md), sans implémentation attestée. La séparation entre appartenance MVP et affectation de release dans l’application reste liée aux propositions de FEAT-004/005.
 
 ## Traçabilité
 
-Fonctionnalité nouvelle de V1, issue de D06 et D11 et du principe d’identité stable des fonctionnalités de la description initiale. Son découpage a été approuvé avec le catalogue. Le workflow `structure-project` sert de référence fonctionnelle ; son adaptation technique reste à concevoir.
+Fonctionnalité nouvelle de V1, issue de D06 et D11 et du principe d’identité stable des fonctionnalités de la description initiale. Son découpage a été approuvé avec le catalogue. Le workflow `structure-project` sert de référence fonctionnelle ; son adaptation technique est approuvée par l’ADR-0009 et reste à réaliser. `preview|apply|audit` est un mode documentaire indépendant d’`output_mode` et ne donne aucun droit SQLite au modèle.

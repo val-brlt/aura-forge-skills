@@ -2,6 +2,7 @@
 id: FEAT-008
 module: functional-scoping
 decision_status: approved
+scope: mvp
 source: versions/v1/SCOPING-SUMMARY.md
 ---
 
@@ -33,6 +34,10 @@ Les éléments reportés alimentent les cadrages suivants sans inclusion automat
 
 **Source :** [Synthèse V1](../../versions/v1/SCOPING-SUMMARY.md), description initiale et D06, D09, D11, D12.
 
+## Critères d'acceptation validés
+
+Les critères approuvés sont conservés dans la [section historique V1](#v1) ci-dessus. Ils fondent l’appartenance au [MVP global](../../MVP.md), sans attribuer de release ni attester de développement ou de livraison. Les critères proposés ci-dessous ne sont pas approuvés.
+
 ## Critères d’acceptation proposés
 
 Aucun critère supplémentaire proposé.
@@ -46,7 +51,7 @@ Aucun critère supplémentaire proposé.
 
 ## Questions ouvertes
 
-Aucune question fonctionnelle consignée pour V1. Les contenus reportés propres au produit Aura Forge sont recensés dans son [backlog](../../FUTURE-FEATURES.md).
+Aucune question fonctionnelle pour la référence V1. Le [backlog unique](../../FUTURE-FEATURES.md) conserve besoins futurs, propositions/refus et références aux fonctionnalités approuvées hors d’un changement ; ces dernières gardent leur appartenance MVP et leurs états réels. L’adaptation de cette distinction dans l’interface dépend de FEAT-004/005 ; aucune affectation de release ni promotion d’un report n’est automatique.
 
 ## Traçabilité
 

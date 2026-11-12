@@ -7,7 +7,7 @@ status: approved
 
 ## État et références
 
-Le [cadrage V1](../VERSION.md), ses douze fonctionnalités et l’[UX approuvée](../ux/UX-SUMMARY.md) sont les entrées de cette conception. La V1 n’est pas déclarée livrée. Le dossier technique a été approuvé le 10 novembre 2026 par « je valide », après présentation des contrats et contrôles du dossier intégré. La planification peut commencer ; aucune autorisation de commit ou push n’est donnée par cette validation.
+Le [cadrage V1](../VERSION.md), ses douze fonctionnalités et l’[UX approuvée](../ux/UX-SUMMARY.md) sont les entrées de cette conception. V1 est une identité de baseline documentaire, sans équivalent SemVer attribué ; le [MVP global](../../../MVP.md) peut être réalisé par plusieurs livraisons. La V1 n’est pas déclarée livrée. Le dossier technique a été approuvé le 10 novembre 2026 par « je valide », après présentation des contrats et contrôles du dossier intégré. La planification peut commencer ; aucune autorisation de commit ou push n’est donnée par cette validation.
 
 L’[architecture globale](../../../architecture/ARCHITECTURE.md) consigne la cible acceptée. Aucun code produit, schéma de stockage ou contrat technique existant n’est à migrer dans ce dépôt.
 
@@ -98,7 +98,7 @@ L’utilisateur a accepté A HTTP + SSE le 10 novembre 2026 par « A ». Voir [A
 
 FLOW-003 et FLOW-007 conservent attente annoncée, erreur/réessai et réponse Markdown. Les fragments de texte sont une capacité, sans nouveau comportement d’affichage obligatoire. FLOW-005 reste contrôlé par des commandes explicites : ni événement terminé, ni réponse IA, ni acquittement technique ne valide un cadrage.
 
-Les commandes devront être dédupliquées par identifiant stable lors des retransmissions ; un réessai de génération reste lié au message utilisateur existant. Les révisions attendues protégeront les sauvegardes et validations obsolètes. Les formes exactes de requête, acquittement et erreur restent à définir dans les contrats partagés. Un résultat durable n’est notifié qu’après commit ; une réponse HTTP peut seulement confirmer le début d’une tentative encore en cours.
+Les commandes doivent être dédupliquées par identifiant stable lors des retransmissions ; un réessai de génération reste lié au message utilisateur existant. Les révisions attendues protègent les sauvegardes et validations obsolètes. Les formes de requête, acquittement et erreur sont définies dans les contrats partagés approuvés ci-dessous et restent à implémenter. Un résultat durable n’est notifié qu’après commit ; une réponse HTTP peut seulement confirmer le début d’une tentative encore en cours.
 
 Le navigateur établit l’abonnement puis relit l’état enregistré ; les événements reçus pendant la lecture doivent être réconciliés par révision. Cette reprise est requise à l’ouverture/reconnexion et devant un contexte ou curseur périmé. Last-Event-ID ne garantit pas de rejeu et repart vide pour un nouvel objet EventSource après rechargement. Aucun journal durable de chaque fragment n’est choisi ici.
 
@@ -133,9 +133,19 @@ Cette table précise la représentation retenue dans le dossier intégré approu
 
 Les copies approuvées n’embarquent pas une duplication de tous les brouillons ou messages. Les liens utiles de provenance pointent vers leurs identités conservées. L’historique des décisions manuelles suit les mêmes exigences que celui des changements issus d’une proposition IA autorisée. Aucun besoin de restauration arbitraire à chaque frappe ni d’export de cette représentation n’est ajouté au MVP.
 
+### Compatibilité des périmètres et des livraisons
+
+Le modèle logique ci-dessus est celui de la baseline approuvée : `ProjectVersion`, `VersionFeature`, `WorkingScoping`, `DeliveryFact` et les routes `/api/v1` gardent leurs identifiants et leur signification. Le [MVP](../../../MVP.md) et le backlog séparent désormais objectif fonctionnel et releases ; cela ne transforme pas automatiquement `ProjectVersion` en release SemVer.
+
+La migration proposée doit dissocier identité du périmètre, appartenance MVP, affectations de tranches et faits de livraison, tout en conservant les copies approuvées et les liens de contexte existants. Les règles de réouverture après livraison partielle et d’activité unique demandent d’abord une décision fonctionnelle et UX dans FEAT-004/005/006. Aucun nouveau DATA-* ni route, schéma SQL ou migration exécutable n’est approuvé ici. Les contrats documentaires passent aux formats UX 2 / architecture 1.1 avec `delivery.scope.kind=legacy`, la source V1 intacte, les mêmes critères et un registre de releases vide. Les champs de schéma ne sont pas des versions de logiciel.
+
+Pour les livraisons futures, la convention documentaire est `MAJOR.MINOR.PATCH` : rupture du contrat public → MAJOR, fonctionnalité compatible ou dépréciation publique → MINOR, correction compatible → PATCH, avec remise à zéro des composants inférieurs. En `0.x.y`, les conventions installées proposent PATCH pour une correction compatible, MINOR pour une fonctionnalité ou une incompatibilité ; leur application détaillée au produit et les critères de stabilité seront soumis à validation, sans inventer la première release. Toute incompatibilité requiert une migration documentée. Les contenus effectivement publiés restent immuables. Un PATCH compatible se traite par analyse d’impact ciblée et réutilisation des décisions/maquettes ; un risque réel de frontière, sécurité ou migration impose sa propre revue.
+
+Les contrats listent indépendamment décision, affectations, développement et livraison. Les états sans preuve restent `unknown`, les affectations et releases vides, et le jalon MVP ouvert. La future planification proposera les `CHANGE-*`, leurs critères de tranche, dépendances et releases ; aucune capacité de planification ou suivi du développement n’est ajoutée à l’application MVP.
+
 ### Garanties de commande à préciser
 
-Une mutation vérifie le contexte modifiable et la révision attendue, applique ses règles, puis enregistre ensemble son effet, le changement métier et le résultat associé à son identifiant de commande. Une retransmission réseau du même identifiant ne doit pas produire un nouvel effet ; la forme exacte du contrat partagé reste à définir. Une sauvegarde obsolète ne doit pas écraser silencieusement une révision récente, même entre deux onglets du même utilisateur.
+Une mutation vérifie le contexte modifiable et la révision attendue, applique ses règles, puis enregistre ensemble son effet, le changement métier et le résultat associé à son identifiant de commande. Une retransmission réseau du même identifiant ne doit pas produire un nouvel effet ; le contrat est précisé dans « Commandes, acquittements et lectures » ci-dessous. Une sauvegarde obsolète ne doit pas écraser silencieusement une révision récente, même entre deux onglets du même utilisateur.
 
 Pour FEAT-010, prérequis, révision concernée et questions bloquantes sont vérifiés dans la transaction d’approbation, puis validation et copie sont enregistrées ensemble. Pour FEAT-006, la coordination des propriétaires conserve la référence, modifie les états de versions et journalise l’opération atomiquement selon l’action autorisée. Les appels Codex restent hors transaction. Ce sont des garanties à vérifier sur l’implémentation, pas des essais déjà réalisés.
 
@@ -149,7 +159,7 @@ La tâche choisie par Python détermine le contexte et le schéma : préparation
 
 Le SDK audité expose instructions et output_schema ; la version de runtime et le schéma supportés devront être fixés ensemble. Les sorties structurées ne désactivent pas les outils. Les permissions ne doivent pas reprendre aveuglément les valeurs par défaut du SDK : deny_all est traduit en approvalPolicy=never, tandis que read_only autorise encore des lectures et certaines commandes. Un cwd dédié ne limite pas à lui seul toutes les lectures. La configuration effective des capacités (shell, web, MCP, apps/plugins et héritages) doit être contrôlée avant données réelles, sans modifier le profil global personnel. Les données propres au runtime/session restent distinctes des fichiers métier.
 
-À vérifier lors de la réalisation : branche files préservée, structured propagé, absence d’écritures métier/Git déclenchées par ce mode, refus d’une sortie invalide ou d’un contexte obsolète, séparation des discussions et maintien des trois validations. Aucun skill, code produit ou accès au compte n’est modifié par ce dossier de conception.
+À vérifier lors de la réalisation : branche files préservée, structured propagé, absence d’écritures métier/Git déclenchées par ce mode, refus d’une sortie invalide ou d’un contexte obsolète, séparation des discussions et maintien des trois validations. L’inspection du 12 novembre 2026 constate l’absence de `output_mode` dans les quatre skills installés et leurs références. Le double mode est donc une cible approuvée, non une capacité attestée de ces fichiers. Aucun skill, code produit ou accès au compte n’est modifié dans cette mise à jour documentaire.
 
 ## Contrats partagés — conception approuvée
 
@@ -246,6 +256,8 @@ Enveloppe de sortie retenue : `schema_version`, `task`, `context`, `source_revis
 
 Le backend attribue les nouvelles identités persistantes et contrôle celles des objets déjà existants ; une identité annoncée par le modèle ne permet pas de changer de portée. Les champs prétendant accorder une validation, une livraison ou une autorisation technique ne sont pas des effets métier acceptables. Le schéma technique est fourni via output_schema et versionné avec les instructions ; les modèles partagés doivent reprendre ces noms et préserver les contraintes de portée/provenance. Les détails de type locaux sont fixés dans ce contrat partagé avant branchement des producteurs et consommateurs.
 
+Le backend conserve la provenance de chaque proposition, la tâche, les révisions sources et les versions d’instructions/schéma dans la tentative et ses liens vers le résultat. Un échec de schéma, de référence, de révision ou de règle métier suit l’erreur existante `ai_result_invalid` ou le conflit applicable : aucune écriture métier non autorisée, aucune validation/livraison et aucune bascule automatique en `files`. Une reprise redemande explicitement `structured` et les instructions dépendantes adaptées.
+
 Les sorties correspondent à la tâche autorisée et à ses prérequis. Elles peuvent produire une proposition, une interprétation ou une réponse selon l’action UX ; les validations humaines et arbitrages restent des commandes distinctes. Les formats exacts par tâche seront versionnés dans l’implémentation et vérifiés contre le SDK/runtime fixé avant utilisation. Un schéma valide ne remplace ni la vérification des références ni la relecture fonctionnelle.
 
 ## Parcours et preuves attendues — conception approuvée
@@ -316,7 +328,7 @@ Les diagnostics techniques identifient commande, contexte non sensible, tentativ
 
 ## Revue, risques et passage à la planification
 
-Le [contrat structuré](ARCHITECTURE-CONTRACT.json), les onze choix individuels et les contrats, dépendances et contrôles de ce dossier ont été approuvés le 10 novembre 2026 par « je valide », en réponse à la demande de validation finale du dossier d’architecture V1. Aucun arbitrage bloquant pour la planification n’est ouvert : planning_ready est true. Les conditions de réalisation ci-dessous restent à vérifier ; aucune application n’est déclarée implémentée ou livrée.
+Le [contrat structuré](ARCHITECTURE-CONTRACT.json), les onze choix individuels et les contrats, dépendances et contrôles de ce dossier ont été approuvés le 10 novembre 2026 par « je valide », en réponse à la demande de validation finale du dossier d’architecture V1. Aucun arbitrage bloquant pour planifier le dossier historique approuvé n’est ouvert : planning_ready est true. Les adaptations produit de FEAT-004/005/006 ne sont pas comprises dans cette approbation et restent à valider avant leur planification comme exigences approuvées. Les conditions de réalisation ci-dessous restent à vérifier ; aucune application n’est déclarée implémentée ou livrée.
 
 | Point restant | Classification | Condition concrète |
 | --- | --- | --- |
