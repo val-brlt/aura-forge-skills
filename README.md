@@ -1,125 +1,157 @@
 # Project Toolkit Skills
 
-**Des skills pour accompagner un projet logiciel, de l’idée à la livraison.**
+[![skills.sh](https://skills.sh/b/val-brlt/project-toolkit-skills)](https://skills.sh/val-brlt/project-toolkit-skills)
 
-Cette collection rassemble des workflows pour agents IA autour des étapes d’un projet : cadrer le besoin, concevoir l’expérience utilisateur, définir l’architecture, puis préparer la planification et le développement. Chaque étape s’appuie sur des décisions humaines explicites et des livrables réutilisables par la suivante.
+**Skills to guide a software project from idea to delivery.**
 
-Le dépôt s’organise autour de **trois skills principaux** qui pilotent ces étapes. Des skills de soutien, principalement importés d’autres dépôts, apportent des méthodes spécialisées : questionnement, recherche, prototypage, design, architecture et documentation.
+This collection provides AI agent workflows for each stage of a project: scoping requirements, designing the user experience, defining the architecture, and preparing for planning and development. Each stage relies on explicit human decisions and produces deliverables that the next stage can reuse.
+
+The repository is organized around **three main skills** that guide these stages. Supporting skills, mostly imported from other repositories, provide specialized methods for interviewing, research, prototyping, design, architecture, and documentation.
 
 > [!NOTE]
-> Le parcours actuel couvre le cadrage, l’UX et l’architecture. La planification avec GitHub Projects et l’orchestration du développement font partie des évolutions prévues.
+> The current workflow covers scoping, UX, and architecture. Planning with GitHub Projects and development orchestration are planned additions.
 
-## Les skills principaux
+## Main skills
 
-| Étape | Skill | Rôle et livrables |
+| Stage | Skill | Purpose and deliverables |
 | --- | --- | --- |
-| Cadrage | [`project-scoping`](.agents/skills/project-scoping/SKILL.md) | Clarifier le MVP ou une évolution fonctionnelle, définir les critères de réussite et structurer les modules, fiches fonctionnalités et backlog. |
-| UX/UI | [`project-ux`](.agents/skills/project-ux/SKILL.md) | Concevoir les parcours et les interactions avec des maquettes HTML interactives, une synthèse `UX-SUMMARY.md` et un contrat `UX-CONTRACT.json`. |
-| Architecture | [`project-architecture`](.agents/skills/project-architecture/SKILL.md) | Comparer les solutions techniques, préparer l’architecture, le design technique, les ADR utiles et `ARCHITECTURE-CONTRACT.json`, puis valider le package avant son approbation finale. |
+| Scoping | [`project-scoping`](.agents/skills/project-scoping/SKILL.md) | Clarify the MVP or a functional change, define success criteria, and organize modules, feature cards, and the backlog. |
+| UX/UI | [`project-ux`](.agents/skills/project-ux/SKILL.md) | Design user journeys and interactions with interactive HTML mockups, a `UX-SUMMARY.md` summary, and a `UX-CONTRACT.json` contract. |
+| Architecture | [`project-architecture`](.agents/skills/project-architecture/SKILL.md) | Compare technical solutions, prepare the architecture, technical design, relevant ADRs, and `ARCHITECTURE-CONTRACT.json`, then validate the package before final approval. |
 
-Ces étapes se lancent à la demande et se reprennent à partir des documents existants. Leurs livrables transmettent les besoins, les décisions et les dépendances à la suite du projet ; terminer une étape ne lance pas automatiquement la suivante.
+These stages run on request and can resume from existing documents. Their deliverables carry requirements, decisions, and dependencies forward; completing one stage does not automatically start the next.
 
-## Principes de travail
+## Working principles
 
-- **L’IA conseille, l’humain décide.** Le périmètre, les maquettes et les choix d’architecture importants passent par des validations explicites.
-- **Le MVP reste un objectif fonctionnel.** Il peut être livré progressivement sur plusieurs releases. Son achèvement et la première version stable sont deux décisions distinctes.
-- **Les décisions restent traçables.** Les fonctionnalités conservent leurs identifiants `FEAT-*`, reliés aux parcours, écrans, interactions et éléments d’architecture.
-- **Les documents évoluent avec le projet.** Les skills reprennent les chemins et décisions existants, mettent à jour les sections concernées et préservent les éléments déjà livrés.
-- **Le backlog reste unique.** Un nouveau projet utilise `BACKLOG.md` ; un projet existant conserve son backlog canonique, y compris l’ancien nom `FUTURE-FEATURES.md`, jusqu’à une migration approuvée. Les besoins futurs et les fonctionnalités hors du changement courant y sont distingués avec leur état réel.
-- **L’avancement reste explicite.** Validation, planification, développement et livraison sont suivis séparément ; une maquette approuvée ne prouve pas une fonctionnalité développée.
-- **Les livrables destinés à l’utilisateur sont en français par défaut**, avec des identifiants et clés de contrats en anglais.
+- **AI advises; humans decide.** Scope, mockups, and significant architectural choices require explicit approval.
+- **The MVP remains a functional goal.** It can be delivered incrementally across multiple releases. Completing the MVP and shipping the first stable version are separate decisions.
+- **Decisions remain traceable.** Features retain their `FEAT-*` identifiers, linked to user journeys, screens, interactions, and architectural elements.
+- **Documents evolve with the project.** Skills reuse existing paths and decisions, update the relevant sections, and preserve what has already been delivered.
+- **There is one backlog.** New projects use `BACKLOG.md`; existing projects keep their canonical backlog, including the legacy name `FUTURE-FEATURES.md`, until a migration is approved. Future requirements and features outside the current change are recorded with their actual status.
+- **Progress stays explicit.** Approval, planning, development, and delivery are tracked separately; an approved mockup does not mean a feature has been implemented.
+- **User-facing deliverables are in French by default**, with identifiers and contract keys in English.
 
-Les trois workflows principaux demandent des autorisations distinctes pour un commit et pour un push.
+The three main workflows require separate permissions to commit and to push.
 
-## Commencer
+## Installation (30-second setup)
 
-Utilisez un agent capable de lire et d’appliquer des instructions `SKILL.md` dans le dépôt de votre projet.
+A plugin updates itself. [skills.sh](https://skills.sh/val-brlt/project-toolkit-skills) copies editable files into your project, and you update them manually. Choose one method per agent: installing both adds every skill twice.
 
-1. Récupérez cette collection :
+This collection currently installs through [Skills CLI](https://github.com/vercel-labs/skills), which requires Node.js 22.20 or later. Run the commands from the root of your **target project**.
 
-   ```sh
-   git clone https://github.com/val-brlt/project-toolkit-skills.git
-   ```
+### 1. Get the skills
 
-2. Copiez le contenu de `.agents/skills/` dans `.agents/skills/` du projet cible, en conservant les références, schémas et scripts associés. Les commandes de validation documentées utilisent ce chemin. Les skills de soutien sont déjà inclus : conserver l’ensemble de la collection fournit les dépendances des workflows. Configurez leur découverte selon votre agent.
-3. Intégrez les conventions utiles de [`AGENTS.md`](AGENTS.md) et de [`docs/agents/`](docs/agents/) à celles du projet cible. Remplacez `NOM_GITHUB/NOM_REPO_GITHUB` par son dépôt GitHub et conservez ses règles et documents existants.
-4. Demandez explicitement à l’agent d’utiliser le skill correspondant à votre étape, en lui donnant votre idée ou les documents déjà approuvés.
+<details>
+<summary><strong>Codex</strong></summary>
 
-Exemple pour démarrer :
-
-```text
-Utilise project-scoping pour cadrer le MVP de mon projet.
-Voici l’idée, les utilisateurs visés et les contraintes connues : …
+```bash
+npx skills@latest add val-brlt/project-toolkit-skills --skill '*' --agent codex
 ```
 
-Une fois le cadrage approuvé :
+To update, run `npx skills@latest update`. Run `add` again to pick up new skills in the collection.
 
-```text
-Utilise project-ux à partir du cadrage approuvé et prépare les maquettes HTML.
+</details>
+
+<details>
+<summary><strong>Other agents, or editable files</strong> (manual updates)</summary>
+
+```bash
+npx skills@latest add val-brlt/project-toolkit-skills -a <agent>
 ```
 
-Puis, après validation de l’UX :
+Omit `-a <agent>` to choose your agent in the installer. Available identifiers are listed in the [Skills CLI supported agents reference](https://github.com/vercel-labs/skills/blob/main/docs/agents.md).
+
+When the installer asks which skills to install, select the entire collection to include the workflow dependencies. To update, run `npx skills@latest update`, then run `add` again to pick up new skills.
+
+Dedicated integrations for other agents have not yet been prepared for this collection.
+
+</details>
+
+Keep the references, schemas, and scripts included with the skills. Workflow validation commands use the project's `.agents/skills/` path.
+
+### 2. Configure your project
+
+Merge the relevant conventions from [`AGENTS.md`](AGENTS.md) and [`docs/agents/`](docs/agents/) into your target project's conventions. These files are not installed by `skills add`. Replace `NOM_GITHUB/NOM_REPO_GITHUB` with your project's GitHub repository and preserve its existing rules and documents.
+
+### 3. Run your first workflow
+
+Explicitly ask the agent to use the skill for your current stage, providing your idea or previously approved documents.
+
+To get started:
 
 ```text
-Utilise project-architecture à partir du cadrage et de l’UX approuvés.
-Compare les choix techniques encore ouverts et prépare le passage à la planification.
+Use project-scoping to scope my project's MVP.
+Here are the idea, target users, and known constraints: …
 ```
 
-Les scripts de validation fournis utilisent Python. Les opérations sur GitHub Issues suivent les conventions du projet et utilisent la CLI `gh` ; elles ne font pas partie des trois étapes principales actuelles.
+Once the scope is approved:
 
-## Skills de soutien
+```text
+Use project-ux with the approved scope to prepare HTML mockups.
+```
 
-Les workflows principaux sélectionnent les méthodes utiles à leur étape. Certains skills de soutien peuvent aussi être lancés séparément pour un besoin précis.
+Then, after UX approval:
 
-| Besoin | Skills présents |
+```text
+Use project-architecture with the approved scope and UX.
+Compare the remaining technical options and prepare the handoff to planning.
+```
+
+The included validation scripts use Python. GitHub Issues operations follow the project's conventions and use the `gh` CLI; they are outside the three main stages currently available.
+
+## Supporting skills
+
+The main workflows select the methods relevant to their stage. Some supporting skills can also be used independently for a specific task.
+
+| Need | Included skills |
 | --- | --- |
-| Clarifier le besoin et le vocabulaire | [`grilling`](.agents/skills/grilling/SKILL.md), [`domain-modeling`](.agents/skills/domain-modeling/SKILL.md) |
-| Rechercher et explorer | [`research`](.agents/skills/research/SKILL.md), [`prototype`](.agents/skills/prototype/SKILL.md) |
-| Concevoir et évaluer l’interface | [`frontend-design`](.agents/skills/frontend-design/SKILL.md), [`design-critique`](.agents/skills/design-critique/SKILL.md) |
-| Structurer la documentation fonctionnelle | [`structure-project`](.agents/skills/structure-project/SKILL.md) |
-| Approfondir l’architecture | [`codebase-design`](.agents/skills/codebase-design/SKILL.md), [`software-architecture`](.agents/skills/software-architecture/SKILL.md) |
-| Rédiger la documentation | [`writing-for-agents`](.agents/skills/writing-for-agents/SKILL.md), [`create-readme`](.agents/skills/create-readme/SKILL.md) |
+| Clarify requirements and vocabulary | [`grilling`](.agents/skills/grilling/SKILL.md), [`domain-modeling`](.agents/skills/domain-modeling/SKILL.md) |
+| Research and explore | [`research`](.agents/skills/research/SKILL.md), [`prototype`](.agents/skills/prototype/SKILL.md) |
+| Design and evaluate the interface | [`frontend-design`](.agents/skills/frontend-design/SKILL.md), [`design-critique`](.agents/skills/design-critique/SKILL.md) |
+| Structure functional documentation | [`structure-project`](.agents/skills/structure-project/SKILL.md) |
+| Refine the architecture | [`codebase-design`](.agents/skills/codebase-design/SKILL.md), [`software-architecture`](.agents/skills/software-architecture/SKILL.md) |
+| Write documentation | [`writing-for-agents`](.agents/skills/writing-for-agents/SKILL.md), [`create-readme`](.agents/skills/create-readme/SKILL.md) |
 
-La [liste des dépendances](docs/agents/skill-dependencies.md) précise les skills utilisés, leurs sources et leur rôle. `research` et `prototype` sont mobilisés selon les besoins de la phase.
+The [dependency list](docs/agents/skill-dependencies.md) details the skills used, their sources, and their roles. `research` and `prototype` are used as needed during each stage.
 
-`structure-project` fournit la procédure de structuration documentaire utilisée par `project-scoping`. La [référence fonctionnelle](.agents/skills/project-scoping/references/functional-documents.md) précise leur articulation ; les [conventions communes](.agents/skills/project-scoping/references/versioning.md) définissent le backlog, les états d’avancement et la séparation du MVP et des releases.
+`structure-project` provides the documentation structure procedure used by `project-scoping`. The [functional documentation reference](.agents/skills/project-scoping/references/functional-documents.md) explains how they work together; the [shared conventions](.agents/skills/project-scoping/references/versioning.md) define the backlog, progress states, and the distinction between the MVP and releases.
 
-La méthode de discussion et de comparaison architecturale est intégrée à la [référence locale de comparaison technique](.agents/skills/project-architecture/references/technical-comparisons.md), directement utilisée par `project-architecture`.
+The method for discussing and comparing architectural options is included in the [local technical comparison reference](.agents/skills/project-architecture/references/technical-comparisons.md), used directly by `project-architecture`.
 
-Les origines des imports présents sont enregistrées dans [`skills-lock.json`](skills-lock.json) : [Matt Pocock](https://github.com/mattpocock/skills), [Anthropic Skills](https://github.com/anthropics/skills), [Anthropic Knowledge Work Plugins](https://github.com/anthropics/knowledge-work-plugins), [magnus919](https://github.com/magnus919/agent-skills) et [GitHub Awesome Copilot](https://github.com/github/awesome-copilot).
+The sources of imported skills are recorded in [`skills-lock.json`](skills-lock.json): [Matt Pocock](https://github.com/mattpocock/skills), [Anthropic Skills](https://github.com/anthropics/skills), [Anthropic Knowledge Work Plugins](https://github.com/anthropics/knowledge-work-plugins), [magnus919](https://github.com/magnus919/agent-skills), and [GitHub Awesome Copilot](https://github.com/github/awesome-copilot).
 
-## Vérifier la collection
+## Verify the collection
 
-Depuis la racine du dépôt, lancez les tests des contrats, des références et de la compatibilité avec les anciens formats :
+From the repository root, run the tests for contracts, references, and compatibility with legacy formats:
 
 ```sh
 python -B .agents/skills/project-scoping/tests/test_contracts.py
 ```
 
-Sous Windows, utilisez `py` si nécessaire. Chaque workflow indique aussi sa commande pour auditer les documents du projet accompagné ; l’approbation humaine porte sur les besoins, les maquettes et les décisions effectivement présentés.
+On Windows, use `py` if needed. Each workflow also documents its command for auditing the target project's documents; human approval applies to the requirements, mockups, and decisions actually presented.
 
-## Évolutions prévues
+## Planned additions
 
-| Étape | Direction envisagée | État |
+| Stage | Planned direction | Status |
 | --- | --- | --- |
-| `project-planning` | Exploiter le cadrage, l’UX, l’architecture et leurs dépendances pour organiser le travail avec GitHub Projects, les issues et les releases. | Prévu, absent du dépôt. |
-| Volet développement | Orchestrer des agents pour l’implémentation, les tests, la revue de code, la sécurité et la préparation de la livraison. | À définir ; nom provisoire : `project-developpement`. |
+| `project-planning` | Use the scope, UX, architecture, and their dependencies to organize work with GitHub Projects, issues, and releases. | Planned; not yet included in the repository. |
+| Development workflow | Orchestrate agents for implementation, testing, code review, security, and delivery preparation. | To be defined; provisional name: `project-developpement`. |
 
-Ces futurs workflows prolongeront le cadrage, l’UX et l’architecture en réutilisant leurs livrables approuvés. Le choix des skills de soutien et l’organisation des agents pour ces étapes restent à définir.
+These future workflows will extend scoping, UX, and architecture by reusing their approved deliverables. Supporting skills and agent coordination for these stages are still to be defined.
 
-## Organisation du dépôt
+## Repository structure
 
 ```text
 .agents/skills/
-  project-scoping/       # Cadrage fonctionnel, références et validateurs
-  project-ux/            # Conception UX, contrat et validateur
-  project-architecture/  # Architecture, contrat et validateur
-  structure-project/     # Méthode de structuration documentaire
-  …                      # Skills de soutien et imports
-docs/agents/             # Conventions pour les agents
-AGENTS.md                # Point d’entrée des instructions du dépôt
-GLOSSARY.md              # Vocabulaire partagé
-skills-lock.json         # Provenance et empreintes des skills importés
+  project-scoping/       # Functional scoping, references, and validators
+  project-ux/            # UX design, contract, and validator
+  project-architecture/  # Architecture, contract, and validator
+  structure-project/     # Documentation structure method
+  …                      # Supporting skills and imports
+docs/agents/             # Agent conventions
+AGENTS.md                # Entry point for repository instructions
+GLOSSARY.md              # Shared vocabulary
+skills-lock.json         # Sources and hashes of imported skills
 ```
 
-Les conventions du dépôt couvrent le [suivi des issues](docs/agents/issue-tracker.md) et le [glossaire et les ADR](docs/agents/domain.md). Les livrables produits par les workflows se placent dans le projet accompagné, en respectant sa documentation existante.
+The repository conventions cover [issue tracking](docs/agents/issue-tracker.md) and the [glossary and ADRs](docs/agents/domain.md). Workflow deliverables are saved in the target project, following its existing documentation structure.
