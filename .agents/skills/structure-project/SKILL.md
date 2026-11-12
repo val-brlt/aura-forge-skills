@@ -17,7 +17,7 @@ Required inputs: `target_version` (e.g. `v1`, `v2`), approved summary path and e
 - `mode=apply`: write/update after the user **explicitly approves the catalogue** and version boundary.
 - `mode=audit`: inspect and validate without changing files.
 
-If summary approval or version identity is unclear, stop and request a concrete decision; do not invent consent. Never run `to-spec`, publish issues, choose a stack or implement code.
+If summary approval or version identity is unclear, stop and request a concrete decision; do not invent consent. Never publish issues, choose a stack or implement code.
 
 ## Catalogue and history rules
 

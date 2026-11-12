@@ -39,8 +39,6 @@ Load and apply installed skill instructions when applicable, using the environme
 - `research` (Matt Pocock): verify uncertain framework, hosting, library, security, performance or API facts against primary sources. If subagents/background execution are unsupported, perform research inline and cite sources; never claim a background task is running.
 - `prototype` (Matt Pocock): one-off throwaway logic/state exploration when an architectural decision cannot be settled from diagrams or documents; clearly label any spike experimental. Do not reuse the UX prototype workflow by default.
 
-**Separate optional companion, NOT automatically invoked:** `improve-codebase-architecture` (Matt Pocock) for a separately requested audit of an existing codebase, particularly after V1. This is a user-invoked workflow, not a required hidden dependency here.
-
 If a dependency is unavailable, explain the limitation briefly, continue with the principles documented here where practical, and never claim it was executed. Do not auto-install external skills or run untrusted scripts without user approval.
 
 ## Inputs, in order

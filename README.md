@@ -1,27 +1,112 @@
-# Project Starter for Matt Pocock's Skills
+# Aura Forge Skills
 
-This repository provides a starting point for projects using Matt Pocock's engineering skills. It includes the issue tracking, triage label, and domain documentation configuration these skills expect.
+**Des skills pour accompagner un projet logiciel, de l’idée à la livraison.**
 
-## Structure
+Aura Forge rassemble des workflows pour agents IA autour des étapes d’un projet : cadrer le besoin, concevoir l’expérience utilisateur, définir l’architecture, puis préparer la planification et le développement. Chaque étape s’appuie sur des décisions humaines explicites et des livrables réutilisables par la suivante.
+
+Le dépôt s’organise autour de **skills principaux** qui pilotent ces étapes. Des skills de soutien, principalement importés d’autres dépôts, apportent des méthodes spécialisées : questionnement, recherche, design, architecture, tests ou revue de code.
+
+> [!NOTE]
+> Le parcours actuel couvre le cadrage, l’UX et l’architecture. La planification avec GitHub Projects et l’orchestration du développement font partie des évolutions prévues.
+
+## Les skills principaux
+
+| Étape | Skill | Rôle et livrables |
+| --- | --- | --- |
+| Cadrage | [`project-scoping`](.agents/skills/project-scoping/SKILL.md) | Clarifier le MVP ou une évolution fonctionnelle, définir les critères de réussite et structurer les modules, fiches fonctionnalités et besoins futurs. |
+| UX/UI | [`project-ux`](.agents/skills/project-ux/SKILL.md) | Concevoir les parcours et les interactions avec des maquettes HTML interactives, une synthèse `UX-SUMMARY.md` et un contrat `UX-CONTRACT.json`. |
+| Architecture | [`project-architecture`](.agents/skills/project-architecture/SKILL.md) | Comparer les solutions techniques, définir les responsabilités et contrats partagés, puis produire l’architecture, le design technique, les ADR utiles et `ARCHITECTURE-CONTRACT.json`. |
+
+Ces étapes se lancent à la demande et se reprennent à partir des documents existants. Leurs livrables transmettent les besoins, les décisions et les dépendances à la suite du projet ; terminer une étape ne lance pas automatiquement la suivante.
+
+## Principes de travail
+
+- **L’IA conseille, l’humain décide.** Le périmètre, les maquettes et les choix d’architecture importants passent par des validations explicites.
+- **Le MVP reste un objectif fonctionnel.** Il peut être livré progressivement sur plusieurs releases. Son achèvement et la première version stable sont deux décisions distinctes.
+- **Les décisions restent traçables.** Les fonctionnalités conservent leurs identifiants `FEAT-*`, reliés aux parcours, écrans, interactions et éléments d’architecture.
+- **Les documents évoluent avec le projet.** Les skills reprennent les chemins et décisions existants, mettent à jour les sections concernées et préservent les éléments déjà livrés.
+- **L’avancement reste explicite.** Validation, planification, développement et livraison sont suivis séparément ; une maquette approuvée ne prouve pas une fonctionnalité développée.
+- **Les livrables destinés à l’utilisateur sont en français par défaut**, avec des identifiants et clés de contrats en anglais.
+
+Les trois workflows principaux demandent des autorisations distinctes pour un commit et pour un push.
+
+## Commencer
+
+Utilisez un agent capable de lire et d’appliquer des instructions `SKILL.md` dans le dépôt de votre projet.
+
+1. Récupérez cette collection :
+
+   ```sh
+   git clone https://github.com/val-brlt/aura-forge-skills.git
+   ```
+
+2. Copiez les dossiers de `.agents/skills/` dans le répertoire de skills reconnu par votre agent pour le projet cible. Conservez les références, schémas et scripts associés. Garder l’ensemble de la collection permet de disposer des dépendances méthodologiques des workflows principaux.
+3. Intégrez les conventions utiles de [`AGENTS.md`](AGENTS.md) et de [`docs/agents/`](docs/agents/) à celles du projet cible. Remplacez `NOM_GITHUB/NOM_REPO_GITHUB` par son dépôt GitHub et conservez ses règles et documents existants.
+4. Demandez explicitement à l’agent d’utiliser le skill correspondant à votre étape, en lui donnant votre idée ou les documents déjà approuvés.
+
+Exemple pour démarrer :
 
 ```text
-AGENTS.md                       # Entry point and configuration links
-GLOSSARY.md                     # Domain vocabulary to fill in
-docs/
-└── agents/
-    ├── issue-tracker.md         # GitHub Issues conventions
-    ├── triage-labels.md         # Triage label mapping
-    └── domain.md                # Glossary and ADR guidelines
+Utilise project-scoping pour cadrer le MVP de mon projet.
+Voici l’idée, les utilisateurs visés et les contraintes connues : …
 ```
 
-Document architectural decisions in `docs/adr/` as the project evolves.
+Une fois le cadrage approuvé :
 
-## Using This Starter
+```text
+Utilise project-ux à partir du cadrage approuvé et prépare les maquettes HTML.
+```
 
-1. Copy this starter into a new repository and configure its GitHub remote.
-2. Install Matt Pocock's skills in the tool you use to work on the project.
-3. Replace `NOM_GITHUB/NOM_REPO_GITHUB` in `AGENTS.md` with the target repository's `owner/repo` and adapt the conventions in `docs/agents/`.
-4. Create any missing GitHub labels: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, and `wontfix`.
-5. Expand the glossary and record architectural decisions as the domain becomes clearer.
+Puis, après validation de l’UX :
 
-Edit the configuration files directly to match your project's practices. The skills themselves are installed separately.
+```text
+Utilise project-architecture à partir du cadrage et de l’UX approuvés.
+Compare les choix techniques encore ouverts et prépare le passage à la planification.
+```
+
+Les scripts de validation fournis utilisent Python. Les opérations sur GitHub Issues suivent les conventions du projet et utilisent la CLI `gh` ; elles ne font pas partie des trois étapes principales actuelles.
+
+## Skills de soutien
+
+Les workflows principaux sélectionnent les méthodes utiles à leur étape. Certains skills de soutien peuvent aussi être lancés séparément pour un besoin précis.
+
+| Besoin | Skills présents |
+| --- | --- |
+| Clarifier le besoin et le vocabulaire | `grilling`, `grill-me`, `grill-with-docs`, `domain-modeling`, `to-questionnaire` |
+| Rechercher et explorer | `research`, `prototype` |
+| Concevoir et évaluer l’interface | `frontend-design`, `design-critique` |
+| Structurer la documentation fonctionnelle | `structure-project` |
+| Approfondir l’architecture | `codebase-design`, `software-architecture`, `architect-specify`, `improve-codebase-architecture` |
+| Préparer et suivre le travail | `to-spec`, `to-tickets`, `triage`, `wayfinder` |
+| Développer, tester et revoir | `implement`, `implement-spec`, `tdd`, `diagnosing-bugs`, `code-review`, `pr` |
+| Accompagner les sessions et la documentation | `ask-matt`, `handoff`, `retro`, `teach`, `wait-what`, `wizard`, `writing-for-agents`, `create-readme` |
+
+`structure-project` est un soutien local au cadrage. Dans `project-scoping`, son utilisation suit l’[adaptateur de documentation fonctionnelle](.agents/skills/project-scoping/references/functional-documents.md), qui sépare le MVP des releases.
+
+Les origines des imports sont enregistrées dans [`skills-lock.json`](skills-lock.json) : [Matt Pocock](https://github.com/mattpocock/skills), [Anthropic Skills](https://github.com/anthropics/skills), [Anthropic Knowledge Work Plugins](https://github.com/anthropics/knowledge-work-plugins), [Tikalk](https://github.com/tikalk/adlc-team-skills), [magnus919](https://github.com/magnus919/agent-skills) et [GitHub Awesome Copilot](https://github.com/github/awesome-copilot).
+
+## Évolutions prévues
+
+| Étape | Direction envisagée | État |
+| --- | --- | --- |
+| `project-planning` | Exploiter le cadrage, l’UX, l’architecture et leurs dépendances pour organiser le travail avec GitHub Projects, les issues et les releases. | Prévu, absent du dépôt. |
+| Volet développement | Orchestrer des agents pour l’implémentation, les tests, la revue de code, la sécurité et la préparation de la livraison. | À définir ; nom provisoire : `project-developpement`. |
+
+Des skills individuels de planification et de développement sont déjà présents dans la collection. Les futurs workflows principaux doivent les articuler dans la continuité du parcours projet.
+
+## Organisation du dépôt
+
+```text
+.agents/skills/
+  project-scoping/       # Cadrage fonctionnel, références et validateurs
+  project-ux/            # Conception UX, contrat et validateur
+  project-architecture/  # Architecture, contrat et validateur
+  structure-project/     # Méthode de structuration documentaire
+  …                      # Skills de soutien et imports
+docs/agents/             # Conventions pour les agents
+AGENTS.md                # Point d’entrée des instructions du dépôt
+GLOSSARY.md              # Vocabulaire partagé
+skills-lock.json         # Provenance et empreintes des skills importés
+```
+
+Les conventions du dépôt couvrent le [suivi des issues](docs/agents/issue-tracker.md), les [labels de triage](docs/agents/triage-labels.md) et le [glossaire et les ADR](docs/agents/domain.md). Les livrables produits par les workflows se placent dans le projet accompagné, en respectant sa documentation existante.
