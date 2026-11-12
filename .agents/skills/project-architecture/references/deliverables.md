@@ -90,7 +90,7 @@ The structured contract is **an index/hand-off**, not a copy of the prose docs. 
 
 - If current version **not delivered**: update the canonical feature/UX document with authorized product decision, then update affected architecture sections, version design and contract. Maintain stable IDs.
 - If version **delivered**: do not silently rewrite its approved historical version to include a new feature. Handle as proposed scope in a later version. The global architecture must accurately distinguish current deployed state from approved future target.
-- Never write a bottom-of-file chronological patch block (e.g. "Complément suite à la revue D17"). Move the final decision into the right sections and retain traceability via ADR/Git.
+- Integrate the accepted decision into its canonical section and retain traceability via ADR/Git.
 
 ## Planning gate checklist
 

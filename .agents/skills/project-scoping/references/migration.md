@@ -47,7 +47,7 @@ Commandes de recherche locales possibles : `rg --files --hidden`, puis `rg -n --
 - Le validateur architecture accepte `"1.0"` et `"1.1"`. Le schéma et les invariants partagés sont contrôlés avec Python standard, sans dépendance facultative.
 - Les trois skills partagent `project-scoping/references/versioning.md`, `delivery.schema.json` et `scripts/validate_delivery.py` ; conserver ces fichiers ensemble lors de la distribution. Ce sont des références/utilitaires, pas un nouveau skill de planification.
 - Un audit fonctionnel `project-scoping/scripts/validate_scope.py` contrôle les nouveaux périmètres globaux sans exiger de dossier `versions/`. Les anciens arbres inchangés conservent leur audit hérité.
-- `structure-project` n'est pas modifié ici. Son entrée indépendante et son validateur restent hérités (version obligatoire, MVP-pointeur). **Le cadrage emploie l'adaptateur explicite de `functional-documents.md`**, avec les mêmes procédures preview/apply/audit et validations humaines, sans appliquer ces règles héritées. Une évolution indépendante de `structure-project` et des consommateurs externes doit être préparée si leur utilisation directe est souhaitée.
+- `structure-project` porte désormais les procédures preview/apply/audit et les formats fonctionnels canoniques, communs à son utilisation directe et à `project-scoping`. `functional-documents.md` conserve un pointeur de compatibilité. L'audit courant accepte un MVP sans release ; `validate_docs.py --legacy` conserve les contrôles des arbres V1/V2 inchangés, avec une référence historique distincte. Distribuer ces fichiers avec le validateur partagé de `project-scoping`.
 
 ## Approbations encore nécessaires
 
@@ -61,7 +61,9 @@ Chemins relatifs à `.agents/skills/` :
 | --- | --- |
 | `project-scoping/SKILL.md`, `project-scoping/agents/openai.yaml` | Cadrage du MVP global ou d'une évolution, reprise des décisions et gates préservés. |
 | `project-scoping/references/versioning.md` | Nouvelle référence commune : SemVer, contrats publics, stabilité, progression indépendante, dépendances et idempotence. |
-| `project-scoping/references/functional-documents.md` | Formats fonctionnels globaux et adaptation des procédures preview/apply/audit de la dépendance héritée. |
+| `project-scoping/references/functional-documents.md` | Pointeur de compatibilité vers les procédures et formats canoniques de `structure-project`. |
+| `structure-project/SKILL.md`, `structure-project/references/document-formats.md`, `structure-project/agents/openai.yaml` | Structuration du MVP ou d'une évolution sans version imposée, commune aux entrées directe et orchestrée. |
+| `structure-project/scripts/validate_docs.py`, `structure-project/scripts/validate_legacy_docs.py`, `structure-project/references/legacy-document-formats.md` | Sélection de l'audit courant ou historique explicite, sans conversion des documents. |
 | `project-scoping/references/delivery.schema.json`, `project-scoping/scripts/validate_delivery.py` | Schéma et contrôle partagés des intentions et preuves de livraison ; contrôles structurels des schémas locaux. |
 | `project-scoping/scripts/validate_scope.py` | Audit structurel du MVP global, sans version imposée. |
 | `project-scoping/references/migration.md` | Présent inventaire, options, risques et approbations restantes. |

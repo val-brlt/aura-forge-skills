@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Validate Aura Forge architecture contract structure, references and handoff gate.
 
-Usage: python scripts/validate_contract.py path/to/ARCHITECTURE-CONTRACT.json
+Usage (repository root): python .agents/skills/project-architecture/scripts/validate_contract.py path/to/ARCHITECTURE-CONTRACT.json
 Requires only Python stdlib; checks the bundled schema and shared delivery
 invariants with no optional dependency or network access. This does not verify that external
 FEAT/FLOW/SCREEN references or approval evidence actually exist in the repository.
@@ -18,7 +18,7 @@ from validate_delivery import delivery_errors, schema_errors
 
 def main() -> int:
     if len(sys.argv) != 2:
-        print("Usage: python scripts/validate_contract.py PATH_TO_CONTRACT.json")
+        print("Usage: python .agents/skills/project-architecture/scripts/validate_contract.py PATH_TO_CONTRACT.json")
         return 2
     path = pathlib.Path(sys.argv[1])
     try:

@@ -55,7 +55,7 @@ scope: MVP.md
 <Conventions et exceptions utiles, ou « Aucun point bloquant »>
 ```
 
-For a version with **no new/changed UI**, replace the mockup link with a real link to the previous approved version's HTML as appropriate. `status` is `draft` until the **actual HTML** is approved and the structured contract passes validation, then `approved`. Do not claim the software was delivered.
+For a scope with **unchanged UI**, replace the mockup link with a real link to the existing approved HTML. For an **entirely no-UI scope**, retain `Maquettes validées` and explain that no mockup applies, linking the approved functional source and summarizing each user-approved `no_ui` justification; create no HTML or mockup folder. Its contract has empty `flows`/`screens`, one justified `no_ui` coverage record per scoped feature and only the corresponding FEAT delivery items. `status` stays `draft` until the applicable visuals or no-UI justifications are explicitly approved and validation passes, then becomes `approved`. Neither approval proves software delivery.
 
 ## UX-CONTRACT.json — required machine-readable format
 
@@ -131,7 +131,7 @@ Use the following schema shape. This is an *illustrative* dataset, not a claim t
 
 **Future considerations:** optional entries with `source` pointing to an **existing** project/roadmap source, `item`, `navigationImplication`. These entries cannot create current-version `FEAT-*`, screens, journeys, Issue scope or clickable future features. They preserve future-aware navigation decisions without mocking future phases.
 
-**JSON is the authoritative UX *data* handoff**, but the validated `VERSION.md` and feature cards remain the functional truth; never overwrite them merely because JSON or prototype code suggests new behavior. The `UX-SUMMARY.md` summarizes instead of duplicating fields, allowing the future architecture/planning skill to use the JSON without re-parsing long Markdown tables.
+**JSON is the authoritative UX *data* handoff**, but the approved MVP/change scope and feature cards remain the functional truth; never overwrite them merely because JSON or prototype code suggests new behavior. The `UX-SUMMARY.md` summarizes instead of duplicating fields, allowing the future architecture/planning skill to use the JSON without re-parsing long Markdown tables.
 
 ## Incorporating approved functional refinements discovered during UX
 
@@ -141,4 +141,4 @@ For an **already delivered version**, keep its functional baseline unchanged; do
 
 ## Validation rules
 
-Run `python .agents/skills/project-ux/scripts/validate_ux_docs.py <DOCS_ROOT> --contract <contract-path>` (path relative to working directory). Legacy `--version <baseline>` is supported, including `v1`; SemVer directories are also accepted. With neither option, discover global and legacy contracts. Validate shape, coverage, IDs, dependency/delivery metadata, anchors/assets and scratch isolation. Static checks do not verify user authority, evidence contents, JavaScript behavior or visual quality; open final HTML and compare against the approved preview. Review functional edits in the scoped diff before separate commit/push permissions. Upgrading a document/contract or removing legacy files requires the reviewed migration procedure; never delete them automatically.
+Run `python .agents/skills/project-ux/scripts/validate_ux_docs.py <DOCS_ROOT> --contract <contract-path>` (path relative to working directory). Legacy `--version <baseline>` is supported, including `v1`; SemVer directories are also accepted. With neither option, discover global and legacy contracts. Validate shape, coverage, IDs, dependency/delivery metadata, anchors/assets and scratch isolation. Static checks do not verify user authority, evidence contents, JavaScript behavior or visual quality; for UI scopes open final HTML and compare against the approved preview. For an entirely no-UI scope manually verify each justification and its explicit approval instead. Review functional edits in the scoped diff before separate commit/push permissions. Upgrading a document/contract or removing legacy files requires the reviewed migration procedure; never delete them automatically.

@@ -1,83 +1,61 @@
 ---
 name: structure-project
-description: "Model-invoked Aura Forge skill for previewing, applying and auditing version-aware functional docs: one canonical feature card per feature, immutable approved version scopes, living backlog, and V1 MVP/V2+ changes."
+description: "Structure approved MVP or functional change summaries into a feature catalogue and canonical documentation. Use to preview, apply or audit functional scopes, including legacy version trees, independently of release planning."
 ---
 
-# Aura Forge — Structure a Product Version
+# Structure a Functional Scope
 
-**Role:** Convert the **approved functional summary for one target version** into a user-reviewable feature catalogue and traceable project docs. Can run for V1/MVP and be reused for V2, V3, etc. This skill is **model-invoked** so `project-scoping` can call it. Communicate with the user in **French** and respect `AGENTS.md`, approved docs and glossary conventions.
+Convert an **approved functional summary** into a reviewable catalogue and canonical project documents. This model-invoked skill can be used directly or by `project-scoping`. Communicate in **French** and follow `AGENTS.md`, approved decisions and glossary conventions.
 
-**Language contract:** Write all new *user-facing* docs in **French**, including titles, section headings, descriptions, version differences, business rules and acceptance criteria, regardless of source language. Keep `FEAT-*` IDs, file names/slugs, YAML frontmatter keys/values in English. Keep the approved summary **verbatim** in its original language. Do not automatically translate the glossary or ADRs.
+Read [shared scope and delivery conventions](../project-scoping/references/versioning.md) before preview/apply/audit. Read [document formats](references/document-formats.md) before proposing or writing files. For an unchanged historical V1/V2 audit only, read [legacy formats](references/legacy-document-formats.md). For proposed migration of approved documents, read the [migration procedure](../project-scoping/references/migration.md).
 
 ## Inputs and modes
 
-Required inputs: `target_version` (e.g. `v1`, `v2`), approved summary path and existing docs tree when present. Specify `release_kind=mvp` for the V1 MVP or `standard` for normal versions, based on explicit product decisions.
+Required: approved summary path, stable `scope_id`, `scope_kind` (`mvp`, `change` or `legacy`) and `DOCS_ROOT`. Discover and reuse the authoritative documentation tree; for a new project use `docs/docs-project/`. A new global MVP uses `scope_id: mvp`. Reuse an existing scope ID/path for an evolution. `target_version` is optional context for an already-approved release assignment.
 
-- `mode=preview`: **read-only** analysis, catalogue, proposed changes and exact file manifest.
-- `mode=apply`: write/update after the user **explicitly approves the catalogue** and version boundary.
-- `mode=audit`: inspect and validate without changing files.
+- `mode=preview`: read-only catalogue, exact file manifest and proposed diffs.
+- `mode=apply`: write the approved catalogue as draft documents after explicit catalogue approval.
+- `mode=audit`: read-only structural and semantic checks of the selected functional scope.
 
-If summary approval or version identity is unclear, stop and request a concrete decision; do not invent consent. Never publish issues, choose a stack or implement code.
+If summary approval or functional scope identity is unclear, obtain the missing decision before apply. A software version is not a prerequisite. Work stays within functional documentation; issues, technical design, implementation and Git actions belong to other workflows.
 
-## Catalogue and history rules
+## 1. Preview and approve the catalogue
 
-1. Read the full current approved summary, the previous version scopes and relevant existing functional docs, glossary and ADRs. Determine whether the input describes an **entirely new feature** or an **evolution of an existing feature**.
-2. Propose coherent **functional** modules, not implementation packages. Keep each feature in **one canonical card** at `modules/<module>/<feature>.md`, and reuse stable IDs across versions. Never create a duplicate card for a V2 enhancement of the same feature.
-3. Separate **decision state** (`approved`, `proposed`, `rejected`, `unresolved`) from **version scope** (membership in `versions/<version>/VERSION.md`) and from **delivery status** (explicitly confirmed by the user or trustworthy records, never presumed by this skill). Do not use the legacy `release_bucket: mvp` as a timeless global property.
-4. Document changes to existing features as an **append-only, version-labelled section** in their canonical feature card: V1's agreed behavior/acceptance criteria remain identifiable after V2 introduces other rules. Avoid silently replacing or reinterpreting earlier approved requirements.
-5. New approved version scopes include **only approved functional work**. Proposed/unresolved/rejected items are retained in their appropriate backlog sections but **not** represented as approved release commitments. A previous version's delivery status is not inferred from its scope.
-6. Every feature, version-level decision and meaningful change must trace to an **approved summary or explicit user decision**. Unsupported acceptance criteria stay labelled *proposed*, and missing facts stay *unresolved*.
-7. During `preview`, display module, stable feature ID, French name, new-versus-evolution, target version, decision state, provenance, affected files and diff impact. Show gaps, duplicates, contradictions and assumptions. **Wait for explicit approval.**
+Read the complete approved summary, current project/MVP/backlog, relevant cards, existing scope baselines, glossary and ADRs. Classify each requested change as a new concept or evolution of an existing feature.
 
-## Document tree
+Maintain **one canonical card per `FEAT-*`** under `modules/<module>/<feature>.md`. Reuse IDs and functional module slugs. Separate approval, functional scope, planned release, development and evidenced delivery. Keep proposed, unresolved, rejected and future-only work outside the approved MVP/change scope.
 
-Follow `references/document-formats.md`. For a new project:
+Present module, FEAT ID, French name, new/evolution, scope, decision state, provenance, approved acceptance criteria, dependencies and independent progress fields. Include assumptions, contradictions, the exact manifest and diffs to existing approved prose. Every approved requirement must trace to the summary or an explicit user decision; unsupported criteria remain proposed.
 
-```text
-docs/docs-project/
-├── PROJECT.md                   # Living overview and index of versions
-├── MVP.md                       # Optional compatibility pointer to V1 (not a second feature catalogue)
-├── FUTURE-FEATURES.md           # Living backlog: deferred, proposed, unresolved, rejected
-├── versions/
-│   ├── v1/
-│   │   ├── VERSION.md           # Approved V1 scope (MVP when designated)
-│   │   └── SCOPING-SUMMARY.md   # Approved source snapshot in original language
-│   └── v2/
-│       ├── VERSION.md           # Approved V2 changes relative to baseline
-│       └── SCOPING-SUMMARY.md
-└── modules/
-    └── <module-slug>/
-        ├── MODULE.md
-        └── <feature-slug>.md     # One canonical card per feature across all versions
-```
+**Done:** the user explicitly approves the catalogue, manifest and any corrections to approved requirements. Revise and obtain approval again when the proposal changes.
 
-Do **not** create future version folders until those versions have been scoped and approved. `versions/v1/VERSION.md` is the source of truth for V1, not root `MVP.md`; the latter is optional compatibility/navigation only. Versions have their own approved summary and scope. Feature cards/modules and `PROJECT.md` can be updated by later approved cycles; past version summaries/scopes must not be silently rewritten. `FUTURE-FEATURES.md` may continue listing an enhancement of an already delivered feature, but label the **pending change**, not the whole feature, as future.
+## 2. Apply the approved catalogue
 
-### Compatibility with old V1-only docs
+Use the current [document formats](references/document-formats.md):
 
-When legacy documents already exist at root (`MVP.md`, `SCOPING-SUMMARY.md`, feature `release_bucket: mvp`), **do not destroy or silently migrate them**. In preview, propose a one-time mapping from the approved V1 scope to `versions/v1/VERSION.md` and from `release_bucket` to explicit version membership. Preserve IDs and historical source links. The root summary can remain the source and be referenced by the V1 version index rather than duplicated; a version-specific summary is recommended for each **new** version. Perform migration only with explicit approval, then audit. If old and new scopes conflict, stop and report both.
+1. Preserve the approved summary verbatim in its original language, at its existing canonical path or `SCOPING-SUMMARY.md` under DOCS_ROOT for a new MVP.
+2. Create/update the authoritative functional scope with `status: draft` pending document review. `MVP.md` holds the global indispensable scope and success criteria, independently of releases. For a change, reuse its existing scope path or include a new scope path in the approved manifest.
+3. Update the living `PROJECT.md`, module indexes, canonical feature cards and `FUTURE-FEATURES.md` in place. Integrate accepted refinements into ordinary sections; preserve attributable delivered requirements, historical baselines and original summary snapshots. Corrections to an approved snapshot require separate explicit approval.
+4. Record only already-approved release assignments. Preserve historical `versions/v1/` paths without inferring a SemVer number. A new MVP needs no release directory; release partitioning alone creates no new feature cards or functional interview.
 
-## Apply, audit and handback
+**Done:** every file in the approved manifest reflects the accepted catalogue, drafts are distinct from approvals, and the diff contains only authorized functional changes. Approval of documentation changes never proves development or delivery.
 
-Only after the catalogue is approved:
+## 3. Audit the selected scope
 
-1. Create/update the current version's `versions/<version>/SCOPING-SUMMARY.md` **faithfully**, avoiding an unnecessary duplicate of an existing approved root summary in an approved migration.
-2. Create `versions/<version>/VERSION.md` with `status: draft` pending final documentation approval, approved goal, baseline, included new features and enhancements (link to canonical cards), exclusions, dependencies, open decisions and the source snapshot. Treat this as a **historical record** after approval, never an editable living backlog.
-3. Update `PROJECT.md` as a **living product overview and index** to all versions. Update appropriate module/feature cards with version-labelled changes, preserving earlier history. Update `FUTURE-FEATURES.md` with deferred, unresolved and rejected work, without suggesting delivery.
-4. For the initial V1 designated MVP, optionally add root `MVP.md` with a **link** to `versions/v1/VERSION.md`, never a duplicate catalogue. Do not generate a new root `MVP.md` for V2. Preserve an existing one unless its change was explicitly approved.
-5. Compare affected files and show any updates to earlier approved content. Require a specific approval **before** changing a previously approved version snapshot.
-6. Run the structural validator:
+From the **project repository root**, run:
 
-   `python .agents/skills/structure-project/scripts/validate_docs.py docs/docs-project`
+`python .agents/skills/structure-project/scripts/validate_docs.py <DOCS_ROOT> --scope <scope-path>`
 
-   On Windows use `py` if needed; locate the actual installed skill path when necessary. This script checks version indices, links, stable IDs and basic approval constraints; it **cannot determine whether something was really shipped**, whether behavior is correct, or whether French prose is good. Conduct a separate semantic and linguistic review.
-7. Return the file manifest, exact current-version feature set, diff summary, warnings and blockers to the orchestrator for **human documentation approval**. **Never commit or push.**
+`--scope` defaults to `MVP.md` and is relative to DOCS_ROOT. Use `py` on Windows if needed, or resolve the actual installed skill path. This entry point uses the shared functional validator packaged in `project-scoping/scripts/validate_scope.py`.
 
-## Never
+For an **unchanged legacy V1/V2 tree**, use `--legacy` instead of `--scope`. This checks historical version membership and headings without converting documents. A revised global MVP uses the current audit, including when legacy snapshots coexist in the tree.
 
-- Pretend the scoping snapshot for V1 is evidence that V1 was shipped.
-- Automatically migrate backlog features into V2 or mark older features delivered.
-- Create duplicate feature cards for version upgrades or rewrite earlier version-specific acceptance criteria.
-- Update an approved historical `versions/<old>/VERSION.md` without separate explicit approval.
-- Conflate MVP with every future version or infer version membership from a single global `mvp` flag.
-- Invent product requirements, acceptance criteria, delivery evidence, GitHub tickets or technical architecture.
+Manually check French prose, approval authority, source faithfulness, criteria, dependencies, independent progress, partial delivery and preservation of delivered behavior. Compare the diff with the approved preview. Validate existing UX/architecture contracts **only when affected** by the functional edits; new scoping work can finish before those contracts exist. Any impacted downstream design remains pending its phase review.
+
+**Done:** all structural errors are resolved, semantic checks are reported, and warnings, missing evidence and downstream impacts are explicit. Automated checks verify neither real approvals nor shipment.
+
+## 4. Document review and handback
+
+Present the manifest, exact FEAT set, functional delta, audit results, unresolved questions and scoped diff. Obtain explicit document approval before updating only the current scope's approval metadata to `approved`; show that metadata diff. Preserve unrelated approvals and progress fields.
+
+When called by `project-scoping`, return this package for its final document-review gate instead of requesting the same approval twice. Direct use performs the review here. The skill ends with the documentation package; commit and push are outside its scope.

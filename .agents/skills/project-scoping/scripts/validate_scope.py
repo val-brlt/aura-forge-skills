@@ -3,7 +3,7 @@
 
 Usage: python validate_scope.py DOCS_ROOT [--scope MVP.md]
 Read-only structural checks; humans verify requirements, approvals and evidence.
-Use structure-project's legacy validator only for unchanged legacy version trees.
+Use structure-project/scripts/validate_docs.py --legacy only for unchanged legacy version trees.
 """
 import argparse
 from pathlib import Path

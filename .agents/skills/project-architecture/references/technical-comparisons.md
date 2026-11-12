@@ -12,6 +12,16 @@ This reference governs **the analysis shown to the user before approval** and it
 - An approved choice should not be relitigated for variety. Reopen only for a verified conflict, new requirement, failed assumption or an explicit user request.
 - Compare technologies independently of what is installed on the user's machine. Existing shipped architecture and verified hosting constraints matter; incidental local tool availability never selects a stack.
 
+## Decision procedure
+
+1. **Frame:** connect the specific choice to approved functional/UX requirements, current code, accepted constraints and material migration concerns. Distinguish hard requirements, preferences and assumptions; use team familiarity only when known. State reversibility and choose the few criteria that discriminate among viable options.
+2. **Research:** use the option-space rules above. Compare equivalent decisions, explaining scope differences between integrated and standalone solutions. Verify consequential claims about integrations, pricing, licenses, feature support, deployment, version compatibility, performance and security against primary documentation/source code. Record URLs and verification dates. Label estimates and unavailable verification explicitly.
+3. **Prepare and present:** write the scratch comparison using the convention below **before** asking for approval. Show a concise French table and recommendation in the conversation, including why alternatives lose, accepted costs/risks, when another option wins and effects on other decisions. A link alone is insufficient. If persistence is unavailable, show the full comparison inline and report that limitation.
+4. **Decide:** ask one targeted approval question at a time and wait for explicit acceptance. Record `proposed`, `accepted`, `rejected` or `deferred` with verifiable approval evidence. Preserve the original recommendation and user feedback if another option is chosen; update the same file's current decision and consequences.
+5. **Integrate:** put accepted decisions in canonical architecture sections and a sparse ADR only when warranted. Preserve essential context, alternatives, rationale and consequences there independently of scratch. Draft proposals remain visibly proposed. Settle cross-module/shared-data contracts, security boundaries, deployment and difficult migrations before planning; a consequential deferred blocker keeps the handoff non-ready.
+
+Local, low-impact implementation conventions need no full comparison or human decision. When a consequential choice has only one credible option, document the constraint, attempted alternative search and reason the option is forced, then obtain approval. Reuse already-approved choices unless a verified conflict, changed requirement or explicit user request reopens them.
+
 ## Exact scratch convention
 
 Default relative to **repository root**:

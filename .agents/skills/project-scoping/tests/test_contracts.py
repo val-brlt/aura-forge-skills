@@ -122,6 +122,18 @@ class ContractChecks(unittest.TestCase):
         self.ux["featureCoverage"] = [{"featureId": "FEAT-001", "coverage": "no_ui", "screenIds": [], "flowIds": []}]
         self.assert_error(self.check_ux(), "user-approved justification")
 
+    def test_approved_no_ui_scope_needs_no_html(self):
+        self.ux.update(status="approved", flows=[], screens=[])
+        self.ux["featureCoverage"] = [{"featureId": "FEAT-001", "coverage": "no_ui", "screenIds": [], "flowIds": [], "justification": "Traitement automatique sans interaction utilisateur, justification approuvée."}]
+        self.ux["delivery"]["items"] = [item for item in self.ux["delivery"]["items"] if item["ref"] == "FEAT-001"]
+        path = self.ux_docs()
+        (path.parent / "mockups/index.html").unlink()
+        (path.parent / "mockups").rmdir()
+        summary = path.parent / "UX-SUMMARY.md"
+        summary.write_text(summary.read_text(encoding="utf-8").replace("[Maquettes](mockups/index.html)", "Sans interface : justification approuvée. [Périmètre](../MVP.md)"), encoding="utf-8")
+        self.assert_ok(run("project-ux/scripts/validate_ux_docs.py", self.root, "--contract", path))
+        self.assertFalse((path.parent / "mockups").exists())
+
     def test_future_feature_cannot_enter_flows(self):
         self.ux["flows"][0]["featureIds"] = ["FEAT-999"]
         self.assert_error(self.check_ux(), "not in mvp's scope")
@@ -263,8 +275,38 @@ class ContractChecks(unittest.TestCase):
         self.write("modules/projects/duplicate.md", card.read_text(encoding="utf-8"))
         self.assert_error(run(script, self.root), "duplicate canonical FEAT")
 
+    def test_structure_entry_point_audits_global_scope_read_only(self):
+        self.functional_docs()
+        before = {str(p): p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
+        script = "structure-project/scripts/validate_docs.py"
+        first = run(script, self.root)
+        self.assert_ok(first)
+        self.assertEqual(first.stdout, run(script, self.root).stdout)
+        self.assertEqual(before, {str(p): p.read_bytes() for p in self.root.rglob("*") if p.is_file()})
+        self.assertFalse((self.root / "versions").exists())
+        self.assertFalse(list(self.root.rglob("*-CONTRACT.json")))
+
+    def test_structure_entry_point_accepts_explicit_change_scope(self):
+        self.functional_docs()
+        scope = self.root / "MVP.md"
+        scope.rename(self.root / "CHANGE.md")
+        project = self.root / "PROJECT.md"
+        project.write_text(project.read_text(encoding="utf-8").replace("MVP.md", "CHANGE.md"), encoding="utf-8")
+        self.assert_ok(run("structure-project/scripts/validate_docs.py", self.root, "--scope", "CHANGE.md"))
+
+    def test_structure_entry_point_keeps_explicit_legacy_audit(self):
+        self.functional_docs()
+        self.write("versions/v1/VERSION.md", "---\nversion: v1\nrelease_kind: mvp\nstatus: approved\n---\n## Objectif de la version\nCréer un projet.\n## Référence précédente\nAucune.\n## Fonctionnalités incluses\n- [FEAT-001 — Créer](../../modules/projects/create.md)\n## Source de cadrage\n[Synthèse](../../SCOPING-SUMMARY.md)\n")
+        project = self.root / "PROJECT.md"
+        project.write_text(project.read_text(encoding="utf-8") + "\n[V1](versions/v1/VERSION.md)\n", encoding="utf-8")
+        card = self.root / "modules/projects/create.md"
+        card.write_text(card.read_text(encoding="utf-8") + "\n## Historique fonctionnel par version\n### V1\nCréation approuvée.\n", encoding="utf-8")
+        before = {str(p): p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
+        self.assert_ok(run("structure-project/scripts/validate_docs.py", self.root, "--legacy"))
+        self.assertEqual(before, {str(p): p.read_bytes() for p in self.root.rglob("*") if p.is_file()})
+
     def test_shared_reference_links_exist(self):
-        for skill in ["project-scoping", "project-ux", "project-architecture"]:
+        for skill in ["project-scoping", "project-ux", "project-architecture", "structure-project"]:
             for path in (SKILLS / skill).rglob("*.md"):
                 # Skip illustrative code blocks, which describe generated project docs.
                 text = re.sub(r"```.*?```", "", path.read_text(encoding="utf-8"), flags=re.S)

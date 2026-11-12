@@ -8,8 +8,8 @@ disable-model-invocation: true
 
 This is a **user-started workflow**, not a production implementation agent. Run after the MVP or requested functional change is approved with `project-scoping`. Preserve a coherent UX for the **whole MVP**, with progressive delivery subsets when already approved. Talk **in French** and follow `AGENTS.md`. Read `references/document-formats.md` and [shared versioning conventions](../project-scoping/references/versioning.md) before writing. For legacy inputs read the [migration plan](../project-scoping/references/migration.md). A release partition alone reuses validated design and HTML, without restarting UX.
 
-**Core principle:** The user reviews **interactive HTML mockups**, not one Markdown document per screen. Preserve three complementary outputs:
-1. Validated, browser-viewable HTML/CSS/JavaScript mockups: the visual reference.
+**Core principle:** For scopes with UI, the user reviews **interactive HTML mockups**, not one Markdown document per screen. Preserve these complementary outputs:
+1. Validated, browser-viewable HTML/CSS/JavaScript mockups when the scope has UI: the visual reference.
 2. A short French `UX-SUMMARY.md`: human-readable design rationale, main journeys/navigation, roadmap awareness, and links.
 3. `UX-CONTRACT.json`: the **machine-readable UX handoff** for architecture, issue planning and implementation, with feature/flow/screen/interaction/preview links.
 
@@ -39,7 +39,7 @@ UX review often reveals a legitimate feature change. **Do not treat the earlier 
 
 1. Identify affected FEAT, module, canonical MVP/change scope and living indexes. Explain the functional change and scope; clarify only unresolved ambiguity. **Obtain explicit functional approval before recording a change as approved.** Visual approval alone does not approve novel functional behavior.
 2. For an **approved refinement to undelivered behavior**, update the affected canonical requirements/acceptance, module, MVP/change scope and relevant indexes **in place**. Keep existing historical headings and stable FEAT IDs; do not invent version sections or release assignments. Only create a FEAT for a separate concept.
-3. **Do NOT append an “addendum D17”, “complément UX”, “source complémentaire”, or a pointer to `SCOPING-ADDENDUM.md` inside the feature/module/normal scope prose. Do not create a `SCOPING-ADDENDUM.md` just for this.** If a pre-existing feature or module contains such an appendix-style paragraph for the very change being normalized, fold its approved content into the ordinary existing sections and remove that redundant paragraph/link. Do not delete the underlying addendum file or break other references without a separate, reviewed cleanup approval. Do not add a provenance annotation explaining that a requirement came from the UX review. Tell the user what was integrated in the chat, and show the Git diff before commit; Git history provides change provenance. Keep the originally approved `SCOPING-SUMMARY.md` as the original snapshot unless the user explicitly requests and approves a correction to it.
+3. Integrate the approved behavior into the ordinary canonical sections. Fold any redundant appendix for this same refinement into those sections and remove its duplicate paragraph/link; removing an underlying source file or affecting other references requires reviewed cleanup approval. Explain provenance in the conversation and scoped diff. Preserve the original approved `SCOPING-SUMMARY.md` unless a correction is explicitly approved.
 4. Preserve **already delivered behavior and slices**, even if the whole MVP is incomplete. Record enhancements as a separate approved functional delta with release unset until planning; never silently rewrite shipped baselines. Escalate broad unresolved functional scope to `project-scoping`. A MAJOR bump follows public-contract incompatibility, not perceived feature importance.
 5. Update the UX gallery, `UX-CONTRACT.json` and `UX-SUMMARY.md` to match the now-approved functional scope. Reconfirm affected visuals when their design changes. Do not mark a proposal approved until its functional decision and visual review (if applicable) are explicit.
 
@@ -55,6 +55,8 @@ Identify the approved functional scope, existing document baseline and any verif
 
 Ask only questions needed for journeys, information architecture, interaction or visual decisions. Use `grilling` when helpful. Handle any user-requested **functional** changes through the canonical-update process above, before locking the corresponding UX choices. Propose a small set of main journeys/screens, with an overall navigation structure that can accommodate documented later phases.
 
+**No-UI path:** if every scoped feature genuinely has no UI, obtain explicit approval of each `no_ui` justification, skip steps 2–3 and the visual promotion in step 4, then write the summary and contract. Use empty `flows`/`screens`, one `no_ui` coverage record per FEAT with empty screen/flow references, and FEAT-only delivery items. Under the summary's `Maquettes validées` heading explain that no mockup is applicable and link the approved functional source. Create no gallery or placeholder screen. **Done:** all no-UI justifications are approved, the audit passes and both documents can be marked approved. A scope with unchanged existing UI instead reuses its approved HTML; mixed scopes still review their UI normally.
+
 ### 2. Build and critique interactive mockups
 
 Build a **real, offline-capable HTML/CSS/JavaScript gallery** under the same scratch scope's `preview/`, containing only new/changed screens in the approved functional scope. Design global MVP journeys; distinguish independently deliverable steps/states/interactions in the contract without adding future-only UI. Reuse unchanged approved visuals. Use stable `id="SCREEN-001"` containers and `href="#SCREEN-001"` navigation, meaningful in-memory clicks/forms/states and French copy. **Images alone, posters and static Markdown are not an acceptable preview.** Apply `frontend-design`, then `design-critique` on actual previews. HTML remains design evidence, never production code.
@@ -65,7 +67,7 @@ Present the working gallery path/URL and describe covered journeys and how the n
 
 ### 4. Promote approved visuals and write the handoff
 
-After visual approval, promote the **exact approved** HTML and assets to the existing canonical UX location. For a new global MVP use `<DOCS_ROOT>/ux/mockups/`; retain existing `versions/<baseline>/ux/mockups/` paths. Never move approved files merely to match a release number. Check offline opening, anchors and navigation. Reused screens link to existing approved HTML without duplication. Never link final docs to scratch.
+For scopes with new/changed UI, after visual approval promote the **exact approved** HTML and assets to the existing canonical UX location. For a new global MVP use `<DOCS_ROOT>/ux/mockups/`; retain existing `versions/<baseline>/ux/mockups/` paths. Never move approved files merely to match a release number. Check offline opening, anchors and navigation. Reused screens link to existing approved HTML without duplication. Never link final docs to scratch.
 
 Create or update **only**:
 
@@ -92,20 +94,10 @@ Run:
 
 Legacy `--version <baseline>` and discovery remain supported. Paths passed to `--contract` are relative to the current working directory.
 
-Use `py` on Windows when needed. The script checks JSON shape/references/coverage, feature IDs, local HTML anchors/assets and forbidden scratch paths; it **cannot** decide design quality or confirm user approval. Correct discrepancies. If the JSON contradicts the approved HTML, correct the JSON; if the actual design needs changing, obtain renewed visual approval. Ensure any approved functional changes are integrated directly into canonical functional documents and reflected in the JSON. After approved visual review and passing audit, set UX summary and contract status to `approved` and rerun validation.
+Use `py` on Windows when needed. The script checks JSON shape/references/coverage, feature IDs, local HTML anchors/assets and forbidden scratch paths; it **cannot** decide design quality or confirm user approval. Correct discrepancies. If the JSON contradicts the approved HTML, correct the JSON; if the actual design needs changing, obtain renewed visual approval. Ensure any approved functional changes are integrated directly into canonical functional documents and reflected in the JSON. After passing audit and explicit approval of the applicable visuals or no-UI justifications, set UX summary and contract status to `approved` and rerun validation.
 
-Give the user a short French report: approved preview, covered journeys/features, relevant future navigation implications, functional documents updated in place (if any), and genuinely unresolved points. **Do not require them to review the whole contract or a screen-by-screen document stack.** Show the complete relevant Git diff, including any canonical functional edits, for transparency.
+Give the user a short French report: approved preview or no-UI justifications, covered journeys/features, relevant future navigation implications, functional documents updated in place (if any), and genuinely unresolved points. **Do not require them to review the whole contract or a screen-by-screen document stack.** Show the complete relevant Git diff, including any canonical functional edits, for transparency.
 
 ### 6. Git actions: separate explicit approvals
 
 Show `git status`, the relevant diff and unrelated changes. Stage **only** the documents, approved HTML and functional edits within scope; never `git add -A`. Ask explicit permission to **commit**, then request **independent push permission** with remote and branch confirmation. Declining either action leaves local files intact. No automatic branch creation, commit, push, architecture stage or GitHub Issue publication.
-
-## Hard rules
-
-- **Human approval of functional scope changes and actual HTML visuals**; no implicit approvals.
-- **No per-screen Markdown by default**; concise French UX summary + approved HTML + complete JSON contract. Optional design guidelines only when useful.
-- **No addendum-style prose in canonical functional docs** for same-version refinements; update the real feature/module/version text and mention changes in the conversation/diff instead.
-- Do not mutate delivered version history or the original scoping-summary snapshot automatically.
-- Roadmap informs navigation, never expands the approved functional scope without authorization.
-- Stable IDs and explicit FEAT/FLOW/SCREEN linkage for later issue planning; no stack/API assumptions.
-- No unapproved Git operations.

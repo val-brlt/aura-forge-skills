@@ -16,9 +16,9 @@ Write all **new user-facing functional documentation** in **French**: `PROJECT.m
 
 Scope **functional needs for the MVP or requested change**. Cover user goals, business rules, functional changes, dependencies, exclusions and acceptance criteria when user-approved. Keep future features separate. **Do not** impose technical release partitioning, assign definitive versions before dependency analysis/human validation, design UX flows/wireframes, select technologies, create schemas/APIs, implementation tasks or publish GitHub issues. Capture cross-phase topics for later.
 
-Use Matt Pocock's installed **model-invoked** `grilling` and `domain-modeling` for unresolved interview/domain questions; do not modify Matt's skills. Read local `structure-project` and its references for catalogue methodology, applying the mandatory compatibility adapter in `references/functional-documents.md` to its preview/apply/audit procedures.
+Use Matt Pocock's installed **model-invoked** `grilling` and `domain-modeling` for unresolved interview/domain questions. Use local [structure-project](../structure-project/SKILL.md) for the authoritative catalogue, document formats and preview/apply/audit procedures.
 
-**Codex compatibility (mandatory):** Do **not** assume an executable tool named `Skill` exists. Codex can expose instructions/paths without it. Read the relevant installed `SKILL.md` files with available file tools and follow them in-session. For `structure-project`, read its instructions/references, then execute **the adapted preview/apply/audit in `references/functional-documents.md`**, which supersedes its legacy version templates for this workflow. A dedicated invocation tool is optional. Do not claim tool invocation merely for reading instructions, or report a missing `Skill` tool as an error when files are readable. If a required file truly cannot be found/read, identify that dependency and limit work accordingly while preserving every approval gate.
+**Tool compatibility:** Read installed `SKILL.md` files and apply their instructions in-session when a dedicated invocation tool is unavailable. If a required file cannot be read, identify the missing dependency and limit the work accordingly while preserving approval gates.
 
 ## Determine the functional scope and existing baseline first
 
@@ -54,16 +54,9 @@ Keep this snapshot in its source language. Show it in French and request **expli
 
 ### 3. Catalogue, canonical structure and approval gate
 
-Execute the adapted `structure-project` `mode=preview` (read-only) from `references/functional-documents.md`, with approved summary, scope ID/kind and existing DOCS_ROOT. Its legacy V1/MVP output rules do not apply. It must:
+Follow [structure-project](../structure-project/SKILL.md) in `mode=preview` with the approved summary, `scope_id`, `scope_kind` and DOCS_ROOT. Its current procedure applies equally to direct use and this workflow.
 
-- Reuse **stable `FEAT-*` IDs** and one canonical card; allocate new IDs only for new concepts. Preserve attributable historical behavior/acceptance and approved source snapshots.
-- Propose only requested functional changes; distinguish new/modified features and incremental slices. Approval, planning, development and actual delivery remain independent.
-- Select indispensable MVP/change features **only with explicit approval**. Keep future/proposed/unresolved/rejected work separate; no automatic release allocation.
-- Show proposed modifications to *existing approved content* as diffs; never silently rewrite it.
-
-Present the proposed catalogue and file manifest in **French**; obtain explicit approval before generating final docs. If changed, revise the preview and seek approval again.
-
-Execute the adapted `mode=apply` only after approval, then its adapted `mode=audit`. Preserve the original summary and historical baselines; update **living** project/MVP/module/feature/backlog sections in place without addenda. Check links, IDs, criteria, dependencies and truthful progress. Do not run the legacy validator as a gate that requires artificial version membership.
+**Done:** the user explicitly approves the catalogue and exact manifest, including diffs to approved content; `mode=apply` produces drafts and `mode=audit` resolves structural errors and reports semantic checks, warnings and downstream impacts. Return the audit package to step 4 for final document approval. Existing UX/architecture contracts are checked only when affected; their absence does not block an initial functional scope.
 
 ### 4. Document review and approval gate
 
